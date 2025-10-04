@@ -16,21 +16,66 @@ public abstract class User {
         this.pastSessions = new ArrayList<>();
         this.upcomingSessions = new ArrayList<>();
     }
-    //----getters and setters----
+    //----Getters and Setters----
+
     //first name
     public String getFirstName() {
-        return firstName;}
-    public void setFirstName(String firstName){
-        this.firstName = firstName;}
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     //last name
     public String getLastName() {
-        return lastName;}
-    public void setLastName(String lastName){
-        this.lastName = lastName;}
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    //password
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    //phone number
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    //email
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    //past sessions
+    public List<String> getPastSessions() {
+        return pastSessions;
+    }
+    public void setPastSessions(List<String> pastSessions) {
+        this.pastSessions = pastSessions;
+    }
+
+    //upcoming sessions
+    public List<String> getUpcomingSessions() {
+        return upcomingSessions;
+    }
+    public void setUpcomingSessions(List<String> upcomingSessions) {
+        this.upcomingSessions = upcomingSessions;
     }
 
 
 
     //Methods
-    public
+
 }
