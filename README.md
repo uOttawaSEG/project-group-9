@@ -17,7 +17,7 @@ git remote -v
 ```
 git fetch origin
 git checkout -t origin/dev    # creates local 'dev' tracking 'origin/dev'
-```
+
 
 ## Development
 
