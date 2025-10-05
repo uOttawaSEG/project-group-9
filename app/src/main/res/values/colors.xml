@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colour Palette of the app -->
+    <color name="dark_gunmetal">#242528</color>
+    <color name="deep_dumpling">#9E3120</color>
+    <color name="pale_silver">#D5C4BB</color>
+    <color name="cadet_silver">#98A6A9</color>
+    <color name="light_slate_gray">#798F9C</color>
+
+    <!-- Default colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
