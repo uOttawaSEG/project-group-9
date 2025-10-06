@@ -3,6 +3,17 @@
     <style name="Base.Theme.Otams" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/deep_dumpling</item>
+        <item name="colorOnPrimary">@color/pale_silver</item>
+
+        <item name="colorSecondary">@color/cadet_silver</item>
+        <item name="colorOnSecondary">@color/dark_gunmetal</item>
+
+        <item name="colorSurface">@color/pale_silver</item>
+        <item name="colorOnSurface">@color/dark_gunmetal</item>
+
+        <item name="android:statusBarColor">@color/dark_gunmetal</item>
+        <item name="android:navigationBarColor">@color/dark_gunmetal</item>
     </style>
 
     <style name="Theme.Otams" parent="Base.Theme.Otams" />
