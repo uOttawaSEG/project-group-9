@@ -1,19 +1,57 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- App theme -->
     <style name="Base.Theme.Otams" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/deep_dumpling</item>
-        <item name="colorOnPrimary">@color/pale_silver</item>
+        <!-- Primary -->
+        <item name="colorPrimary">@color/burgundy_red</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
 
-        <item name="colorSecondary">@color/cadet_silver</item>
-        <item name="colorOnSecondary">@color/dark_gunmetal</item>
+        <!-- Secondary / accents -->
+        <item name="colorSecondary">@color/soft_gold</item>
+        <item name="colorOnSecondary">@color/slate_gray</item>
 
-        <item name="colorSurface">@color/pale_silver</item>
-        <item name="colorOnSurface">@color/dark_gunmetal</item>
+        <!-- Background & surfaces -->
+        <item name="android:colorBackground">@color/off_white</item>
+        <item name="colorOnBackground">@color/slate_gray</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
 
-        <item name="android:statusBarColor">@color/dark_gunmetal</item>
-        <item name="android:navigationBarColor">@color/dark_gunmetal</item>
+        <!-- Cards/Sections -->
+        <item name="colorSurfaceVariant">@color/cool_sand</item>
+        <item name="colorOnSurfaceVariant">@color/slate_gray</item>
+
+        <!-- Shape language -->
+        <item name="shapeAppearanceLargeComponent">@style/Shape.MediumRadius</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.MediumRadius</item>
+        <item name="shapeAppearanceSmallComponent">@style/Shape.MediumRadius</item>
+
+        <!-- Fonts -->
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="materialButtonStyle">@style/Widget.Otams.Button</item>
+    </style>
+
+    <!-- Shared rounded corner style -->
+    <style name="Shape.MediumRadius">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50dp</item>
+    </style>
+
+    <style name="Shape" parent="ShapeAppearance.Material3.MediumComponent" />
+
+    <!-- Buttons -->
+    <style name="Widget.Otams.Button" parent="Widget.Material3.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textColor">@color/on_primary</item>
+        <item name="backgroundTint">@color/burgundy_red</item>
+    </style>
+
+    <!-- Outlined button variant -->
+    <style name="Widget.Otams.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textColor">@color/slate_gray</item>
+        <item name="strokeColor">@color/slate_gray</item>
+        <item name="strokeWidth">2dp</item>
     </style>
 
     <style name="Theme.Otams" parent="Base.Theme.Otams" />

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Otams">
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LandingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
