@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">otams</string>
+    <string name="logo_of_the_app">Logo_of_the_app</string>
+    <string name="otams">OTAMS</string>
+    <string name="welcome">Welcome</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="logout">Logout</string>
+    <string name="tutor">Tutor</string>
+    <string name="student">Student</string>
 </resources>

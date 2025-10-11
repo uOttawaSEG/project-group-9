@@ -14,11 +14,11 @@ The overall look and feel should be **modern, calm, and professional**, reflecti
 
 | Color Name | Hex | Usage |
 |-------------|------|--------|
-| **Dark Gunmetal** | `#242528` | Primary text, navbar, app bar background, cards |
-| **Deep Dumpling** | `#9E3120` | Accent color — buttons, icons, highlights |
-| **Pale Silver** | `#D5C4BB` | Background or surfaces (light mode) |
-| **Cadet Grey** | `#98A6A9` | Secondary text, placeholders, disabled states |
-| **Light Slate Gray** | `#798F9C` | Borders, dividers, secondary buttons |
+| **Burgundy Red** | `#7A001D` | Primary brand color — app bar, buttons, and key highlights |
+| **Off-White** | `#FAFAFA` | Main background and card surfaces |
+| **Cool Sand** | `#E8E5E0` | Secondary background or section containers |
+| **Slate Gray** | `#5B5B66` | Primary text, icons, and secondary UI elements |
+| **Soft Gold** | `#D9B98C` | Accent color — dividers, borders, and subtle highlights |
 
 ![Color Palette](//assets/ui/color_palette.png)
 
@@ -52,7 +52,7 @@ The overall look and feel should be **modern, calm, and professional**, reflecti
 ## 🧩 Implementation Notes
 In `themes.xml`, set the default font:
 ```xml
-<item name="android:fontFamily">@font/roboto</item>
+<item name="android:fontFamily">@font/roboto_regular</item>
 ```
 
 In `styles.xml`, create reusable text styles:
