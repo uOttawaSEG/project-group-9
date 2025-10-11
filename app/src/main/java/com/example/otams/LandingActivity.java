@@ -1,6 +1,7 @@
 package com.example.otams;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,13 +18,10 @@ public class LandingActivity extends AppCompatActivity {
 
         btnGetStarted = findViewById(R.id.getStarted);
 
-        btnGetStarted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LandingActivity.this, LoginPage.class);
-                startActivity(intent);
-                finish();
-            }
+        btnGetStarted.setOnClickListener(view -> {
+            Intent intent = new Intent(LandingActivity.this, LoginPage.class);
+            startActivity(intent);
+            finish();
         });
     }
 }
