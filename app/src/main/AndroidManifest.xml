@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Otams">
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LandingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +23,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginPage"
+            android:theme="@style/Theme.Otams"
+            android:exported="true"/>
+        <activity
+            android:name=".RegisterPage"
+            android:theme="@style/Theme.Otams"
+            android:exported="true"/>
+        <activity
+            android:name=".AdministratorHome"
+            android:theme="@style/Theme.Otams"
+            android:exported="true"/>
+        <activity
+            android:name=".TutorHome"
+            android:theme="@style/Theme.Otams"
+            android:exported="true"/>
+        <activity
+            android:name=".StudentHome"
+            android:theme="@style/Theme.Otams"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

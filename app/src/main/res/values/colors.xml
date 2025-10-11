@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colour Palette of the app -->
+    <color name="burgundy_red">#7A001D</color>
+    <color name="off_white">#FAFAFA</color>
+    <color name="cool_sand">#E8E5E0</color>
+    <color name="slate_gray">#5B5B66</color>
+    <color name="soft_gold">#D9B98C</color>
+
+    <!-- Support colors  -->
+    <color name="surface">#FFFFFF</color>     <!-- Cards/surfaces (light) -->
+    <color name="on_surface">#2C2C30</color>  <!-- Text on surfaces -->
+    <color name="on_primary">#FFFFFF</color>  <!-- Text on burgundy -->
+
+    <!-- Default colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

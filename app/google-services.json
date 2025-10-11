@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "488820450445",
+    "project_id": "otams-login-registration",
+    "storage_bucket": "otams-login-registration.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488820450445:android:68abe35e906a5b4cd32ec4",
+        "android_client_info": {
+          "package_name": "com.example.otams"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJMrNwFYUDhwRvZarJCrEPAauJGFldsXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
