@@ -10,7 +10,7 @@ public class Tutor extends User {
     private ArrayList<String> coursesOffered;
     private String degree;
 
-    /** Parameterized contructor
+    /** Parameterized constructor
      * @param firstName
      * @param lastName
      * @param password
@@ -22,7 +22,7 @@ public class Tutor extends User {
      * @param coursesOffered
      * @param rating
      */
-    public Tutor(String firstName, String lastName, String password, int phoneNumber, String email, ArrayList<Session> pastSessions, ArrayList<Session> upcomingSessions, String degree, ArrayList<String> coursesOffered, int rating){
+    public Tutor(String firstName, String lastName, String password, int phoneNumber, String email, ArrayList<tutoringSessions> pastSessions, ArrayList<tutoringSessions> upcomingSessions, String degree, ArrayList<String> coursesOffered, int rating){
         super(firstName, lastName, password, phoneNumber, email, pastSessions, upcomingSessions);
         this.degree = degree;
         this.rating = rating;
@@ -36,27 +36,24 @@ public class Tutor extends User {
 
 
     /** [GETTER] Returns the tutor's rating
-     * @param rating
      * @return the rating
      */
-    public int getRating(int rating){
-        return rating;
+    public int getRating(){
+        return this.rating;
     }
 
     /** [GETTER] Returns the coursesOffered
-     * @param coursesOffered
      * @return the coursesOffered
      */
-    public ArrayList<String> getCoursesOffered(ArrayList<String> coursesOffered){
-        return coursesOffered;
+    public ArrayList<String> getCoursesOffered(){
+        return this.coursesOffered;
     }
 
     /** [GETTER] Returns their degree
-     * @param degree
      * @return the degree
      */
-    public String getDegree(String degree){
-        return degree;
+    public String getDegree(){
+        return this.degree;
     }
 
     /** [SETTER] Sets the rating
@@ -91,7 +88,7 @@ public class Tutor extends User {
      * @param approved
      * @return integer of approval
      */
-    public int approveSessionRequest(Session session, int approved){
+    public int approveSessionRequest(tutoringSessions session, int approved){
         if(approved == 1){
             session.setApproval(1);
             return 1;
@@ -106,13 +103,11 @@ public class Tutor extends User {
      * @param listOfSessions
      * @return count of all sessions
      */
-    public int approveAllSessionRequests(ArrayList<Session> listOfSessions){
-        int count = 0;
-        for(int i = 0; i < listOfSessions.size(); i++){
-            approveSessionRequest(listOfSessions.get(i), 1);
-            count++;
+    public int approveAllSessionRequests(ArrayList<tutoringSessions> listOfSessions){
+        for(tutoringSessions session : listOfSessions){
+            approveSessionRequest(session, 1);
         }
-        return count;
+        return listOfSessions.size();
     }
 
 

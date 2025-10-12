@@ -2,13 +2,13 @@
  * 
  * @author Lauren Hendley [lhend093@uottawa.ca]
  */
-public class Session {
+public class tutoringSessions {
     // Instatiated variables
-    int approval;
-    int startTime;
-    int endTime;
-    Tutor tutor;
-    Student student;
+    private int approval;
+    private int startTime;
+    private int endTime;
+    private Tutor tutor;
+    private Student student;
 
     /** Parameterized constructor
      * @param approval
@@ -17,7 +17,7 @@ public class Session {
      * @param tutor
      * @param student
      */
-    public Session(int approval, int endTime, int startTime, Tutor tutor, Student student){
+    public tutoringSessions(int approval, int endTime, int startTime, Tutor tutor, Student student){
         this.approval = approval;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -27,7 +27,7 @@ public class Session {
 
     /** Empty constructor
      */
-    public Session(){
+    public tutoringSessions(){
         this.approval = 0;
     }
 
@@ -57,4 +57,41 @@ public class Session {
     public void setStartTime(int startTime){
         this.startTime = startTime;
     }
+
+    /** [GETTER] Returns the approval
+     * @return approval 
+     */
+    public int getApproval(){
+        return this.approval;
+    }
+
+    /** [GETTER] Returns the start time
+     * @return start time 
+     */
+    public int getStartTime(){
+        return this.startTime;
+    }
+
+    /** [GETTER] Returns the end time
+     * @return end time 
+     */
+    public int getEndTime(){
+        return this.endTime;
+    }
+
+    /** [GETTER] Returns the tutor object
+     * @return tutor 
+     */
+    public Tutor getTutor(){
+        return this.tutor;
+    }
+
+    /** [GETTER] Returns the student object
+     * @return student 
+     */
+    public Student getStudent(){
+        return this.student;
+    }
+
+
 }
