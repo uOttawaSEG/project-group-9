@@ -11,11 +11,12 @@ public abstract class User {
     private List<String> pastSessions;
     private List<String> upcomingSessions;
 
-    //Constructors
+    //---Constructors---
     public User(){
         this.pastSessions = new ArrayList<>();
         this.upcomingSessions = new ArrayList<>();
     }
+
     //----Getters and Setters----
 
     //first name
@@ -62,6 +63,7 @@ public abstract class User {
     public List<String> getPastSessions() {
         return pastSessions;
     }
+
     public void setPastSessions(List<String> pastSessions) {
         this.pastSessions = pastSessions;
     }
@@ -77,5 +79,34 @@ public abstract class User {
 
 
     //Methods
+    //view past sessions
+    public List<String> viewPastSessions(){
+       return pastSessions;
+    }
+    //view upcoming sessions
+    public List<String> viewUpcomingSessions(){
+        return upcomingSessions;
+    }
+    //cancel sessions
+    public boolean cancelSession(String sessionName){
+        return upcomingSessions.remove(sessionName);
+    }
 
+    //approve registration
+    public void approveRegistration(String userEmail){
+        System.out.println("Approved registration for:"+ userEmail);
+    }
+    //validating programming
+    public boolean validateProgram(String program){
+        return program != null && !program.trim().isEmpty();
+    }
+    //validate course
+
+    public boolean validateCourse(String course){
+        return course!= null && !course.trim().isEmpty();
+    }
+    //validating degree
+    public boolean validateDegree(String degree){
+        return course!= null && !course.trim().isEmpty();
+    }
 }
