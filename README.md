@@ -30,7 +30,7 @@ git pull # Pull latest changes
 
 git checkout dev # Switch to dev
 git pull # Pull latest changes
-
+ -m
 git checkout -b <yourname>/<feature-name>
 # Examples: `onur/login-ui`
 git push -u origin <yourname>/<feature-name>

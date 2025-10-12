@@ -76,8 +76,6 @@ public abstract class User {
         this.upcomingSessions = upcomingSessions;
     }
 
-
-
     //Methods
     //view past sessions
     public List<String> viewPastSessions(){
@@ -100,8 +98,8 @@ public abstract class User {
     public boolean validateProgram(String program){
         return program != null && !program.trim().isEmpty();
     }
+    /*
     //validate course
-
     public boolean validateCourse(String course){
         return course!= null && !course.trim().isEmpty();
     }
@@ -109,4 +107,5 @@ public abstract class User {
     public boolean validateDegree(String degree){
         return course!= null && !course.trim().isEmpty();
     }
+     */
 }
