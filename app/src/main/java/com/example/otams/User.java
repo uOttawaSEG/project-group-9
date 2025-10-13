@@ -21,6 +21,9 @@ public abstract class User {
     public User(String firstName, String lastName, String password, int phoneNumber, String email, ArrayList<tutoringSessions> pastSessions, ArrayList<tutoringSessions> upcomingSessions) {
     }
 
+    public User(String firstName, String lastName, String email, String password, int phoneNumber) {
+    }
+
     //----Getters and Setters----
 
     //first name
