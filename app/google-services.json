@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "488820450445",
-    "project_id": "otams-login-registration",
-    "storage_bucket": "otams-login-registration.firebasestorage.app"
+    "project_number": "674158438139",
+    "firebase_url": "https://otams-682d0-default-rtdb.firebaseio.com",
+    "project_id": "otams-682d0",
+    "storage_bucket": "otams-682d0.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:488820450445:android:68abe35e906a5b4cd32ec4",
+        "mobilesdk_app_id": "1:674158438139:android:1316d6a70bbac8b4d2f25e",
         "android_client_info": {
           "package_name": "com.example.otams"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAJMrNwFYUDhwRvZarJCrEPAauJGFldsXU"
+          "current_key": "AIzaSyAbHEJhRnMt9ZyYgsrNkdOFrJ8-6rW5lR8"
         }
       ],
       "services": {

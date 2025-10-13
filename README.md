@@ -5,7 +5,7 @@
 git clone git@github.com:uOttawaSEG/project-group-9.git
 
 cd project-group-9
-```
+``
 
 #### Verify the remote
 ```
@@ -30,7 +30,7 @@ git pull # Pull latest changes
 
 git checkout dev # Switch to dev
 git pull # Pull latest changes
-
+ -m
 git checkout -b <yourname>/<feature-name>
 # Examples: `onur/login-ui`
 git push -u origin <yourname>/<feature-name>

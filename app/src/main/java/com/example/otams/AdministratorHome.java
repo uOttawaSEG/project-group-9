@@ -17,7 +17,7 @@ public class AdministratorHome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_home);
+        setContentView(R.layout.activity_administrator_home);
 
         mAuth = FirebaseAuth.getInstance();
         welcomeText = findViewById(R.id.welcomeText);
