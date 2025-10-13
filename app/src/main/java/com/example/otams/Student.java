@@ -12,6 +12,7 @@ public class Student extends User {
     public Student(String firstName, String lastName, String email,
                    String password, int phoneNumber, String program) {
         //Calls the constructor from the User class to set shared fields
+        super(firstName, lastName, email, password, phoneNumber);
         this.program = program;
     }
 
