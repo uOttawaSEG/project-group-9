@@ -19,6 +19,7 @@ public class TutorHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_home);
 
+        // Firebase IMPORTANT
         mAuth = FirebaseAuth.getInstance();
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);

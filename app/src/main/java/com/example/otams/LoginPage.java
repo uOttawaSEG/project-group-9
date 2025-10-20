@@ -66,7 +66,7 @@ public class LoginPage extends AppCompatActivity {
                 return;
             }
 
-            // Firebase login for Student/Tutor
+            // Firebase login for Student/Tutor IMPORTANT
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         progressBar.setVisibility(View.GONE);
@@ -77,16 +77,29 @@ public class LoginPage extends AppCompatActivity {
                                     .addOnSuccessListener(doc -> {
                                         if (doc.exists()) {
                                             String role = doc.getString("role");
-                                            Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
+                                            String requestStatus = doc.getString("request status");
 
-                                            if ("Student".equals(role)) {
-                                                startActivity(new Intent(LoginPage.this, StudentHome.class));
-                                            } else if ("Tutor".equals(role)) {
-                                                startActivity(new Intent(LoginPage.this, TutorHome.class));
+                                            if ("checking".equals(requestStatus)) {
+                                                Toast.makeText(this, "Registration is being verified by admin approval.", Toast.LENGTH_LONG).show();
+                                                mAuth.signOut();
+                                                return;
+                                            } else if ("rejected".equals(requestStatus)) {
+                                                Toast.makeText(this, "Registration was rejected by admin approval. Contact admin at 613-123-4567.", Toast.LENGTH_LONG).show();
+                                                mAuth.signOut();
+                                                return;
+                                            } else if ("approved".equals(requestStatus)) { //Once admin approved, then user can continue
+                                                Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
+
+
+                                                if ("Student".equals(role)) {
+                                                    startActivity(new Intent(LoginPage.this, StudentHome.class));
+                                                } else if ("Tutor".equals(role)) {
+                                                    startActivity(new Intent(LoginPage.this, TutorHome.class));
+                                                }
+                                                finish();
+                                            } else {
+                                                Toast.makeText(this, "User role not found!", Toast.LENGTH_LONG).show();
                                             }
-                                            finish();
-                                        } else {
-                                            Toast.makeText(this, "User role not found!", Toast.LENGTH_LONG).show();
                                         }
                                     })
                                     .addOnFailureListener(e ->

@@ -88,6 +88,7 @@ public class RegisterPage extends AppCompatActivity {
                             Map<String, Object> user = new HashMap<>();
                             user.put("email", email);
                             user.put("role", role);
+                            user.put("request status", "checking"); // wait of request to admin's approval/rejection
 
                             db.collection("users").document(userId)
                                     .set(user)
