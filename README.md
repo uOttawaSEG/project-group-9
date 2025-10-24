@@ -1,3 +1,3 @@
 # Admin Login Info
 admin@example.com
-admin123
+admin123git 
