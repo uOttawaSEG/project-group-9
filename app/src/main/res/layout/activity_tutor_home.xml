@@ -1,26 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:gravity="center">
 
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome Tutor"
-        android:textStyle="bold"
+        android:layout_marginTop="156dp"
+        android:layout_marginEnd="112dp"
+        android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
+        android:text="Welcome Tutor"
         android:textSize="24sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="360dp"
+        android:fontFamily="@font/poppins_semibold"
         android:text="Logout"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+        app:layout_constraintStart_toStartOf="@+id/welcomeText"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="First and Last Name"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Phone Number"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="315dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Highest degree"
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="401dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courses offered"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="491dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="239dp"
+        android:layout_height="46dp"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="262dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText2"
+            android:layout_width="242dp"
+            android:layout_height="44dp"
+            android:hint="First and Last Name"
+            tools:layout_editor_absoluteX="-2dp"
+            tools:layout_editor_absoluteY="1dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textInputLayout3"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="342dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText3"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="346dp"
+            android:hint="Phone number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
