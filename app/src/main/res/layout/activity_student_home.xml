@@ -12,122 +12,69 @@
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
-        android:layout_marginEnd="96dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="Welcome Student"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteY="154dp" />
 
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="404dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Logout"
-        app:layout_constraintEnd_toEndOf="@+id/welcomeText"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="@+id/welcomeText"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="536dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="114dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="114dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="First name and Last Name"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText"
-        app:layout_constraintVertical_bias="0.0" />
+        android:text="Please enter your first and last name:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="240dp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="145dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginBottom="1dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="Phone Number"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        android:text="Please enter your phone number:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="339dp" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="145dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="145dp"
-        android:layout_marginBottom="6dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="Program of study"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
+        android:text="Please enter your field of study:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="440dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="First and Last Name"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="264dp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="378dp"
+        android:layout_height="44dp"
+        android:hint="Phone Number"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="363dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout4"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="425dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout5"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="377dp"
+        android:layout_height="42dp"
+        android:hint="Program of study"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="466dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
