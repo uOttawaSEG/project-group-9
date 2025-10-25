@@ -93,11 +93,12 @@
         android:textColor="#7A001D" />
 
     <Button
-        android:id="@+id/btn_register2"
+        android:id="@+id/loginNow"
         android:layout_width="109dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:backgroundTint="#FFFFFF"
         android:text="@string/login"
         android:textColor="#7A001D" />
+
 </LinearLayout>

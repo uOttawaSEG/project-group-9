@@ -34,9 +34,6 @@ public class RegisterPage extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
-        editTextFirstName = findViewById(R.id.firstName);
-        editTextLastName = findViewById(R.id.lastName);
-        editTextPhoneNumber = findViewById(R.id.phoneNumber);
         buttonReg = findViewById(R.id.btn_register);
         textView = findViewById(R.id.loginNow);
         radioGroupRole = findViewById(R.id.radioGroupRole);
