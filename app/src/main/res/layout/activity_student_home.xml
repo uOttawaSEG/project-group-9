@@ -68,7 +68,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="378dp"
         android:layout_height="43dp"
-        android:hint="First and Last Name"
+        android:hint="Last Name"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="329dp" />
 
@@ -76,7 +76,7 @@
         android:id="@+id/editText"
         android:layout_width="378dp"
         android:layout_height="43dp"
-        android:hint="First and Last Name"
+        android:hint="First Name"
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="239dp" />
 
