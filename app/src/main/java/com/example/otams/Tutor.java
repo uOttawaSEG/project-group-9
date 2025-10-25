@@ -91,7 +91,7 @@ public class Tutor extends User {
      * @param approved
      * @return integer of approval
      */
-    public int approveSessionRequest(tutoringSessions session, int approved) {
+    public int approveSessionRequest(TutoringSessions session, int approved) {
         if (approved == 1) {
             session.setApproval(1);
             return 1;
@@ -108,8 +108,8 @@ public class Tutor extends User {
      * @param listOfSessions
      * @return count of all sessions
      */
-    public int approveAllSessionRequests(ArrayList<tutoringSessions> listOfSessions) {
-        for (tutoringSessions session : listOfSessions) {
+    public int approveAllSessionRequests(ArrayList<TutoringSessions> listOfSessions) {
+        for (TutoringSessions session : listOfSessions) {
             approveSessionRequest(session, 1);
         }
         return listOfSessions.size();

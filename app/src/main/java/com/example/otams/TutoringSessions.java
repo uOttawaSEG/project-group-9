@@ -5,7 +5,7 @@ package com.example.otams;
  *
  * @author Lauren Hendley [lhend093@uottawa.ca]
  */
-public class tutoringSessions {
+public class TutoringSessions {
     // Instatiated variables
     private int approval;
     private int startTime;
@@ -22,7 +22,7 @@ public class tutoringSessions {
      * @param tutor
      * @param student
      */
-    public tutoringSessions(int approval, int endTime, int startTime, Tutor tutor, Student student) {
+    public TutoringSessions(int approval, int endTime, int startTime, Tutor tutor, Student student) {
         this.approval = approval;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -33,7 +33,7 @@ public class tutoringSessions {
     /**
      * Empty constructor
      */
-    public tutoringSessions() {
+    public TutoringSessions() {
         this.approval = 0;
     }
 
