@@ -1,26 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:gravity="center">
 
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome Tutor"
-        android:textStyle="bold"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="112dp"
+        android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
+        android:text="Welcome Tutor"
         android:textSize="24sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="424dp"
+        android:fontFamily="@font/poppins_semibold"
         android:text="Logout"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+        app:layout_constraintStart_toStartOf="@+id/welcomeText"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your first name:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your last name:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="274dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your phone number:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="353dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your highest level of degree:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="515dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter your offered courses:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="436dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="Last Name"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="298dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText"
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="First Name"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="212dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="Phone Number"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="377dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="377dp"
+        android:layout_height="42dp"
+        android:hint="Courses offered (1 or more)"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="455dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText2"
+        android:layout_width="377dp"
+        android:layout_height="42dp"
+        android:hint="Highest degree"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="539dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

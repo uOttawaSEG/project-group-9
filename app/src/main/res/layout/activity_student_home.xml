@@ -1,27 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
 
-    android:gravity="center"
-    android:padding="16dp">
+    android:layout_height="match_parent"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome Student"
-        android:textStyle="bold"
+        android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
+        android:text="Welcome Student"
         android:textSize="24sp"
-        android:layout_gravity="center"/>
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteY="154dp" />
 
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
         android:text="Logout"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="579dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your last name:"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="305dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your first name:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your phone number:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="400dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your field of study:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="492dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/lastName"
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="Last Name"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="329dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/firstName"
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="First Name"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="239dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/phoneNum"
+        android:layout_width="378dp"
+        android:layout_height="44dp"
+        android:hint="Phone Number"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="424dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/programOfStudy"
+        android:layout_width="377dp"
+        android:layout_height="42dp"
+        android:hint="Program of study"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="516dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
