@@ -27,16 +27,25 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="Logout"
         tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="536dp" />
+        tools:layout_editor_absoluteY="579dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:text="Please enter your first and last name:"
+        android:text="Please enter your last name:"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="305dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Please enter your first name:"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="240dp" />
+        tools:layout_editor_absoluteY="215dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -45,7 +54,7 @@
         android:fontFamily="@font/poppins_regular"
         android:text="Please enter your phone number:"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="339dp" />
+        tools:layout_editor_absoluteY="400dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -54,27 +63,35 @@
         android:fontFamily="@font/poppins_regular"
         android:text="Please enter your field of study:"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="440dp" />
+        tools:layout_editor_absoluteY="492dp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="378dp"
         android:layout_height="43dp"
         android:hint="First and Last Name"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="264dp" />
+        tools:layout_editor_absoluteY="329dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText"
+        android:layout_width="378dp"
+        android:layout_height="43dp"
+        android:hint="First and Last Name"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="239dp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="378dp"
         android:layout_height="44dp"
         android:hint="Phone Number"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="363dp" />
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="424dp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="377dp"
         android:layout_height="42dp"
         android:hint="Program of study"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="466dp" />
+        tools:layout_editor_absoluteY="516dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
