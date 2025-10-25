@@ -8,34 +8,22 @@ import java.util.ArrayList;
  * @author Lauren Hendley [lhend093@uottawa.ca]
  */
 public class Tutor extends User {
-    // Instatiated variables
     private int rating;
     private ArrayList<String> coursesOffered;
     private String degree;
 
-    /**
-     * Parameterized constructor
-     *
-     * @param firstName
-     * @param lastName
-     * @param password
-     * @param phoneNumber
-     * @param email
-     * @param pastSessions
-     * @param upcomingSessions
-     * @param degree
-     * @param coursesOffered
-     * @param rating
-     */
-    public Tutor(String firstName, String lastName, String password, int phoneNumber, String email, ArrayList<tutoringSessions> pastSessions, ArrayList<tutoringSessions> upcomingSessions, String degree, ArrayList<String> coursesOffered, int rating) {
-        super(firstName, lastName, password, phoneNumber, email, pastSessions, upcomingSessions);
-        this.degree = degree;
-        this.rating = rating;
-        this.coursesOffered = coursesOffered;
+    public Tutor(String email) {
+        super(email);
     }
 
-
-    //// ----- HELPER METHODS ----- \\\\
+    /**
+     * Parameterized constructor
+     */
+    public Tutor(String firstName, String lastName, int phoneNumber, ArrayList<String> coursesOffered, String degree) {
+        super(firstName, lastName, phoneNumber);
+        this.coursesOffered = coursesOffered;
+        this.degree = degree;
+    }
 
 
     /**
@@ -126,13 +114,4 @@ public class Tutor extends User {
         }
         return listOfSessions.size();
     }
-
-
-/**
- * Unfinished method– to be put in place for deliverable 2
- *
- public availabilitySlots(){
-
- }
- */
 }

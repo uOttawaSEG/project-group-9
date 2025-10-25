@@ -17,12 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class RegisterPage extends AppCompatActivity {
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editTextFirstName, editTextLastName, editTextPhoneNumber;
     Button buttonReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -38,6 +34,9 @@ public class RegisterPage extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editTextFirstName = findViewById(R.id.firstName);
+        editTextLastName = findViewById(R.id.lastName);
+        editTextPhoneNumber = findViewById(R.id.phoneNumber);
         buttonReg = findViewById(R.id.btn_register);
         textView = findViewById(R.id.loginNow);
         radioGroupRole = findViewById(R.id.radioGroupRole);
@@ -48,7 +47,6 @@ public class RegisterPage extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LoginPage.class);
             startActivity(intent);
             finish();
-
         });
 
         buttonReg.setOnClickListener(view -> {
@@ -56,8 +54,10 @@ public class RegisterPage extends AppCompatActivity {
 
             String email = String.valueOf(editTextEmail.getText());
             String password = String.valueOf(editTextPassword.getText());
+            String firstName = String.valueOf(editTextFirstName.getText());
+            String lastName = String.valueOf(editTextLastName.getText());
+            String phoneStr = String.valueOf(editTextPhoneNumber.getText());
 
-            // Check for empty fields
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(RegisterPage.this, "Please enter email", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
@@ -75,20 +75,20 @@ public class RegisterPage extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 return;
             }
-            String role = (selectedId == R.id.radioStudent) ? "Student" : "Tutor";
 
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
-                        progressBar.setVisibility(View.GONE); // hide progress bar no matter what
+                        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
-                            // Successfully created user — save role in Firestore
                             String userId = mAuth.getCurrentUser().getUid();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("email", email);
-                            user.put("role", role);
-                            user.put("request status", "checking"); // wait of request to admin's approval/rejection
+                            User user;
+                            if (selectedId == R.id.radioStudent) {
+                                user = new Student(email);
+                            } else {
+                                user = new Tutor(email);
+                            }
 
                             db.collection("users").document(userId)
                                     .set(user)
@@ -97,9 +97,8 @@ public class RegisterPage extends AppCompatActivity {
                                         startActivity(new Intent(getApplicationContext(), LoginPage.class));
                                         finish();
                                     })
-                                    .addOnFailureListener(e -> Toast.makeText(RegisterPage.this, "Failed to save role: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                                    .addOnFailureListener(e -> Toast.makeText(RegisterPage.this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_LONG).show());
                         } else {
-                            // Handle specific errors (like email already in use)
                             String error = task.getException() != null ? task.getException().getMessage() : "Unknown error";
                             if (error.contains("email address is already in use")) {
                                 Toast.makeText(RegisterPage.this, "This email is already registered. Please log in.", Toast.LENGTH_LONG).show();

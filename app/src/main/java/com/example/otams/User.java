@@ -1,27 +1,20 @@
 package com.example.otams;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class User {
     private String firstName;
     private String lastName;
-    private String password;
     private int phoneNumber;
     private String email;
-    private List<String> pastSessions;
-    private List<String> upcomingSessions;
 
-    //---Constructors---
-    public User() {
-        this.pastSessions = new ArrayList<>();
-        this.upcomingSessions = new ArrayList<>();
+    //----Constructor----
+    public User(String email) {
+        this.email = email;
     }
 
-    public User(String firstName, String lastName, String password, int phoneNumber, String email, ArrayList<tutoringSessions> pastSessions, ArrayList<tutoringSessions> upcomingSessions) {
-    }
-
-    public User(String firstName, String lastName, String email, String password, int phoneNumber) {
+    public User(String firstName, String lastName, int phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     //----Getters and Setters----
@@ -44,14 +37,6 @@ public abstract class User {
         this.lastName = lastName;
     }
 
-    //password
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     //phone number
     public int getPhoneNumber() {
@@ -70,58 +55,4 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    //past sessions
-    public List<String> getPastSessions() {
-        return pastSessions;
-    }
-
-    public void setPastSessions(List<String> pastSessions) {
-        this.pastSessions = pastSessions;
-    }
-
-    //upcoming sessions
-    public List<String> getUpcomingSessions() {
-        return upcomingSessions;
-    }
-
-    public void setUpcomingSessions(List<String> upcomingSessions) {
-        this.upcomingSessions = upcomingSessions;
-    }
-
-    //Methods
-    //view past sessions
-    public List<String> viewPastSessions() {
-        return pastSessions;
-    }
-
-    //view upcoming sessions
-    public List<String> viewUpcomingSessions() {
-        return upcomingSessions;
-    }
-
-    //cancel sessions
-    public boolean cancelSession(String sessionName) {
-        return upcomingSessions.remove(sessionName);
-    }
-
-    //approve registration
-    public void approveRegistration(String userEmail) {
-        System.out.println("Approved registration for:" + userEmail);
-    }
-
-    //validating programming
-    public boolean validateProgram(String program) {
-        return program != null && !program.trim().isEmpty();
-    }
-    /*
-    //validate course
-    public boolean validateCourse(String course){
-        return course!= null && !course.trim().isEmpty();
-    }
-    //validating degree
-    public boolean validateDegree(String degree){
-        return course!= null && !course.trim().isEmpty();
-    }
-     */
 }

@@ -4,15 +4,13 @@ public class Student extends User {
     private String program;
 
     //---Constructors---
-    //This is required by Firebase
-    public Student() {
-        super();
+    public Student(String email) {
+        super(email);
     }
 
-    public Student(String firstName, String lastName, String email,
-                   String password, int phoneNumber, String program) {
+    public Student(String firstName, String lastName, int phoneNumber, String program) {
         //Calls the constructor from the User class to set shared fields
-        super(firstName, lastName, email, password, phoneNumber);
+        super(firstName, lastName, phoneNumber);
         this.program = program;
     }
 

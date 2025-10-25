@@ -9,16 +9,14 @@
     android:background="@drawable/bg"
     tools:context=".RegisterPage">
 
-    <TextView
+    <Button
+        android:id="@+id/btn_register2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:padding="15dp"
-        android:textColor="#FFFFFFFF"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFFF"
         android:text="@string/register"
-        android:fontFamily="@font/poppins_semibold"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textColor="#7A001D" />
 
     <RadioGroup
         android:id="@+id/radioGroupRole"
@@ -29,21 +27,64 @@
 
         <RadioButton
             android:id="@+id/radioStudent"
-            android:textColor="#FFFFFFFF"
-            android:buttonTint="#FFFFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="#FFFFFFFF"
             android:checked="true"
-            android:text="@string/student" />
+            android:text="@string/student"
+            android:textColor="#FFFFFFFF" />
 
         <RadioButton
             android:id="@+id/radioTutor"
-            android:textColor="#FFFFFFFF"
-            android:buttonTint="#FFFFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tutor" />
+            android:buttonTint="#FFFFFFFF"
+            android:text="@string/tutor"
+            android:textColor="#FFFFFFFF" />
     </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/firstName"
+            android:hint="First Name"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lastName"
+            android:hint="Last Name"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneNumber"
+            android:hint="Phone Number"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:inputType="phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -65,12 +106,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:backgroundTint="#FFFFFF"
             android:hint="@string/password"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
     <ProgressBar
         android:id="@+id/progressBar"
@@ -89,16 +130,15 @@
 
     <TextView
         android:id="@+id/loginNow"
-        android:textColor="#FFFFFF"
-        android:text="@string/click_to_login"
-        android:fontFamily="@font/poppins_semibold"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="@string/click_to_login"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>
