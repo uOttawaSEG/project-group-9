@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterPage extends AppCompatActivity {
-    TextInputEditText editTextEmail, editTextPassword, editTextFirstName, editTextLastName, editTextPhoneNumber;
+    TextInputEditText editTextEmail, editTextPassword;
     Button buttonReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -51,9 +51,7 @@ public class RegisterPage extends AppCompatActivity {
 
             String email = String.valueOf(editTextEmail.getText());
             String password = String.valueOf(editTextPassword.getText());
-            String firstName = String.valueOf(editTextFirstName.getText());
-            String lastName = String.valueOf(editTextLastName.getText());
-            String phoneStr = String.valueOf(editTextPhoneNumber.getText());
+
 
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(RegisterPage.this, "Please enter email", Toast.LENGTH_SHORT).show();
