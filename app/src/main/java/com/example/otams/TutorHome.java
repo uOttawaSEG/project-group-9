@@ -110,12 +110,16 @@ public class TutorHome extends AppCompatActivity {
     			});
     }
 
-    private void createRequest(String uid, String firstName, String lastName){
+    private void createRequest(String uid, String firstName, String lastName, String email, String phoneNumber, String degree, List<String> courses){
     	Map<String,Object> request = new HashMap<>();
     	request.put("userId", uid);
         request.put("role", "Tutor");
     	request.put("firstName", firstName);
     	request.put("lastName", lastName);
+        request.put("email", email);
+        request.put("phoneNumber", phoneNumber);
+        request.put("degree", degree);
+        request.put("courses", courses);
     	request.put("timestamp", Timestamp.now());
     	request.put("approved", false);
 

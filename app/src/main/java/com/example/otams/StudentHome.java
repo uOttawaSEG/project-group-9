@@ -96,7 +96,7 @@ public class StudentHome extends AppCompatActivity {
     			.addOnSuccessListener(unused -> {
     				progressBar.setVisibility(View.GONE);
     				toast("Profile creation succesful");
-    				createRequest(uid, firstName, lastName);
+    				createRequest(uid, firstName, lastName, email. number, program);
     			})
     			.addOnFailureListener(e -> {
     				progressBar.setVisibility(View.GONE);
@@ -104,12 +104,15 @@ public class StudentHome extends AppCompatActivity {
     			});
     }
 
-    private void createRequest(String uid, String firstName, String lastName){
+    private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String program){
     	Map<String,Object> request = new HashMap<>();
     	request.put("userId", uid);
         request.put("role", "Student");
     	request.put("firstName", firstName);
     	request.put("lastName", lastName);
+        request.put("email", email);
+        request.put("phoneNumber", phoneNumber);
+        request.put("program", program);
     	request.put("timestamp", Timestamp.now());
     	request.put("approved", false);
 
