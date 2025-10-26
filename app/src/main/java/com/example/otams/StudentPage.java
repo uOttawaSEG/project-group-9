@@ -6,10 +6,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputEditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class TutorHome extends AppCompatActivity {
+public class StudentPage extends AppCompatActivity {
+    TextInputEditText firstName, lastName, phoneNum, programOfStudy;
     TextView welcomeText;
     Button logoutButton;
     FirebaseAuth mAuth;
@@ -17,16 +19,22 @@ public class TutorHome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_home);
+        setContentView(R.layout.activity_student_home);
 
-        // Firebase IMPORTANT
         mAuth = FirebaseAuth.getInstance();
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);
+
+        firstName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
+        phoneNum = findViewById(R.id.phoneNum);
+        programOfStudy = findViewById(R.id.programOfStudy);
+
         // Display welcome message
         if (mAuth.getCurrentUser() != null) {
-            welcomeText.setText("Welcome, Tutor!");
+            welcomeText.setText("Welcome, Student!");
         }
+
         // Logout
         logoutButton.setOnClickListener(v -> {
             mAuth.signOut();

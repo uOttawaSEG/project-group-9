@@ -7,10 +7,6 @@ public class Student extends User {
         super();
     }
 
-    public Student(String email) {
-        super(email);
-    }
-
     public String getProgram() {
         return program;
     }

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class LandingActivity extends AppCompatActivity {
+public class LandingPage extends AppCompatActivity {
 
     Button btnGetStarted;
 
@@ -18,7 +18,7 @@ public class LandingActivity extends AppCompatActivity {
         btnGetStarted = findViewById(R.id.getStarted);
 
         btnGetStarted.setOnClickListener(view -> {
-            Intent intent = new Intent(LandingActivity.this, LoginPage.class);
+            Intent intent = new Intent(LandingPage.this, LoginPage.class);
             startActivity(intent);
             finish();
         });

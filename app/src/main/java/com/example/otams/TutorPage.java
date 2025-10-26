@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AdministratorHome extends AppCompatActivity {
+public class TutorPage extends AppCompatActivity {
     TextView welcomeText;
     Button logoutButton;
     FirebaseAuth mAuth;
@@ -17,17 +17,16 @@ public class AdministratorHome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_administrator_home);
+        setContentView(R.layout.activity_tutor_home);
 
+        // Firebase IMPORTANT
         mAuth = FirebaseAuth.getInstance();
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);
-
         // Display welcome message
         if (mAuth.getCurrentUser() != null) {
-            welcomeText.setText("Welcome, Administrator!");
+            welcomeText.setText("Welcome, Tutor!");
         }
-
         // Logout
         logoutButton.setOnClickListener(v -> {
             mAuth.signOut();
