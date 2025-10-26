@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Otams">
         <activity
-            android:name=".InboxAdminApprovalPage"
+            android:name=".RejectedRequestsPage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
