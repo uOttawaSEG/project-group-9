@@ -74,7 +74,7 @@ public class StudentHome extends AppCompatActivity {
 		String email = text(editTextEmail);
     	String program = text(editTextProgram);
 
-    	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| program.isEmpty()){
+    	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| email.isEmpty()|| program.isEmpty()){
     		toast("Fill in all fields.");
     		return;
     	}
