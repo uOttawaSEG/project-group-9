@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Existing app themes -->
     <style name="Theme.YourAppName" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your main theme here -->
         <item name="colorPrimary">#7A001D</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <item name="android:windowBackground">@drawable/bg</item>
     </style>
 
-    <!-- Add this custom style for white radio buttons -->
     <style name="WhiteRadioButtonTheme" parent="ThemeOverlay.MaterialComponents.Light">
-        <item name="colorControlActivated">#FFFFFF</item> <!-- Checked dot -->
-        <item name="colorOnSurface">#FFFFFF</item>        <!-- Unchecked ring -->
+        <item name="colorControlActivated">#FFFFFF</item>
+        <item name="colorOnSurface">#FFFFFF</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
 

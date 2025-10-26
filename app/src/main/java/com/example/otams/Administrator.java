@@ -3,64 +3,74 @@ package com.example.otams;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Administrator class
+/**
+ * Administrator class
  *
  * @author Lauren Hendley [lhend093@uottawa.ca]
  */
 public class Administrator extends User {
     // Instantiating variables
     private final List<Request> requests = new ArrayList<>();
-    private String email;
-    private String password;
+    private String email = "admin@example.com";
 
-    /** Constructor for the administrator object
+    /**
+     * Constructor for the administrator object
+     *
      * @param email
      */
-    public Administrator(String email){
+    public Administrator(String email) {
         super(email);
     }
 
-    /** [GETTER] Returns the list of requests
+    /**
+     * [GETTER] Returns the list of requests
+     *
      * @return list of requests
      */
-    public List<Request> getRequests(){
+    public List<Request> getRequests() {
         return this.requests;
     }
 
-    /** Approves all the requests in the list of requests
+    /**
+     * Approves all the requests in the list of requests
      */
-    public void approveAll(){
-        for(Request r : requests){
+    public void approveAll() {
+        for (Request r : requests) {
             r.setApprovalApproved();
         }
     }
 
-    /** Denys all the requests in the list of requests
+    /**
+     * Denys all the requests in the list of requests
      */
-    public void denyAll(){
-        for(Request r : requests){
+    public void denyAll() {
+        for (Request r : requests) {
             r.setApprovalNotApproved();
         }
     }
 
-    /** Approves a certain request under a user's email
+    /**
+     * Approves a certain request under a user's email
+     *
      * @param userEmail
      */
-    public void approve(String userEmail){
-        for(Request r : requests){
-            if(r.getUser().getEmail() == userEmail){
+    public void approve(String userEmail) {
+        for (Request r : requests) {
+            if (r.getUser().getEmail() == userEmail) {
                 r.setApprovalApproved();
                 return;
             }
         }
     }
 
-    /** Denies a certain request under a user's email
+    /**
+     * Denies a certain request under a user's email
+     *
      * @param userEmail
      */
-    public void deny(String userEmail){
-        for(Request r : requests){
-            if(r.getUser().getEmail() == userEmail){
+    public void deny(String userEmail) {
+        for (Request r : requests) {
+            if (r.getUser().getEmail() == userEmail) {
                 r.setApprovalNotApproved();
                 return;
             }

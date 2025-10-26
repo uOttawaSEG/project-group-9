@@ -70,19 +70,22 @@ public class RegisterPage extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 return;
             }
-
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         progressBar.setVisibility(View.GONE);
+
                         if (task.isSuccessful()) {
                             String userId = mAuth.getCurrentUser().getUid();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
                             User user;
+
                             if (selectedId == R.id.radioStudent) {
                                 user = new Student(email);
+                                user.setRole("Student");
                             } else {
                                 user = new Tutor(email);
+                                user.setRole("Tutor");
                             }
 
                             db.collection("users").document(userId)
