@@ -35,13 +35,23 @@
         tools:layout_editor_absoluteY="307dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/Move2"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="656dp"
-        android:text="Registration Approval Inbox"
+        android:text="Registration Requests"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="167dp"
+        tools:layout_editor_absoluteY="126dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
