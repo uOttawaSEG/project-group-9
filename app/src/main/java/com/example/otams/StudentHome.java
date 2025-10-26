@@ -6,10 +6,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputEditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class StudentHome extends AppCompatActivity {
+    TextInputEditText firstName, lastName, phoneNum, programOfStudy;
     TextView welcomeText;
     Button logoutButton;
     FirebaseAuth mAuth;
@@ -22,6 +24,11 @@ public class StudentHome extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);
+
+        firstName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
+        phoneNum = findViewById(R.id.phoneNum);
+        programOfStudy = findViewById(R.id.programOfStudy);
 
         // Display welcome message
         if (mAuth.getCurrentUser() != null) {

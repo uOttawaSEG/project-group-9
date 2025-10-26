@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
-    android:gravity="center"
-    android:background="@drawable/bg"
     tools:context=".RegisterPage">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:padding="15dp"
-        android:textColor="#FFFFFFFF"
-        android:text="@string/register"
-        android:fontFamily="@font/poppins_semibold"
-        android:textSize="25sp"
-        android:textStyle="bold" />
 
     <RadioGroup
         android:id="@+id/radioGroupRole"
@@ -29,21 +18,36 @@
 
         <RadioButton
             android:id="@+id/radioStudent"
-            android:textColor="#FFFFFFFF"
-            android:buttonTint="#FFFFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="#FFFFFFFF"
             android:checked="true"
-            android:text="@string/student" />
+            android:text="@string/student"
+            android:textColor="#FFFFFFFF"
+            android:theme="@style/WhiteRadioButtonTheme" />
 
         <RadioButton
             android:id="@+id/radioTutor"
-            android:textColor="#FFFFFFFF"
-            android:buttonTint="#FFFFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tutor" />
+            android:buttonTint="#FFFFFFFF"
+            android:text="@string/tutor"
+            android:textColor="#FFFFFFFF"
+            android:theme="@style/WhiteRadioButtonTheme" />
+
     </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -51,12 +55,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
-            android:hint="@string/email"
-            android:textColorHint="#FFFFFF"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:hint="@string/email"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -65,40 +69,36 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:backgroundTint="#FFFFFF"
             android:hint="@string/password"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/btn_register"
-        android:textColor="#7A001D"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
         android:layout_marginTop="10dp"
-        android:text="@string/register" />
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/register"
+        android:textColor="#7A001D" />
 
-    <TextView
+    <Button
         android:id="@+id/loginNow"
-        android:textColor="#FFFFFF"
-        android:text="@string/click_to_login"
-        android:fontFamily="@font/poppins_semibold"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
+        android:layout_width="109dp"
         android:layout_height="wrap_content"
-        />
-
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/login"
+        android:textColor="#7A001D" />
 
 </LinearLayout>
