@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdministratorPage extends AppCompatActivity {
     TextView welcomeText;
-    Button logoutButton;
+    Button logoutButton, rejectedRequestsButton;
     FirebaseAuth mAuth;
 
     @Override
@@ -23,10 +23,22 @@ public class AdministratorPage extends AppCompatActivity {
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);
 
+        rejectedRequestsButton = findViewById(R.id.button3);
+
+        rejectedRequestsButton.setOnClickListener(v -> {
+            Intent rejectButton = new Intent(AdministratorPage.this, RejectedRequestsPage.class);
+            startActivity(rejectButton);
+        });
+
         // Display welcome message
         if (mAuth.getCurrentUser() != null) {
             welcomeText.setText("Welcome, Administrator!");
         }
+
+        rejectedRequestsButton.setOnClickListener(v -> {
+            Intent rejectedButton = new Intent(AdministratorPage.this, RejectedRequestsPage.class);
+            startActivity(rejectedButton);
+        });
 
         // Logout
         logoutButton.setOnClickListener(v -> {
@@ -36,5 +48,4 @@ public class AdministratorPage extends AppCompatActivity {
         });
     }
 }
-
 
