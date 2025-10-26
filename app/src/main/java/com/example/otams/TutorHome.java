@@ -44,7 +44,7 @@ public class TutorHome extends AppCompatActivity {
 
         if(user == null){
         	toast("No user signed in. Login.");
-        	startActivity(new Intent(StudentHome.this, LoginPage.class));
+        	startActivity(new Intent(TutorHome.this, LoginPage.class));
         	finish();
         	return;
         }

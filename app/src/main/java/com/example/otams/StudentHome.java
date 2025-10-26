@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 public class StudentHome extends AppCompatActivity {
-    private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextProgram;
+    private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextEmail, editTextProgram;
     private Button signUp, logOut;
     private ProgressBar progressBar;
 
@@ -71,6 +71,7 @@ public class StudentHome extends AppCompatActivity {
     	String firstName = text(editTextFirstName);
     	String lastName = text(editTextLastName);
     	String number = text(editTextNumber);
+		String email = text(editTextEmail);
     	String program = text(editTextProgram);
 
     	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| program.isEmpty()){
@@ -86,6 +87,7 @@ public class StudentHome extends AppCompatActivity {
     	userUpdates.put("firstName", firstName);
     	userUpdates.put("lastName", lastName);
     	userUpdates.put("phoneNumber", number);
+		userUpdates.put("email", email);
     	userUpdates.put("program", program);
         userUpdates.put("role", "Student");
     	userUpdates.put("profileCompleteAt", Timestamp.now());
@@ -96,7 +98,7 @@ public class StudentHome extends AppCompatActivity {
     			.addOnSuccessListener(unused -> {
     				progressBar.setVisibility(View.GONE);
     				toast("Profile creation succesful");
-    				createRequest(uid, firstName, lastName, email. number, program);
+    				createRequest(uid, firstName, lastName, number, email, program);
     			})
     			.addOnFailureListener(e -> {
     				progressBar.setVisibility(View.GONE);
@@ -119,7 +121,7 @@ public class StudentHome extends AppCompatActivity {
     	db.collection("requests")
     			.add(request)
     			.addOnSuccessListener(docRef -> toast("Request submitted."))
-    			.addOnFailureListener(e -> toastLong("Failed to submit: " + e.getMessage()))
+    			.addOnFailureListener(e -> toastLong("Failed to submit: " + e.getMessage()));
     }
 
 
