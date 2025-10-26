@@ -26,8 +26,8 @@ public class AdministratorHome extends AppCompatActivity {
         rejectedRequestsButton = findViewById(R.id.button3);
 
         rejectedRequestsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(AdministratorHome.this, RejectedRequestsPage.class);
-            startActivity(intent);
+            Intent rejectButton = new Intent(AdministratorHome.this, RejectedRequestsPage.class);
+            startActivity(rejectButton);
         });
 
         // Display welcome message
