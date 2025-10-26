@@ -8,7 +8,7 @@ public abstract class User {
 
     private String role;
 
-    protected User() {
+    public User() {
     }
 
     public User(String email) {
