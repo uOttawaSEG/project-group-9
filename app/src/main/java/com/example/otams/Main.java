@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class Main extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
 
