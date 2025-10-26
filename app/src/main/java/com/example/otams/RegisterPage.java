@@ -68,7 +68,7 @@ public class RegisterPage extends AppCompatActivity {
 
             int selectedId = radioGroupRole.getCheckedRadioButtonId();
             if (selectedId == -1) {
-                toast("Please select a role (Student or Tutor)");
+                toast("Please select a role");
                 progressBar.setVisibility(android.view.View.GONE);
                 return;
             }
@@ -91,7 +91,6 @@ public class RegisterPage extends AppCompatActivity {
                         String uid = mAuth.getCurrentUser().getUid();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                        // Write a flat, explicit document
                         Map<String, Object> userDoc = new HashMap<>();
                         userDoc.put("email", email);
                         userDoc.put("role", role);

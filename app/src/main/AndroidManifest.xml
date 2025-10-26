@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Otams">
         <activity
-            android:name=".MainActivity"
+            android:name=".Main"
             android:exported="false" />
         <activity
-            android:name=".LandingActivity"
+            android:name=".LandingPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,11 +39,11 @@
             android:exported="true"
             android:theme="@style/Theme.Otams" />
         <activity
-            android:name=".TutorHome"
+            android:name=".TutorPage"
             android:exported="true"
             android:theme="@style/Theme.Otams" />
         <activity
-            android:name=".StudentHome"
+            android:name=".StudentPage"
             android:exported="true"
             android:theme="@style/Theme.Otams" />
     </application>

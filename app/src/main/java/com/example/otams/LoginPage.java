@@ -62,7 +62,7 @@ public class LoginPage extends AppCompatActivity {
             // Admin login
             if (email.equals("admin@example.com") && password.equals("admin123")) {
                 Toast.makeText(this, "Logged in as Administrator", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginPage.this, AdministratorHome.class));
+                startActivity(new Intent(LoginPage.this, AdministratorPage.class));
                 finish();
                 return;
             }
@@ -82,9 +82,9 @@ public class LoginPage extends AppCompatActivity {
                                             Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
 
                                             if ("Student".equals(role)) {
-                                                startActivity(new Intent(LoginPage.this, StudentHome.class));
+                                                startActivity(new Intent(LoginPage.this, StudentPage.class));
                                             } else if ("Tutor".equals(role)) {
-                                                startActivity(new Intent(LoginPage.this, TutorHome.class));
+                                                startActivity(new Intent(LoginPage.this, TutorPage.class));
                                             }
                                             finish();
                                         } else {
