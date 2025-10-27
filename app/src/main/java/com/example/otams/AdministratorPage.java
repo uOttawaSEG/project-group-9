@@ -87,7 +87,7 @@ public class AdministratorPage extends AppCompatActivity {
         @NonNull
         public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.request_card, parent, false);
+                    .inflate(R.layout.item_registration_request, parent, false);
             return new RequestViewHolder(view);
         } 
 
@@ -110,8 +110,8 @@ public class AdministratorPage extends AppCompatActivity {
                     holder.courses.setVisibility(View.VISIBLE);
                 } else { holder.courses.setVisibility(View.GONE);}
             }
-            holder.approveButton.setOnClickListener(v -> approveRequest(req, pos));
-            holder.denyButton.setOnClickListener(v -> denyRequest(req, pos));      
+            holder.approve.setOnClickListener(v -> approveRequest(req, pos));
+            holder.deny.setOnClickListener(v -> denyRequest(req, pos));
         }
 
         @Override
@@ -152,14 +152,17 @@ public class AdministratorPage extends AppCompatActivity {
             db.collection("rejectedRequests")
                     .document(req.getId())
                     .set(data)
-                    .addOnSuccessListener(unused -> db.collection("requests").document(req.getId()))
-                            .delete()
-                            .addOnSuccessListener(unused -> {
-                                toast("Request rejected.");
-                                pendingRequests.remove(pos);
-                                notifyItemRemoved(pos);
-                            })
-                    .addOnFailureListener(e -> toast("Failed to approve: " + e.getMessage()));
+                    .addOnSuccessListener(unused ->
+                            db.collection("requests").document(req.getId())
+                                .delete()
+                                .addOnSuccessListener(unused2 -> {
+                                    toast("Request rejected.");
+                                    pendingRequests.remove(pos);
+                                    notifyItemRemoved(pos);
+                                })
+                                .addOnFailureListener(e -> toast("Failed to approve: " + e.getMessage()))
+                    )
+            .addOnFailureListener(e -> toast("Failed to approve: " + e.getMessage()));
         }
     }
 
