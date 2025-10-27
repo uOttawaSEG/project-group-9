@@ -102,7 +102,7 @@ public class TutorHome extends AppCompatActivity {
         userUpdates.put("profileCompleteAt", Timestamp.now());
 
         
-        db.collection("users").document(uid)
+        db.collection("requests").document(uid)
                 .update(userUpdates)
                 .addOnSuccessListener(unused -> {
                     progressBar.setVisibility(View.GONE);
