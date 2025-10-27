@@ -2,172 +2,73 @@ package com.example.otams;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.ViewGroup;
-import android.view.View;
-import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AdministratorPage extends AppCompatActivity {
-    TextView welcomeText;
-    Button logoutButton, rejectedRequestsButton;
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
-    RecyclerView recyclerView;
-    RequestsAdapter adapter;
-    List<DocumentSnapshot> pendingRequests = new ArrayList<>();
+
+    // Member variables for Firebase and Views
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private RecyclerView recyclerView;
+    private Button rejectedRequestsButton;
+    private Button logoutButton;
+    private TextView welcomeText;
+    // ... (Your Adapter and Request data structures)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_administrator_home);
+        setContentView(R.layout.activity_administrator_home); // Ensure this XML is correct
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user == null) {
+            startActivity(new Intent(AdministratorPage.this, LoginPage.class));
+            finish();
+            return;
+        }
+
+        // Initialize Views using the CORRECT IDs from XML
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);
 
+        // Use the standardized names:
         rejectedRequestsButton = findViewById(R.id.button3);
-        recyclerView = findViewById(R.id.recyclerViewRequests);
-        adapter = new RequestsAdapter();
+       //(works with the version i sent lauren of the activity_administrator_home.xml  recyclerView = findViewById(R.id.recyclerRequests);
+
+        // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        // adapter = new RequestsAdapter(this, requestsList); // Assuming you have an Adapter
+        // recyclerView.setAdapter(adapter);
 
-        fetchRequests();
+        // Set Welcome Message
+        welcomeText.setText("Welcome, Administrator!");
 
-        // Display welcome message
-        if (mAuth.getCurrentUser() != null) {
-            welcomeText.setText("Welcome, Administrator!");
-        }
-
-        rejectedRequestsButton.setOnClickListener(v -> {
-            Intent rejectedButton = new Intent(AdministratorPage.this, RejectedRequestsPage.class);
-            startActivity(rejectedButton);
+        // Set Listeners
+        rejectedRequestsButton.setOnClickListener(view -> {
+            startActivity(new Intent(AdministratorPage.this, RejectedRequestsPage.class));
         });
 
-        // Logout
-        logoutButton.setOnClickListener(v -> {
+        logoutButton.setOnClickListener(view -> {
             mAuth.signOut();
-            startActivity(new Intent(getApplicationContext(), LoginPage.class));
+            Toast.makeText(this, "Administrator logged out.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(AdministratorPage.this, LoginPage.class));
             finish();
         });
-    }
 
-    private void fetchRequests(){
-        db.collection("requests")
-                .whereEqualTo("approved", false)
-                .get()
-                .addOnSuccessListener((QuerySnapshot snapshots) -> {
-                    pendingRequests.clear();
-                    pendingRequests.addAll(snapshots.getDocuments());
-                    adapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e -> toast("Failed to fetch requests: " + e.getMessage()));
-    }
-
-    private class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestViewHolder>{
-        @Override
-        @NonNull
-        public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_registration_request, parent, false);
-            return new RequestViewHolder(view);
-        } 
-
-        @Override
-        public void onBindViewHolder(@NonNull RequestViewHolder holder, int pos){
-            DocumentSnapshot req = pendingRequests.get(pos);
-            holder.name.setText(req.getString("firstName") + " " + req.getString("lastName"));
-            holder.role.setText(req.getString("role"));
-            holder.email.setText("Email: " + req.getString("email"));
-            holder.phone.setText("Phone " + req.getString("phoneNumber"));
-
-            if("Student".equals(req.getString("role"))){
-                holder.programOrDegree.setText("Program: " + req.getString("program"));
-                holder.courses.setVisibility(View.GONE);
-            } else if("Tutor".equals(req.getString("role"))){
-                holder.programOrDegree.setText("Degree: " + req.getString("degree"));
-                List<String> courses = (List<String>) req.get("courses");
-                if(courses != null && !courses.isEmpty()){
-                    holder.courses.setText("Courses: " + String.join(", ", courses));
-                    holder.courses.setVisibility(View.VISIBLE);
-                } else { holder.courses.setVisibility(View.GONE);}
-            }
-            holder.approve.setOnClickListener(v -> approveRequest(req, pos));
-            holder.deny.setOnClickListener(v -> denyRequest(req, pos));
-        }
-
-        @Override
-        public int getItemCount(){
-            return pendingRequests.size();
-        }
-
-        class RequestViewHolder extends RecyclerView.ViewHolder{
-            TextView name, role, email, phone, programOrDegree, courses;
-            Button approve, deny;
-
-            RequestViewHolder(@NonNull View itemView){
-                super(itemView);
-                name = itemView.findViewById(R.id.textName);
-                role = itemView.findViewById(R.id.textRole);
-                email = itemView.findViewById(R.id.textEmail);
-                phone = itemView.findViewById(R.id.textPhone);
-                programOrDegree = itemView.findViewById(R.id.textProgramOrDegree);
-                courses = itemView.findViewById(R.id.textCourses);
-                approve = itemView.findViewById(R.id.buttonApprove);
-                deny = itemView.findViewById(R.id.buttonReject);
-            }
-        }
-
-        private void approveRequest(DocumentSnapshot req, int pos){
-            db.collection("requests").document(req.getId())
-                    .update("approved", true)
-                    .addOnSuccessListener(unused -> {
-                        toast("Request approved.");
-                        pendingRequests.remove(pos);
-                        notifyItemRemoved(pos);
-                    })
-                    .addOnFailureListener(e -> toast("Failed to approve: " + e.getMessage()));
-        }
-
-        private void denyRequest(DocumentSnapshot req, int pos){
-            Map<String,Object> data = req.getData();
-            db.collection("rejectedRequests")
-                    .document(req.getId())
-                    .set(data)
-                    .addOnSuccessListener(unused ->
-                            db.collection("requests").document(req.getId())
-                                .delete()
-                                .addOnSuccessListener(unused2 -> {
-                                    toast("Request rejected.");
-                                    pendingRequests.remove(pos);
-                                    notifyItemRemoved(pos);
-                                })
-                                .addOnFailureListener(e -> toast("Failed to approve: " + e.getMessage()))
-                    )
-            .addOnFailureListener(e -> toast("Failed to approve: " + e.getMessage()));
-        }
-    }
-
-    private void toast(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        // FetchRequests(); // Assuming you have a method to load data
     }
 }
-

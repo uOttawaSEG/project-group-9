@@ -2,10 +2,8 @@ package com.example.otams;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.EditText;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -15,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions; // <-- CRITICAL: NEW IMPORT
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
@@ -25,14 +24,13 @@ import java.util.List;
 
 public class TutorHome extends AppCompatActivity {
     private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextDegree, editTextCourses;
-    private String email;
     private Button signUp, logOut;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser user;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +54,6 @@ public class TutorHome extends AppCompatActivity {
         editTextDegree = findViewById(R.id.editTextDegree);
         editTextCourses = findViewById(R.id.editTextCourses);
 
-        
-
         signUp = findViewById(R.id.signUpButton);
         logOut = findViewById(R.id.logoutButton);
         progressBar = findViewById(R.id.progressBar);
@@ -67,7 +63,7 @@ public class TutorHome extends AppCompatActivity {
 
         logOut.setOnClickListener(view -> {
             mAuth.signOut();
-            toast("Log out succesful.");
+            toast("Log out successful.");
             startActivity(new Intent(TutorHome.this, LoginPage.class));
             finish();
         });
@@ -79,9 +75,10 @@ public class TutorHome extends AppCompatActivity {
         String number = text(editTextNumber);
         String courses = text(editTextCourses);
         String degree = text(editTextDegree);
-        String email = user.getEmail();
+        String uid = user.getUid();
 
-        if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| degree.isEmpty() || courses.isEmpty() || email.isEmpty()){
+        // Removed validation for 'email' since it's from FirebaseUser and guaranteed not null/empty here
+        if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| degree.isEmpty() || courses.isEmpty()){
             toast("Fill in all fields.");
             return;
         }
@@ -89,49 +86,43 @@ public class TutorHome extends AppCompatActivity {
         List<String> coursesList = Arrays.asList(courses.split("\\s*,\\s*"));
         progressBar.setVisibility(View.VISIBLE);
 
-        String uid = user.getUid();
-
+        // 1. DATA TO BE UPDATED IN BOTH COLLECTIONS
         HashMap<String,Object> userUpdates = new HashMap<>();
         userUpdates.put("firstName", firstName);
         userUpdates.put("lastName", lastName);
         userUpdates.put("phoneNumber", number);
         userUpdates.put("degree", degree);
-        userUpdates.put("email", email);
         userUpdates.put("courses", coursesList);
-        userUpdates.put("role", "Tutor");
         userUpdates.put("profileCompleteAt", Timestamp.now());
+        // NOTE: We do NOT update email or role here; they are set in RegisterPage.
 
-        
+
+        // 2. PRIMARY SAVE: Update the 'users' profile
         db.collection("requests").document(uid)
                 .update(userUpdates)
                 .addOnSuccessListener(unused -> {
-                    progressBar.setVisibility(View.GONE);
-                    toast("Profile creation succesful");
-                    createRequest(uid, firstName, lastName, email, number, degree, coursesList);
+                    // 3. Chain the second update to the 'requests' collection
+                    updateRequest(uid, userUpdates);
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
-                    toastLong("Failed to create profile: " + e.getMessage());
+                    toastLong("Failed to save profile: " + e.getMessage());
                 });
     }
 
-    private void createRequest(String uid, String firstName, String lastName, String email, String phoneNumber, String degree, List<String> courses){
-        Map<String,Object> request = new HashMap<>();
-        request.put("userId", uid);
-        request.put("role", "Tutor");
-        request.put("firstName", firstName);
-        request.put("lastName", lastName);
-        request.put("email", email);
-        request.put("phoneNumber", phoneNumber);
-        request.put("degree", degree);
-        request.put("courses", courses);
-        request.put("timestamp", Timestamp.now());
-        request.put("approved", false);
-
-        db.collection("requests")
-                .add(request)
-                .addOnSuccessListener(docRef -> toast("Request submitted."))
-                .addOnFailureListener(e -> toastLong("Failed to submit: " + e.getMessage()));
+    // This method updates the existing request document in the secondary step.
+    private void updateRequest(String uid, Map<String,Object> updates){
+        // CRITICAL FIX: Use SET with MERGE to guarantee the document is updated/created
+        db.collection("requests").document(uid)
+                .set(updates, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    progressBar.setVisibility(View.GONE);
+                    toast("Profile created and submitted for administrator review.");
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    toastLong("Successfully saved profile, but failed to update request.");
+                });
     }
 
 
