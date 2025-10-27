@@ -74,7 +74,6 @@ public class TutorHome extends AppCompatActivity {
     	String firstName = text(editTextFirstName);
     	String lastName = text(editTextLastName);
     	String number = text(editTextNumber);
-        String email = user.getEmail();
     	String courses = text(editTextCourses);
         String degree = text(editTextDegree);
 
@@ -103,7 +102,7 @@ public class TutorHome extends AppCompatActivity {
     			.addOnSuccessListener(unused -> {
     				progressBar.setVisibility(View.GONE);
     				toast("Profile creation succesful");
-    				createRequest(uid, firstName, lastName,);
+    				createRequest(uid, firstName, lastName);
     			})
     			.addOnFailureListener(e -> {
     				progressBar.setVisibility(View.GONE);
@@ -136,11 +135,11 @@ public class TutorHome extends AppCompatActivity {
     }
 
     private void toast(String msg) {
-        Toast.makeText(TutorHome.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentHome.this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void toastLong(String msg) {
-        Toast.makeText(TutorHome.this, msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(StudentHome.this, msg, Toast.LENGTH_LONG).show();
     }
 }
 
