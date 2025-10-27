@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
 import java.util.Map;
+import android.util.Log;
 
 
 public class StudentHome extends AppCompatActivity {
@@ -48,6 +49,8 @@ public class StudentHome extends AppCompatActivity {
         	return;
         }
 
+        Log.d("StudentHome", "User: " + user);
+
         editTextFirstName = findViewById(R.id.firstName);
         editTextLastName = findViewById(R.id.lastName);
         editTextNumber = findViewById(R.id.phoneNum);
@@ -58,7 +61,29 @@ public class StudentHome extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
 
-        signUp.setOnClickListener(view -> saveUserInfo());
+        signUp.setOnClickListener(view -> {
+
+            String firstName = text(editTextFirstName);
+            String lastName = text(editTextLastName);
+            String number = text(editTextNumber);
+            String email = user.getEmail();
+            String program = text(editTextProgram);
+
+
+            if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| email.isEmpty()|| program.isEmpty()){
+                toast("Fill in all fields.");
+                return;
+            }
+            toast("Submitting request...");
+            Log.d("StudentHome", "SignUp clicked, firstName: " + text(editTextFirstName));
+
+
+            progressBar.setVisibility(View.VISIBLE);
+
+            String uid = user.getUid();
+
+            createRequest(uid, firstName, lastName, number, email, program);
+        });
 
         logOut.setOnClickListener(view -> {
         	mAuth.signOut();
@@ -68,46 +93,10 @@ public class StudentHome extends AppCompatActivity {
         });
     }
 
-    private void saveUserInfo(){
-    	String firstName = text(editTextFirstName);
-    	String lastName = text(editTextLastName);
-    	String number = text(editTextNumber);
-		String email = user.getEmail();
-    	String program = text(editTextProgram);
-
-    	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| email.isEmpty()|| program.isEmpty()){
-    		toast("Fill in all fields.");
-    		return;
-    	}
-
-    	progressBar.setVisibility(View.VISIBLE);
-
-    	String uid = user.getUid();
-
-    	HashMap<String,Object> userUpdates = new HashMap<>();
-    	userUpdates.put("firstName", firstName);
-    	userUpdates.put("lastName", lastName);
-    	userUpdates.put("phoneNumber", number);
-		userUpdates.put("email", email);
-    	userUpdates.put("program", program);
-        userUpdates.put("role", "Student");
-    	userUpdates.put("profileCompleteAt", Timestamp.now());
-
-    	
-    	db.collection("users").document(uid)
-    			.update(userUpdates)
-    			.addOnSuccessListener(unused -> {
-    				progressBar.setVisibility(View.GONE);
-    				toast("Profile creation succesful");
-    				createRequest(uid, firstName, lastName, number, email, program);
-    			})
-    			.addOnFailureListener(e -> {
-    				progressBar.setVisibility(View.GONE);
-    				toastLong("Failed to create profile: " + e.getMessage());
-    			});
-    }
-
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String program){
+        toast("createRequest() called");
+        Log.d("StudentHome", "createRequest called, email: " + email);
+
     	Map<String,Object> request = new HashMap<>();
     	request.put("userId", uid);
         request.put("role", "Student");
@@ -117,12 +106,20 @@ public class StudentHome extends AppCompatActivity {
         request.put("phoneNumber", phoneNumber);
         request.put("program", program);
     	request.put("timestamp", Timestamp.now());
-    	request.put("approved", false);
+    	request.put("status", "pending");
 
     	db.collection("requests")
     			.add(request)
-    			.addOnSuccessListener(docRef -> toast("Request submitted."))
-    			.addOnFailureListener(e -> toastLong("Failed to submit: " + e.getMessage()));
+    			.addOnSuccessListener(docRef -> {
+                    progressBar.setVisibility(View.GONE);
+                    toast("Request submitted. Waiting for approval.");
+                    startActivity(new Intent(StudentHome.this, PendingScreen.class));
+                    finish();
+                })
+    			.addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    toastLong("Failed to submit: " + e.getMessage());
+                });
     }
 
 
