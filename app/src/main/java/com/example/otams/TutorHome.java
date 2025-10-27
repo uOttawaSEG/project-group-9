@@ -86,7 +86,6 @@ public class TutorHome extends AppCompatActivity {
         List<String> coursesList = Arrays.asList(courses.split("\\s*,\\s*"));
         progressBar.setVisibility(View.VISIBLE);
 
-        // 1. DATA TO BE UPDATED IN BOTH COLLECTIONS
         HashMap<String,Object> userUpdates = new HashMap<>();
         userUpdates.put("firstName", firstName);
         userUpdates.put("lastName", lastName);
