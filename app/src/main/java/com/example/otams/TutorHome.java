@@ -77,7 +77,7 @@ public class TutorHome extends AppCompatActivity {
         String degree = text(editTextDegree);
         String uid = user.getUid();
 
-        // Removed validation for 'email' since it's from FirebaseUser and guaranteed not null/empty here
+
         if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| degree.isEmpty() || courses.isEmpty()){
             toast("Fill in all fields.");
             return;
@@ -94,14 +94,14 @@ public class TutorHome extends AppCompatActivity {
         userUpdates.put("degree", degree);
         userUpdates.put("courses", coursesList);
         userUpdates.put("profileCompleteAt", Timestamp.now());
-        // NOTE: We do NOT update email or role here; they are set in RegisterPage.
 
 
-        // 2. PRIMARY SAVE: Update the 'users' profile
+
+        // Update the 'users' profile
         db.collection("requests").document(uid)
                 .update(userUpdates)
                 .addOnSuccessListener(unused -> {
-                    // 3. Chain the second update to the 'requests' collection
+
                     updateRequest(uid, userUpdates);
                 })
                 .addOnFailureListener(e -> {
@@ -112,7 +112,6 @@ public class TutorHome extends AppCompatActivity {
 
     // This method updates the existing request document in the secondary step.
     private void updateRequest(String uid, Map<String,Object> updates){
-        // CRITICAL FIX: Use SET with MERGE to guarantee the document is updated/created
         db.collection("requests").document(uid)
                 .set(updates, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
