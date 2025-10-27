@@ -22,7 +22,8 @@ import java.util.Map;
 
 
 public class StudentHome extends AppCompatActivity {
-    private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextEmail, editTextProgram;
+    private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextProgram;
+    private String email;
     private Button signUp, logOut;
     private ProgressBar progressBar;
 
@@ -71,7 +72,7 @@ public class StudentHome extends AppCompatActivity {
     	String firstName = text(editTextFirstName);
     	String lastName = text(editTextLastName);
     	String number = text(editTextNumber);
-		String email = text(editTextEmail);
+		String email = user.getEmail();
     	String program = text(editTextProgram);
 
     	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| email.isEmpty()|| program.isEmpty()){

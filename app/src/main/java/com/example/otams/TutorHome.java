@@ -25,6 +25,7 @@ import java.util.List;
 
 public class TutorHome extends AppCompatActivity {
     private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextDegree, editTextCourses;
+    private String email;
     private Button signUp, logOut;
     private ProgressBar progressBar;
 
@@ -55,6 +56,8 @@ public class TutorHome extends AppCompatActivity {
         editTextDegree = findViewById(R.id.editTextDegree);
         editTextCourses = findViewById(R.id.editTextCourses);
 
+        
+
         signUp = findViewById(R.id.signUpButton);
         logOut = findViewById(R.id.logoutButton);
         progressBar = findViewById(R.id.progressBar);
@@ -76,8 +79,9 @@ public class TutorHome extends AppCompatActivity {
     	String number = text(editTextNumber);
     	String courses = text(editTextCourses);
         String degree = text(editTextDegree);
+        String email = user.getEmail();
 
-    	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| degree.isEmpty() || courses.isEmpty()){
+    	if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| degree.isEmpty() || courses.isEmpty() || email.isEmpty()){
     		toast("Fill in all fields.");
     		return;
     	}
@@ -92,6 +96,7 @@ public class TutorHome extends AppCompatActivity {
     	userUpdates.put("lastName", lastName);
     	userUpdates.put("phoneNumber", number);
     	userUpdates.put("degree", degree);
+        userUpdates.put("email", email);
         userUpdates.put("courses", coursesList);
         userUpdates.put("role", "Tutor");
     	userUpdates.put("profileCompleteAt", Timestamp.now());
@@ -102,7 +107,7 @@ public class TutorHome extends AppCompatActivity {
     			.addOnSuccessListener(unused -> {
     				progressBar.setVisibility(View.GONE);
     				toast("Profile creation succesful");
-    				createRequest(uid, firstName, lastName);
+    				createRequest(uid, firstName, lastName, email, number, degree, coursesList);
     			})
     			.addOnFailureListener(e -> {
     				progressBar.setVisibility(View.GONE);
@@ -135,11 +140,11 @@ public class TutorHome extends AppCompatActivity {
     }
 
     private void toast(String msg) {
-        Toast.makeText(StudentHome.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(TutorHome.this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void toastLong(String msg) {
-        Toast.makeText(StudentHome.this, msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(TutorHome.this, msg, Toast.LENGTH_LONG).show();
     }
 }
 
