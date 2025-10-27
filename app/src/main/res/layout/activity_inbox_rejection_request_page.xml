@@ -43,6 +43,17 @@
             app:layout_constraintStart_toEndOf="@+id/Move2RegReq"
             app:layout_constraintTop_toTopOf="@+id/Move2RegReq" />
 
+        <ListView
+            android:id="@+id/rejectedRequestsList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Move2RegReq" />
+
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="wrap_content"

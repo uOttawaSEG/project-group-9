@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewGroup;
-import android.widget.View;
-import android.widget.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.View;
+import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
