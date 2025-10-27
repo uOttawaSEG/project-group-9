@@ -72,42 +72,14 @@ public class RegisterPage extends AppCompatActivity {
                             return;
                         }
 
-                        String uid = mAuth.getCurrentUser().getUid();
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        toast("Account created. Complete profile.");
+                        if("Student".equals(role)){
+                            startActivity(new Intent(RegisterPage.this, StudentHome.class));
+                        } else if("Tutor".equals(role)){
+                            startActivity(new Intent(RegisterPage.this, TutorHome.class));
+                        }
 
-                        // 1. PRIMARY SAVE: Create user document in 'users' collection
-                        Map<String, Object> userDoc = new HashMap<>();
-                        userDoc.put("email", email);
-                        userDoc.put("role", role);
-                        userDoc.put("status", "PENDING"); // Initial status
-                        userDoc.put("createdAt", Timestamp.now());
-
-                        db.collection("users").document(uid)
-                                .set(userDoc)
-                                .addOnCompleteListener(setTask -> {
-                                    if(setTask.isSuccessful()) {
-
-                                        // 2. CRITICAL FIX: Create the document in the 'requests' collection
-                                        Map<String, Object> requestDoc = new HashMap<>();
-                                        requestDoc.put("uid", uid);
-                                        requestDoc.put("email", email);
-                                        requestDoc.put("role", role);
-                                        requestDoc.put("status", "PENDING");
-                                        requestDoc.put("requestDate", Timestamp.now());
-
-                                        db.collection("requests").document(uid)
-                                                .set(requestDoc); // This write creates the collection!
-
-                                        progressBar.setVisibility(View.GONE);
-                                        toast("Account created. Awaiting Administrator approval.");
-                                        mAuth.signOut();
-                                        startActivity(new Intent(getApplicationContext(), LoginPage.class));
-                                        finish();
-                                    } else {
-                                        toastLong("Database save failed: " + setTask.getException().getMessage());
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                });
+                        finish();
                     });
         });
     }

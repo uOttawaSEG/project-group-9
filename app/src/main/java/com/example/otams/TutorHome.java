@@ -59,7 +59,24 @@ public class TutorHome extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
 
-        signUp.setOnClickListener(view -> saveTutorInfo());
+        signUp.setOnClickListener(view -> {
+            String firstName = text(editTextFirstName);
+            String lastName = text(editTextLastName);
+            String number = text(editTextNumber);
+            String courses = text(editTextCourses);
+            String degree = text(editTextDegree);
+            String uid = user.getUid();
+            String email = user.getEmail();
+
+            if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| email.isEmpty() || degree.isEmpty() || courses.isEmpty()){
+                toast("Fill in all fields.");
+                return;
+            }
+
+            List<String> coursesList = Arrays.asList(courses.split("\\s*,\\s*"));
+            progressBar.setVisibility(View.VISIBLE);
+            createRequest(uid,firstName,lastName,number,email,degree,coursesList);
+        });
 
         logOut.setOnClickListener(view -> {
             mAuth.signOut();
@@ -69,57 +86,29 @@ public class TutorHome extends AppCompatActivity {
         });
     }
 
-    private void saveTutorInfo(){
-        String firstName = text(editTextFirstName);
-        String lastName = text(editTextLastName);
-        String number = text(editTextNumber);
-        String courses = text(editTextCourses);
-        String degree = text(editTextDegree);
-        String uid = user.getUid();
+    private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String degree, List<String> courses){
+        Map<String,Object> request = new HashMap<>();
+        request.put("userId", uid);
+        request.put("role", "Tutor");
+        request.put("firstName", firstName);
+        request.put("lastName", lastName);
+        request.put("email", email);
+        request.put("phoneNumber", phoneNumber);
+        request.put("degree", degree);
+        request.put("courses", courses);
+        request.put("timestamp", Timestamp.now());
+        request.put("status", "pending");
 
-
-        if(firstName.isEmpty() || lastName.isEmpty() || number.isEmpty()|| degree.isEmpty() || courses.isEmpty()){
-            toast("Fill in all fields.");
-            return;
-        }
-
-        List<String> coursesList = Arrays.asList(courses.split("\\s*,\\s*"));
-        progressBar.setVisibility(View.VISIBLE);
-
-        HashMap<String,Object> userUpdates = new HashMap<>();
-        userUpdates.put("firstName", firstName);
-        userUpdates.put("lastName", lastName);
-        userUpdates.put("phoneNumber", number);
-        userUpdates.put("degree", degree);
-        userUpdates.put("courses", coursesList);
-        userUpdates.put("profileCompleteAt", Timestamp.now());
-
-
-
-        // Update the 'users' profile
-        db.collection("requests").document(uid)
-                .update(userUpdates)
-                .addOnSuccessListener(unused -> {
-
-                    updateRequest(uid, userUpdates);
+        db.collection("requests")
+                .add(request)
+                .addOnSuccessListener(docRef -> {
+                    progressBar.setVisibility(View.GONE);
+                    startActivity(new Intent(TutorHome.this, PendingScreen.class));
+                    finish();
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
-                    toastLong("Failed to save profile: " + e.getMessage());
-                });
-    }
-
-    // This method updates the existing request document in the secondary step.
-    private void updateRequest(String uid, Map<String,Object> updates){
-        db.collection("requests").document(uid)
-                .set(updates, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    progressBar.setVisibility(View.GONE);
-                    toast("Profile created and submitted for administrator review.");
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    toastLong("Successfully saved profile, but failed to update request.");
+                    toastLong("Failed to submit: " + e.getMessage());
                 });
     }
 

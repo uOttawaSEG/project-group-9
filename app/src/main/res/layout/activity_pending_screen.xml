@@ -8,10 +8,20 @@
     android:background="#FFFFFF">
 
     <TextView
+        android:id="@+id/pendingText"
         android:text="Pending"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#FF0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/backButton"
+        android:text="Back to login page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

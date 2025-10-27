@@ -38,10 +38,22 @@
             android:name=".AdministratorPage"
             android:exported="true" />
         <activity
+            android:name=".TutorHome"
+            android:exported="true" />
+        <activity
             android:name=".TutorPage"
             android:exported="true" />
         <activity
+            android:name=".StudentHome"
+            android:exported="true" />
+        <activity
             android:name=".StudentPage"
+            android:exported="true" />
+        <activity
+            android:name=".PendingScreen"
+            android:exported="true" />
+        <activity
+            android:name=".RejectedScreen"
             android:exported="true" />
 
     </application>

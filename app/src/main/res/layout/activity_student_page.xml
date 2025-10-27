@@ -8,8 +8,8 @@
     android:background="#FFFFFF">
 
     <TextView
-        android:id="@+id/rejectedText"
-        android:text="Rejected. Please contact: 6136136133"
+        android:id="@+id/welcomeText"
+        android:text="Welcome Student!"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#FF0000"
@@ -19,7 +19,7 @@
         android:layout_marginBottom="20dp"/>
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/logoutButton"
         android:text="Back to login page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
