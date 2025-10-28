@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/rejectedText"
-        android:text="Rejected. Please contact: 6136136133"
+        android:text="Your request rejected!"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#FF0000"

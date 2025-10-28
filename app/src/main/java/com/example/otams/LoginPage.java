@@ -118,15 +118,13 @@ public class LoginPage extends AppCompatActivity {
                     String role = querySnapshot.getDocuments().get(0).getString("role");
 
                     if("approved".equals(status)){
-                        Toast.makeText(this, "Account has been approved.", Toast.LENGTH_SHORT).show();
-                        autoRedirectUser(id);
+                        startActivity(new Intent(LoginPage.this, ApprovedPage.class));
+                        finish();
                     } else if("rejected".equals(status)){
-                        Toast.makeText(this, "You have been rejected. Please contant 111-111-111 for more information.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginPage.this, RejectedScreen.class));
+                        startActivity(new Intent(LoginPage.this, RejectedPage.class));
                         finish();
                     } else {
-                        Toast.makeText(this, "You are pending approval.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginPage.this, PendingScreen.class));
+                        startActivity(new Intent(LoginPage.this, PendingPage.class));
                         finish();
                     }
                 } else {

@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/pendingText"
-        android:text="Pending"
+        android:text="Your request is pending!"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#FF0000"

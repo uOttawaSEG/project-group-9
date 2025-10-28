@@ -200,27 +200,20 @@
             android:id="@+id/signUpButton"
             android:layout_width="114dp"
             android:layout_height="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="68dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Sign Up"
-            app:layout_constraintBottom_toTopOf="@id/logoutButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.513"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/degreeLayout" />
+            app:layout_constraintEnd_toStartOf="@+id/logoutButton"
+            tools:layout_editor_absoluteY="557dp" />
 
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="112dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="36dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Logout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
-            app:layout_constraintStart_toStartOf="parent" />
+            tools:layout_editor_absoluteX="232dp"
+            tools:layout_editor_absoluteY="557dp" />
 
         <ProgressBar
             android:id="@+id/progressBar"
