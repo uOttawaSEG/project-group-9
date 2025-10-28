@@ -24,4 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact the administrator at 1-800-555-5555"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
 </LinearLayout>
