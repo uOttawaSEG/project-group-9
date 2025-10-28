@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "otams-682d0"
-  }
+    "default": "otams-682d0",
+    "otams": "otams-682d0"
+  },
+  "targets": {},
+  "etags": {}
 }
