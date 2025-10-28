@@ -38,6 +38,7 @@ public class LoginPage extends AppCompatActivity {
         buttonLogin = findViewById(R.id.btn_login);
         textView = findViewById(R.id.registerNow);
 
+
         textView.setOnClickListener(view -> {
             startActivity(new Intent(LoginPage.this, RegisterPage.class));
             finish();
@@ -74,30 +75,73 @@ public class LoginPage extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             String userId = mAuth.getCurrentUser().getUid();
-
-                            db.collection("users").document(userId).get()
-                                    .addOnSuccessListener(doc -> {
-                                        if (doc.exists()) {
-                                            String role = doc.getString("role");
-                                            Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
-
-                                            if ("Student".equals(role)) {
-                                                startActivity(new Intent(LoginPage.this, StudentPage.class));
-                                            } else if ("Tutor".equals(role)) {
-                                                startActivity(new Intent(LoginPage.this, TutorPage.class));
-                                            }
-                                            finish();
-                                        } else {
-                                            Toast.makeText(this, "User role not found!", Toast.LENGTH_LONG).show();
-                                        }
-                                    })
-                                    .addOnFailureListener(e ->
-                                            Toast.makeText(this, "Error fetching role: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                                    );
+                            autoRedirectUser(userId);
                         } else {
                             Toast.makeText(this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
+
                     });
         });
     }
+
+    private void autoRedirectUser(String userId){
+        db.collection("users").document(userId).get()
+                    .addOnSuccessListener(doc -> {
+                        if (doc.exists()) {
+                            String role = doc.getString("role");
+                            Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
+
+                            if ("Student".equals(role)) {
+                                startActivity(new Intent(LoginPage.this, StudentHome.class));
+                            } else if ("Tutor".equals(role)) {
+                                startActivity(new Intent(LoginPage.this, TutorHome.class));
+                            }
+                            finish();
+                        } else {
+                            checkUserRequest(userId);
+                        }
+                    })
+                    .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error fetching role: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                    );
+    }
+
+    private void checkUserRequest(String id){
+        db.collection("requests")
+            .whereEqualTo("userId", id)
+            .limit(1)
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                progressBar.setVisibility(View.GONE);
+                if(!querySnapshot.isEmpty()){
+                    String status = querySnapshot.getDocuments().get(0).getString("status");
+                    String role = querySnapshot.getDocuments().get(0).getString("role");
+
+                    if("approved".equals(status)){
+                        Toast.makeText(this, "Account has been approved.", Toast.LENGTH_SHORT).show();
+                        autoRedirectUser(id);
+                    } else if("rejected".equals(status)){
+                        Toast.makeText(this, "You have been rejected. Please contant 111-111-111 for more information.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginPage.this, RejectedScreen.class));
+                        finish();
+                    } else {
+                        Toast.makeText(this, "You are pending approval.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginPage.this, PendingScreen.class));
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(this, "Please complete your profile", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginPage.this, LandingPage.class));
+                    finish();
+                }
+            })
+        .addOnFailureListener(e -> {
+            Toast.makeText(this, "Error checking request status: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        });
+    }
 }
+
+
+
+
+

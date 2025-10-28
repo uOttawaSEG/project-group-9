@@ -1,10 +1,10 @@
 package com.example.otams;
 
 /** Basic request class
- * 
+ *
  * @author Lauren Hendley [lhend093@uottawa.ca]
  */
-public class Request {  
+public class Request {
     // Instantiating variables
     private User user;
     private boolean approval;
