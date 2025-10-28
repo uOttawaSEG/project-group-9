@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="8dp"
+    android:elevation="2dp">
 
     <TextView
         android:id="@+id/textName"
@@ -15,8 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonApprove"
-        android:layout_marginEnd="8dp"
-        tools:text="John Doe" />
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/textRole"
@@ -26,8 +29,7 @@
         android:textSize="14sp"
         android:fontFamily="@font/poppins_regular"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textName"
-        tools:text="Tutor" />
+        app:layout_constraintTop_toBottomOf="@+id/textName" />
 
     <TextView
         android:id="@+id/textEmail"
@@ -35,10 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
         android:fontFamily="@font/poppins_regular"
-        app:layout_constraintTop_toBottomOf="@+id/textRole"
-        tools:text="john@example.com" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textRole" />
 
     <TextView
         android:id="@+id/textPhone"
@@ -47,11 +48,8 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_regular"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEmail"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="123-456-7890" />
+        app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 
     <TextView
         android:id="@+id/textProgramOrDegree"
@@ -60,11 +58,8 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_regular"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPhone"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Highest Degree: BASc in Computer Science" />
+        app:layout_constraintTop_toBottomOf="@+id/textPhone" />
 
     <TextView
         android:id="@+id/textCourses"
@@ -76,7 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textProgramOrDegree"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="Courses: CSI 2110, SEG 2105" />
+        android:paddingBottom="8dp" />
 
     <Button
         android:id="@+id/buttonApprove"
@@ -96,4 +91,3 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
