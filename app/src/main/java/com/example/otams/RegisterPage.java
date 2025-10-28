@@ -66,45 +66,55 @@ public class RegisterPage extends AppCompatActivity {
             final String role = (radioGroupRole.getCheckedRadioButtonId() == R.id.radioStudent)
                     ? "Student" : "Tutor";
 
+            // Inside your buttonReg.setOnClickListener...
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            // IMPORTANT: Handle registration failure
+                            toastLong("Registration failed: " + task.getException().getMessage());
+                            progressBar.setVisibility(View.GONE);
+                            buttonReg.setEnabled(true);
+                            return;
+                        }
+
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
+                            String userId = user.getUid(); // Get the user's ID
+
                             Map<String, Object> mail = new HashMap<>();
                             mail.put("to", email);
 
                             Map<String, Object> templateData = new HashMap<>();
                             templateData.put("role", role);
                             templateData.put("displayEmail", email);
+                            // You no longer need to save the uid inside the document, but it can be useful.
+                            // We'll keep it for now as your login query uses it.
+                            templateData.put("uid", userId);
+
                             mail.put("templateData", templateData);
-                            mail.put("uid", user.getUid());
                             mail.put("createdAt", Timestamp.now());
 
-                            db.collection("mail")
-                                    .add(mail)
-                                    .addOnSuccessListener(ref -> {
-                                        ref.get().addOnCompleteListener(getTask -> {
-                                            if (getTask.isSuccessful() && getTask.getResult() != null && getTask.getResult().exists()) {
-                                                toast("Confirmation email sent.");
-                                            } else {
-                                                toast("Failed to send confirmation email.");
-                                            }
-                                            mAuth.signOut();
-                                            startActivity(new Intent(RegisterPage.this, LoginPage.class));
-                                            finish();
-                                        });
+                            // --- THE FIX IS HERE ---
+                            // Use .document(userId).set(mail) instead of .add(mail)
+                            db.collection("mail").document(userId).set(mail)
+                                    .addOnSuccessListener(aVoid -> {
+                                        toast("Confirmation email sent.");
+                                        mAuth.signOut(); // Sign out to force login
+                                        startActivity(new Intent(RegisterPage.this, LoginPage.class));
+                                        finish();
                                     })
                                     .addOnFailureListener(e -> {
-                                        toastLong("Failed to queue email: " + e.getMessage());
+                                        toastLong("Failed to save user data: " + e.getMessage());
                                         progressBar.setVisibility(View.GONE);
                                         buttonReg.setEnabled(true);
                                     });
                         } else {
-                            toastLong("Account created, but user is null.");
+                            toastLong("Account created, but user data is null.");
                             progressBar.setVisibility(View.GONE);
                             buttonReg.setEnabled(true);
                         }
                     });
+
         });
     }
 

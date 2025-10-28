@@ -84,13 +84,21 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
-    private void autoRedirectUser(String userId){
-        db.collection("users").document(userId).get()
-                    .addOnSuccessListener(doc -> {
-                        if (doc.exists()) {
-                            String role = doc.getString("role");
-                            Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
+    private void autoRedirectUser(String userId) {
+        Log.d("AutoRedirect", "Querying 'mail' collection for user with uid: " + userId);
+        // Query the 'mail' collection to find the document where the 'uid' field matches.
+        db.collection("mail")
+                .whereEqualTo("templateData.uid", userId)
+                .limit(1) // We only expect one document per user
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Get the first (and only) document from the result
+                        String role = querySnapshot.getDocuments().get(0).getString("templateData.role");
+                        Log.d("AutoRedirect", "Document found. User role is: " + role);
 
+                        if (role != null) {
+                            Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
                             if ("Student".equals(role)) {
                                 startActivity(new Intent(LoginPage.this, StudentHome.class));
                             } else if ("Tutor".equals(role)) {
@@ -98,44 +106,53 @@ public class LoginPage extends AppCompatActivity {
                             }
                             finish();
                         } else {
-                            checkUserRequest(userId);
+                            Log.e("AutoRedirect", "Role is null in document for user: " + userId);
+                            Toast.makeText(this, "Your profile is incomplete. Please contact support.", Toast.LENGTH_LONG).show();
                         }
-                    })
-                    .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error fetching role: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                    );
+                    } else {
+                        // This is where your current logic is failing. No document was found with that uid.
+                        Log.e("AutoRedirect", "No document in 'mail' collection has uid: " + userId);
+                        Toast.makeText(this, "User data not found. Please contact support.", Toast.LENGTH_LONG).show();
+                        // Optional: You could call checkUserRequest(userId) here as a fallback.
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("AutoRedirect", "Firestore query failed for user: " + userId, e);
+                    Toast.makeText(this, "Error fetching role: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
-    private void checkUserRequest(String id){
-        db.collection("requests")
-            .whereEqualTo("userId", id)
-            .limit(1)
-            .get()
-            .addOnSuccessListener(querySnapshot -> {
-                progressBar.setVisibility(View.GONE);
-                if(!querySnapshot.isEmpty()){
-                    String status = querySnapshot.getDocuments().get(0).getString("status");
-                    String role = querySnapshot.getDocuments().get(0).getString("role");
 
-                    if("approved".equals(status)){
-                        startActivity(new Intent(LoginPage.this, ApprovedPage.class));
-                        finish();
-                    } else if("rejected".equals(status)){
-                        startActivity(new Intent(LoginPage.this, RejectedPage.class));
-                        finish();
+    private void checkUserRequest(String id) {
+        db.collection("requests")
+                .whereEqualTo("userId", id)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (!querySnapshot.isEmpty()) {
+                        String status = querySnapshot.getDocuments().get(0).getString("status");
+                        String role = querySnapshot.getDocuments().get(0).getString("role");
+
+                        if ("approved".equals(status)) {
+                            startActivity(new Intent(LoginPage.this, ApprovedPage.class));
+                            finish();
+                        } else if ("rejected".equals(status)) {
+                            startActivity(new Intent(LoginPage.this, RejectedPage.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(LoginPage.this, PendingPage.class));
+                            finish();
+                        }
                     } else {
-                        startActivity(new Intent(LoginPage.this, PendingPage.class));
+                        Toast.makeText(this, "Please complete your profile", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginPage.this, LandingPage.class));
                         finish();
                     }
-                } else {
-                    Toast.makeText(this, "Please complete your profile", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginPage.this, LandingPage.class));
-                    finish();
-                }
-            })
-        .addOnFailureListener(e -> {
-            Toast.makeText(this, "Error checking request status: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error checking request status: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 }
 
