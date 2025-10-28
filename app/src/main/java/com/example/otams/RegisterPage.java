@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -98,9 +99,16 @@ public class RegisterPage extends AppCompatActivity {
                             // Use .document(userId).set(mail) instead of .add(mail)
                             db.collection("mail").document(userId).set(mail)
                                     .addOnSuccessListener(aVoid -> {
+                                        Log.d("RegisterFlow", "Successfully saved to 'mail' collection. Now redirecting to profile page.");
                                         toast("Confirmation email sent.");
-                                        mAuth.signOut(); // Sign out to force login
-                                        startActivity(new Intent(RegisterPage.this, LoginPage.class));
+                                        //mAuth.signOut(); // Not required anymore
+                                        Intent profileIntent;
+                                        if ("Student".equals(role)) {
+                                            profileIntent = new Intent(RegisterPage.this, StudentRegistrationPage.class);
+                                        } else { // Role is "Tutor"
+                                            profileIntent = new Intent(RegisterPage.this, TutorRegistrationPage.class);
+                                        }
+                                        startActivity(profileIntent);
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {

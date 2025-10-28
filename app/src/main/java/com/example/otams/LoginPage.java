@@ -75,7 +75,7 @@ public class LoginPage extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             String userId = mAuth.getCurrentUser().getUid();
-                            autoRedirectUser(userId);
+                            checkUserStatusAndRedirect(userId);
                         } else {
                             Toast.makeText(this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -84,74 +84,60 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
-    private void autoRedirectUser(String userId) {
-        Log.d("AutoRedirect", "Querying 'mail' collection for user with uid: " + userId);
-        // Query the 'mail' collection to find the document where the 'uid' field matches.
-        db.collection("mail")
-                .whereEqualTo("templateData.uid", userId)
-                .limit(1) // We only expect one document per user
+    private void checkUserStatusAndRedirect(String userId) {
+        Log.d("LoginFlow", "Querying 'requests' collection for user with userId: " + userId);
+        // Query the 'requests' collection to find the document where the 'userId' field matches.
+        db.collection("requests")
+                .whereEqualTo("userId", userId)
+                .limit(1) // We only expect one document per user.
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    if (!querySnapshot.isEmpty()) {
-                        // Get the first (and only) document from the result
-                        String role = querySnapshot.getDocuments().get(0).getString("templateData.role");
-                        Log.d("AutoRedirect", "Document found. User role is: " + role);
+                    // This block executes if the database query itself was successful.
 
-                        if (role != null) {
-                            Toast.makeText(this, "Logged in as " + role, Toast.LENGTH_SHORT).show();
+                    if (!querySnapshot.isEmpty()) {
+                        // Request document for this user was found.
+                        String status = querySnapshot.getDocuments().get(0).getString("status");
+                        Log.d("LoginFlow", "Request document found. User status is: " + status);
+
+                        // Check the value of the 'status' field to decide where to send the user.
+                        if ("approved".equals(status)) {
+                            // The user's registration was approved by the administrator.
+                            // Get the role from the same document to send them to the correct home screen.
+                            String role = querySnapshot.getDocuments().get(0).getString("role");
+                            Log.d("LoginFlow", "User is approved. Role is: " + role);
+                            Toast.makeText(this, "Login Successful. Welcome!", Toast.LENGTH_SHORT).show();
+
                             if ("Student".equals(role)) {
                                 startActivity(new Intent(LoginPage.this, StudentHome.class));
                             } else if ("Tutor".equals(role)) {
                                 startActivity(new Intent(LoginPage.this, TutorHome.class));
                             }
-                            finish();
-                        } else {
-                            Log.e("AutoRedirect", "Role is null in document for user: " + userId);
-                            Toast.makeText(this, "Your profile is incomplete. Please contact support.", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        // This is where your current logic is failing. No document was found with that uid.
-                        Log.e("AutoRedirect", "No document in 'mail' collection has uid: " + userId);
-                        Toast.makeText(this, "User data not found. Please contact support.", Toast.LENGTH_LONG).show();
-                        // Optional: You could call checkUserRequest(userId) here as a fallback.
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("AutoRedirect", "Firestore query failed for user: " + userId, e);
-                    Toast.makeText(this, "Error fetching role: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
-    }
+                            finish(); // Finish LoginPage so the user cannot go back to it.
 
-
-    private void checkUserRequest(String id) {
-        db.collection("requests")
-                .whereEqualTo("userId", id)
-                .limit(1)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (!querySnapshot.isEmpty()) {
-                        String status = querySnapshot.getDocuments().get(0).getString("status");
-                        String role = querySnapshot.getDocuments().get(0).getString("role");
-
-                        if ("approved".equals(status)) {
-                            startActivity(new Intent(LoginPage.this, ApprovedPage.class));
-                            finish();
                         } else if ("rejected".equals(status)) {
+                            // User's registration was rejected.
+                            Log.d("LoginFlow", "User is rejected. Redirecting to RejectedPage.");
                             startActivity(new Intent(LoginPage.this, RejectedPage.class));
                             finish();
+
                         } else {
+                            // Status is "pending" or another unexpected value.
+                            Log.d("LoginFlow", "User is pending. Redirecting to PendingPage.");
                             startActivity(new Intent(LoginPage.this, PendingPage.class));
                             finish();
                         }
                     } else {
-                        Toast.makeText(this, "Please complete your profile", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginPage.this, LandingPage.class));
-                        finish();
+                        // User exists in Firebase Authentication, but has no request document.
+                        // Can happen if they created an account but never completed the profile setup form.
+                        Log.e("LoginFlow", "No request document found for user: " + userId);
+                        Toast.makeText(this, "Profile setup is not complete. Please finish your registration.", Toast.LENGTH_LONG).show();
+                        // You could optionally sign them out here or send them back to the RegisterPage.
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error checking request status: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    // Block executes if the database query fails (e.g., no internet, permissions error).
+                    Log.e("LoginFlow", "Firestore query to 'requests' collection failed for user: " + userId, e);
+                    Toast.makeText(this, "Error checking account status: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 }
