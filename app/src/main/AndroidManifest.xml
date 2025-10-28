@@ -55,6 +55,9 @@
         <activity
             android:name=".RejectedScreen"
             android:exported="true" />
+        <activity
+            android:name=".ApprovedScreen"
+            android:exported="true" />
 
     </application>
 
