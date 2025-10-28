@@ -13,7 +13,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions; // <-- CRITICAL: NEW IMPORT
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
@@ -103,7 +102,7 @@ public class TutorHome extends AppCompatActivity {
                 .add(request)
                 .addOnSuccessListener(docRef -> {
                     progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(TutorHome.this, PendingScreen.class));
+                    startActivity(new Intent(TutorHome.this, PendingPage.class));
                     finish();
                 })
                 .addOnFailureListener(e -> {

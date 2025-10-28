@@ -3,8 +3,6 @@ package com.example.otams;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.EditText;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -101,7 +99,7 @@ public class StudentHome extends AppCompatActivity {
     			.add(request)
     			.addOnSuccessListener(docRef -> {
                     progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(StudentHome.this, PendingScreen.class));
+                    startActivity(new Intent(StudentHome.this, PendingPage.class));
                     finish();
                 })
     			.addOnFailureListener(e -> {

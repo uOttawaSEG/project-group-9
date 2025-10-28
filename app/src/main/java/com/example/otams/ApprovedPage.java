@@ -6,14 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class RejectedScreen extends AppCompatActivity {
-    protected void onCreate(Bundle savedInstanceState){
+public class ApprovedPage extends AppCompatActivity {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rejected_screen);
+        setContentView(R.layout.activity_approved_screen);
 
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(RejectedScreen.this, LoginPage.class);
+            Intent intent = new Intent(ApprovedPage.this, LoginPage.class);
             startActivity(intent);
             finish();
         });

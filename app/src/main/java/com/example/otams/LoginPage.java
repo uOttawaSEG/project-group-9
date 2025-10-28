@@ -118,13 +118,13 @@ public class LoginPage extends AppCompatActivity {
                     String role = querySnapshot.getDocuments().get(0).getString("role");
 
                     if("approved".equals(status)){
-                        startActivity(new Intent(LoginPage.this, ApprovedScreen.class));
+                        startActivity(new Intent(LoginPage.this, ApprovedPage.class));
                         finish();
                     } else if("rejected".equals(status)){
-                        startActivity(new Intent(LoginPage.this, RejectedScreen.class));
+                        startActivity(new Intent(LoginPage.this, RejectedPage.class));
                         finish();
                     } else {
-                        startActivity(new Intent(LoginPage.this, PendingScreen.class));
+                        startActivity(new Intent(LoginPage.this, PendingPage.class));
                         finish();
                     }
                 } else {

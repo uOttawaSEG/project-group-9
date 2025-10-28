@@ -41,22 +41,16 @@
             android:name=".TutorHome"
             android:exported="true" />
         <activity
-            android:name=".TutorPage"
-            android:exported="true" />
-        <activity
             android:name=".StudentHome"
             android:exported="true" />
         <activity
-            android:name=".StudentPage"
+            android:name=".PendingPage"
             android:exported="true" />
         <activity
-            android:name=".PendingScreen"
+            android:name=".RejectedPage"
             android:exported="true" />
         <activity
-            android:name=".RejectedScreen"
-            android:exported="true" />
-        <activity
-            android:name=".ApprovedScreen"
+            android:name=".ApprovedPage"
             android:exported="true" />
 
     </application>
