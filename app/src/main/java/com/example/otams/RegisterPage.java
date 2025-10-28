@@ -39,15 +39,10 @@ public class RegisterPage extends AppCompatActivity {
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         buttonReg = findViewById(R.id.btn_register);
-        textView = findViewById(R.id.loginNow);
         radioGroupRole = findViewById(R.id.radioGroupRole);
         radioStudent = findViewById(R.id.radioStudent);
         radioTutor = findViewById(R.id.radioTutor);
 
-        textView.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), LoginPage.class));
-            finish();
-        });
 
         buttonReg.setOnClickListener(view -> {
             progressBar.setVisibility(View.VISIBLE);
