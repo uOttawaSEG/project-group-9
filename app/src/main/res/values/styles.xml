@@ -13,4 +13,15 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="CustomDatePicker" parent="Theme.AppCompat.Light.Dialog">
+
+        <item name="android:colorAccent">@color/burgundy_red</item>
+
+        <item name="android:colorControlActivated">@color/burgundy_red</item>
+
+        <item name="android:textColorSecondary">@color/off_white</item>
+
+        <item name="android:windowBackground">@color/burgundy_red</item>
+    </style>
+
 </resources>
