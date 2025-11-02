@@ -3,8 +3,8 @@ package com.example.otams;
 public class Student extends User {
     private String program;
 
-    public Student() {
-        super();
+    public Student(String email) {
+        super(email);
     }
 
     public String getProgram() {
