@@ -22,7 +22,6 @@ public class RegistrationRequest {
     private String degree;
     private List<String> courses;
     private String password;
-    private Timestamp timestamp;
 
     /** Empty constructor for Firestore
      */
@@ -45,7 +44,7 @@ public class RegistrationRequest {
         this.phoneNumber = phoneNumber;
         this.role = role;
         this.status = "pending";
-        this.timestamp = Timestamp.now();
+        //this.timestamp = Timestamp.now();
     }
 
 
@@ -199,15 +198,18 @@ public class RegistrationRequest {
     /** [GETTER] Gets timestamp
      * @return timestamp
      */
+
+    /*
     @PropertyName("timestamp")
     public String getPassword() { return timestamp; }
-
+    */
     /** [SETTER] Sets timestamp
      * @param timestamp
      */
+    /*
     @PropertyName("timestamp")
     public void setPassword(Timestamp timestamp) { this.timestamp = timestamp; }
-
+    */
 
 
     /////-------      HELPER METHODS      -------/////

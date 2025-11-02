@@ -96,7 +96,7 @@ public class TutorRegistrationPage extends AppCompatActivity {
         request.setDegree(degree);
         request.setCourses(courses);
         request.setStatus("pending");
-        request.setTimestamp(Timestamp.now());
+        //request.setTimestamp(Timestamp.now());
 
         db.collection("requests")
                 .add(request)
@@ -105,7 +105,7 @@ public class TutorRegistrationPage extends AppCompatActivity {
                     docRef.update("requestId",reqId);
 
                     progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(StudentRegistrationPage.this, PendingPage.class));
+                    startActivity(new Intent(TutorRegistrationPage.this, PendingPage.class));
                     finish();
                 })
                 .addOnFailureListener(e -> {
@@ -114,7 +114,6 @@ public class TutorRegistrationPage extends AppCompatActivity {
                 });
     }
 
-s
     private String text(TextInputEditText input){
         return input.getText() == null ? "" : input.getText().toString().trim();
     }

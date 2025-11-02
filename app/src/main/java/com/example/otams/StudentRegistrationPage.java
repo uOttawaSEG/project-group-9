@@ -93,7 +93,7 @@ public class StudentRegistrationPage extends AppCompatActivity {
         request.setPhoneNumber(phoneNumber);
         request.setProgram(program);
     	request.setStatus("pending");
-        request.setTimestamp(Timestamp.now());
+        //request.setTimestamp(Timestamp.now());
 
     	db.collection("requests")
     			.add(request)
