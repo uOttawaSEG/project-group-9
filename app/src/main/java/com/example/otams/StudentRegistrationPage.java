@@ -84,20 +84,23 @@ public class StudentRegistrationPage extends AppCompatActivity {
     }
 
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String program){
-    	Map<String,Object> request = new HashMap<>();
-    	request.put("userId", uid);
-        request.put("role", "Student");
-    	request.put("firstName", firstName);
-    	request.put("lastName", lastName);
-        request.put("email", email);
-        request.put("phoneNumber", phoneNumber);
-        request.put("program", program);
-    	request.put("timestamp", Timestamp.now());
-    	request.put("status", "pending");
+    	RegistrationRequest request = new RegistrationRequest();
+    	request.setUserId(uid);
+        request.setRole("Student");
+    	request.setFirstName(firstName);
+    	request.setLastName(lastName);
+        request.setEmail(email);
+        request.setPhoneNumber(phoneNumber);
+        request.setProgram(program);
+    	request.setStatus("pending");
+        request.setTimestamp(Timestamp.now());
 
     	db.collection("requests")
     			.add(request)
     			.addOnSuccessListener(docRef -> {
+                    String reqId = docRef.getId();
+                    docRef.update("requestId",reqId);
+
                     progressBar.setVisibility(View.GONE);
                     startActivity(new Intent(StudentRegistrationPage.this, PendingPage.class));
                     finish();

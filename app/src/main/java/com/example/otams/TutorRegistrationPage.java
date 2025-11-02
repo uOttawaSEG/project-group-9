@@ -86,23 +86,26 @@ public class TutorRegistrationPage extends AppCompatActivity {
     }
 
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String degree, List<String> courses){
-        Map<String,Object> request = new HashMap<>();
-        request.put("userId", uid);
-        request.put("role", "Tutor");
-        request.put("firstName", firstName);
-        request.put("lastName", lastName);
-        request.put("email", email);
-        request.put("phoneNumber", phoneNumber);
-        request.put("degree", degree);
-        request.put("courses", courses);
-        request.put("timestamp", Timestamp.now());
-        request.put("status", "pending");
+        RegistrationRequest request = new RegistrationRequest();
+        request.setUserId(uid);
+        request.setRole("Tutor");
+        request.setFirstName(firstName);
+        request.setLastName(lastName);
+        request.setEmail(email);
+        request.setPhoneNumber(phoneNumber);
+        request.setDegree(degree);
+        request.setCourses(courses);
+        request.setStatus("pending");
+        request.setTimestamp(Timestamp.now());
 
         db.collection("requests")
                 .add(request)
                 .addOnSuccessListener(docRef -> {
+                    String reqId = docRef.getId();
+                    docRef.update("requestId",reqId);
+
                     progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(TutorRegistrationPage.this, PendingPage.class));
+                    startActivity(new Intent(StudentRegistrationPage.this, PendingPage.class));
                     finish();
                 })
                 .addOnFailureListener(e -> {
@@ -111,7 +114,7 @@ public class TutorRegistrationPage extends AppCompatActivity {
                 });
     }
 
-
+s
     private String text(TextInputEditText input){
         return input.getText() == null ? "" : input.getText().toString().trim();
     }
