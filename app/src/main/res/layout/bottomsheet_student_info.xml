@@ -6,8 +6,15 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@color/burgundy_red" />
+
     <TextView
-        android:id="@+id/textTitle"
+        android:id="@+id/bottomSheetTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Student Information"
@@ -17,7 +24,7 @@
         android:layout_marginBottom="12dp"/>
 
     <TextView
-        android:id="@+id/textName"
+        android:id="@+id/bottomSheetStudentName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name: Emma Brown"
@@ -26,7 +33,7 @@
         android:layout_marginBottom="4dp"/>
 
     <TextView
-        android:id="@+id/textEmail"
+        android:id="@+id/bottomSheetStudentEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email: emma@example.com"
@@ -35,7 +42,7 @@
         android:layout_marginBottom="8dp"/>
 
     <TextView
-        android:id="@+id/textPhone"
+        android:id="@+id/bottomSheetStudentPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Phone: 123-456-7890"
@@ -44,7 +51,7 @@
         android:layout_marginBottom="8dp"/>
 
     <TextView
-        android:id="@+id/textProgram"
+        android:id="@+id/bottomSheetStudentProgram"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Program: Software Engineering"
@@ -53,7 +60,7 @@
         android:layout_marginBottom="12dp"/>
 
     <Button
-        android:id="@+id/buttonClose"
+        android:id="@+id/bottomSheetStudentButtonClose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Close"
