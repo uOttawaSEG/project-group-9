@@ -13,6 +13,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * @author Imane Moussa Marou [imous061@uottawa.ca]
+ *
+ * Tutor home page with 3 tabs for availability, requests, and sessions.
+ */
 public class TutorHome extends AppCompatActivity {
 
     @Override
@@ -36,6 +41,7 @@ public class TutorHome extends AppCompatActivity {
             }
         }).attach();
 
+        //Logout button code
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(TutorHome.this, "Logged out successfully.", Toast.LENGTH_SHORT).show();

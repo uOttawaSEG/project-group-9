@@ -5,7 +5,11 @@ import  androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-
+/**
+ * @author Imane Moussa Marou [imous061@uottawa.ca]
+ *
+ * Adapter for tutor home page tabs.
+ */
 public class TutorPagerAdapter extends FragmentStateAdapter {
 
     public TutorPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
