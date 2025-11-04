@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@color/burgundy_red" />
+
+    <TextView
+        android:id="@+id/bottomSheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student Information"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/bottomSheetStudentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name: Emma Brown"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/bottomSheetStudentEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email: emma@example.com"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="15sp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/bottomSheetStudentPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phone: 123-456-7890"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="15sp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/bottomSheetStudentProgram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Program: Software Engineering"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="15sp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/bottomSheetStudentButtonClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

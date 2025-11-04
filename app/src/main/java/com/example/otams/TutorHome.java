@@ -7,9 +7,17 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * @author Imane Moussa Marou [imous061@uottawa.ca]
+ *
+ * Tutor home page with 3 tabs for availability, requests, and sessions.
+ */
 public class TutorHome extends AppCompatActivity {
 
     @Override
@@ -17,7 +25,23 @@ public class TutorHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_home);
 
+        //TabLayout Code
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
         Button logoutButton = findViewById(R.id.logoutButton);
+
+        TutorPagerAdapter tutorPagerAdapter = new TutorPagerAdapter(this);
+        viewPager.setAdapter(tutorPagerAdapter);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case 0 : tab.setText("Availability"); break;
+                case 1 : tab.setText("Requests"); break;
+                case 2 : tab.setText("Sessions"); break;
+            }
+        }).attach();
+
+        //Logout button code
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(TutorHome.this, "Logged out successfully.", Toast.LENGTH_SHORT).show();

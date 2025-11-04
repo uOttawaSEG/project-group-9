@@ -143,5 +143,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             buttonApprove = itemView.findViewById(R.id.buttonApprove);
             buttonReject = itemView.findViewById(R.id.buttonReject);
         }
+
+
     }
 }
