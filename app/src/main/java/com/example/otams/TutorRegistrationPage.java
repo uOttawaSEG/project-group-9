@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -102,15 +103,40 @@ public class TutorRegistrationPage extends AppCompatActivity {
                 .add(request)
                 .addOnSuccessListener(docRef -> {
                     String reqId = docRef.getId();
-                    docRef.update("requestId",reqId);
-
-                    progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(TutorRegistrationPage.this, PendingPage.class));
-                    finish();
+                    docRef.update("requestId",reqId)
+                        .addOnSuccessListener(aVoid -> {
+                            sendConfirmation(email, "Tutor");
+                            progressBar.setVisibility(View.GONE);
+                            startActivity(new Intent(TutorRegistrationPage.this, PendingPage.class));
+                            finish();
+                        });
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
                     toastLong("Failed to submit: " + e.getMessage());
+                });
+    }
+
+
+    private void sendConfirmation(String email, String role){
+        Map<String, Object> mail = new HashMap<>();
+        mail.put("to", email);
+
+        Map<String, Object> template = new HashMap<>();
+        template.put("role", role);
+        template.put("displayEmail", email);
+
+        mail.put("templateData", template);
+        mail.put("createdAt", Timestamp.now());
+
+        db.collection("mail")
+                .add(mail)
+                .addOnSuccessListener(docRef -> {
+                    Log.d("RegisterFlow", "Successfully saved to 'mail' collection. Now redirecting to profile page.");
+                    toast("Confirmation email sent.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Email", "Failed to save user data: " + e.getMessage());
                 });
     }
 

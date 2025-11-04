@@ -19,6 +19,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author
+ */
 public class AdministratorPage extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -220,21 +224,56 @@ public class AdministratorPage extends AppCompatActivity {
     }
 
     private void approveRequest(RegistrationRequest request) {
-        db.collection("requests")
-                .document(request.getRequestId())
-                .update("status", "approved")
+        User newUser = null;
+
+        if("Student".equals(request.getRole())){
+            Student student = new Student(request.getEmail());
+            student.setProgram(request.getProgram());
+            newUser = student;
+        } else if("Tutor".equals(request.getRole())){
+            Tutor tutor = new Tutor(request.getEmail());
+            tutor.setDegree(request.getDegree());
+            tutor.setCourses(request.getCourses());
+            newUser = tutor;
+        } else if("Administrator".equals(request.getRole())){
+            Administrator admin = new Administrator(request.getEmail());
+            newUser = admin;
+        }
+
+        if(newUser == null){
+            Toast.makeText(this, "Error. Role type is invalid.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
+        newUser.setPhoneNumber(request.getPhoneNumber());
+        newUser.setRole(request.getRole());
+
+
+        db.collection("users")
+                .document(request.getUserId())
+                .set(newUser)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Request approved successfully", Toast.LENGTH_SHORT).show();
-                    // Reload current view
-                    if ("pending".equals(currentView)) {
-                        loadPendingRequests();
-                    } else {
-                        loadRejectedRequests();
-                    }
+                    db.collection("requests")
+                        .document(request.getRequestId())
+                        .update("status","approved")
+                        .addOnSuccessListener(aVoid2 -> {
+                            Toast.makeText(this, "Request approved successfully", Toast.LENGTH_SHORT).show();
+                            // Reload current view
+                            if ("pending".equals(currentView)) {
+                                loadPendingRequests();
+                            } else {
+                                loadRejectedRequests();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this,"Failed to update request status: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to approve: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to approve: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 

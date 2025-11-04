@@ -56,6 +56,9 @@
         <activity
             android:name=".ApprovedPage"
             android:exported="true" />
+        <activity
+            android:name=".RejectedRequestsPage"
+            android:exported="true" />
     </application>
 
 </manifest>

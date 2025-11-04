@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,27 +21,30 @@ import java.util.Map;
 public class RejectedRequestsPage extends AppCompatActivity {
     TextView welcomeText;
     Button registrationRequestsButton;
+    Button logoutButton;
+    Button rejectedRequestsButton;
     ListView rejectedRequestsList;
     FirebaseFirestore db;
 
-    private List<Map<String, Object>> rejectedUsers = new ArrayList<>();
+    private List<String> rejectedUsers = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Ensures this layout contains rejectedRequestsList
         setContentView(R.layout.activity_inbox_rejection_request_page);
 
         db = FirebaseFirestore.getInstance();
         registrationRequestsButton = findViewById(R.id.Move2RegReq);
+        rejectedRequestsButton = findViewById(R.id.Move2RejectReq);
         rejectedRequestsList = findViewById(R.id.rejectedRequestsList);
         welcomeText = findViewById(R.id.welcomeText);
+        logoutButton = findViewById(R.id.logoutButton);
 
         welcomeText.setText("Previously Rejected User Registrations");
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, rejectedUsers);
         rejectedRequestsList.setAdapter(adapter);
 
 
@@ -50,37 +54,46 @@ public class RejectedRequestsPage extends AppCompatActivity {
             startActivity(regRequest);
             finish();
         });
+
+        rejectedRequestsButton.setOnClickListener(v -> {
+            fetchRejectedRequests();
+        });
+
+        logoutButton.setOnClickListener(v -> {
+            Toast.makeText(this, "Admin logged out of instance.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(RejectedRequestsPage.this, LoginPage.class));
+            finish();
+        });
+
+        fetchRejectedRequests();
     }
 
-        private void fetchRejectedRequests() {
-            db.collection("users")
-                    // Filter by the REJECTED status
-                    .whereEqualTo("status", "REJECTED")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        rejectedUsers.clear();
-                        adapter.clear();
+    private void fetchRejectedRequests() {
+        db.collection("requests")
+                .whereEqualTo("status", "rejected")
+                .get()
+                .addOnCompleteListener(task -> {
+                    rejectedUsers.clear();
+                    adapter.clear();
 
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> userData = document.getData();
-                                userData.put("uid", document.getId());
-                                rejectedUsers.add(userData);
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            RegistrationRequest request = document.toObject(RegistrationRequest.class);
 
-                                String displayLine = userData.get("email") + " (" + userData.get("role") + ")";
-                                adapter.add(displayLine);
-                            }
-
-                            if (rejectedUsers.isEmpty()) {
-                                adapter.add("No previously rejected registration requests found.");
-                            }
-
-                        } else {
-                            Toast.makeText(this, "Error fetching rejected requests: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            adapter.add("Failed to load requests.");
+                            String displayLine = request.getEmail() + " (" + request.getRole() + ")";
+                            adapter.add(displayLine);
                         }
 
-                        adapter.notifyDataSetChanged();
-                    });
+                        if (rejectedUsers.isEmpty()) {
+                            adapter.add("No previously rejected registration requests found.");
+                        }
+
+                    } else {
+                        Toast.makeText(this, "Error fetching rejected requests: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        adapter.add("Failed to load requests.");
+                    }
+
+                    adapter.notifyDataSetChanged();
+                });
         }
     }
