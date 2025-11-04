@@ -46,14 +46,61 @@ public class Tutor extends User {
      */
     public void setDegree(String degree) { this.degree = degree; }
 
-
-    /**
+    /** [SETTER] Sets the past sessions of the tutor
+     * @param pastSessions
      */
-    public void approveSessionRequest(Session session, int approved) {
-        
+    public void setPastSessions(List<Session> pastSessions){ this.pastSessions = pastSessions; }
+
+    /** [SETTER] Sets the upcoming sessions of the tutor
+     * @param upcoming
+     */
+    public void setUpcomingSession(List<Session> upcoming){ this.upcomingSessions = upcoming; }
+
+    /** [SETTER] Sets the available slots of the tutor
+     * @param slots
+     */
+    public void setAvailableSlots(List<Slot> slots){ this.availableSlots = slots; }
+
+    /** [GETTER] Gets the past sessions of the tutor
+     * @return pastSessions
+     */
+    public List<Session> getPastSessions(){ return pastSessions; }
+
+    /** [GETTER] Gets the upcoming sessions of the tutor
+     * @return upcomingSessions
+     */
+    public List<Session> getUpcomingSessions(){ return upcomingSessions; }
+
+    /** [GETTER] Gets the slots of the tutor
+     * @return availableSlots
+     */
+    public List<Slot> getAvailableSlots(){ return availableSlots; }
+
+
+    //////    -----   HELPER METHODS    -----   //////
+
+
+    /** Sets the approval of the session
+     * @param session 
+     * @param approval
+     */
+    public void approveSessionRequest(Session session, String approval) { session.setApproval(approval); }
+
+    /** Automatically approves all session requests
+     * @param listOfSessions
+     */
+    public void approveAllSessionRequests(List<Session> listOfSessions) {
+        for(Session s : listOfSessions){
+            s.setApproval("approved");
+        }
     }
 
-    public void approveAllSessionRequests(List<Session> listOfSessions) {
-
+    /** Creates a new slot for the tutor
+     * @param start
+     * @param end
+     */
+    public void createNewSlot(Tutor tutor, int start, int end, int date){
+        Slot s = new Slot(tutor, start, end, date);
+        availableSlots.add(s);
     }
 }

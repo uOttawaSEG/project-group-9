@@ -6,12 +6,13 @@ package com.example.otams;
  */
 public class Session extends Slot {
     // Instatiated variables
-    private string approval;
+    private String approval;
     private Student student;
 
     /** Parameterized constructor for session object
+     * @param student
      */
-    public Session(Student student) {
+    public Session(Tutor tutor, Student student) {
         super(tutor);
         this.student = student;
         this.approval = "pending";

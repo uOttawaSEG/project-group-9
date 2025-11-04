@@ -11,12 +11,26 @@ public class Slot {
 	private Tutor tutor;
 	private int startTime;
 	private int endTime;
-	private int date
+	private int date;
 
 	/** Paramterized constructor for slot
+     * @param tutor
 	 */
     public Slot(Tutor tutor) {
     	this.tutor = tutor;
+    }
+
+    /** Fully paramterized constructor for slot
+     * @param tutor
+     * @param start
+     * @param end
+     * @param date
+     */
+    public Slot(Tutor tutor, int start, int end, int date){
+        this.tutor = tutor;
+        this.startTime = start;
+        this.endTime = end;
+        this.date = date;
     }
 
     /** [SETTER] Sets the end time
@@ -37,22 +51,22 @@ public class Slot {
     /** [GETTER] Gets the end time
      * @return end time
      */
-    public void getEndTime(){ return endTime; }
+    public int getEndTime(){ return endTime; }
 
     /** [GETTER] Gets the start time
      * @return start time
      */
-    public void getStartTime(){ return startTime; }
+    public int getStartTime(){ return startTime; }
 
     /** [GETTER] Gets the date
      * @return date
      */
-    public void getDate(){ return date; }
+    public int getDate(){ return date; }
 
     /** [GETTER] Gets the tutor object
      * @return tutor 
      */
-    public void getTutor(){ return tutor; }
+    public Tutor getTutor(){ return tutor; }
 
 
 
