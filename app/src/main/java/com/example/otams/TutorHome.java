@@ -7,41 +7,29 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
-
 /**
- * @author Imane Moussa Marou [imous061@uottawa.ca]
+ * TutorHome
  *
- * Tutor home page with 3 tabs for availability, requests, and sessions.
+ * Activity representing the tutor's home screen after successfully logging in or registering.
+ * Currently provides a simple logout feature that signs the user out of Firebase Authentication
+ * and redirects them back to the {@link LoginPage}
+ *
  */
 public class TutorHome extends AppCompatActivity {
-
+    /**
+     * Called when the activity is first created.
+     * Initializes the layout and sets up button event listeners.
+     *
+     * @param savedInstanceState previously saved instance state (unused here)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_home);
 
-        //TabLayout Code
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
         Button logoutButton = findViewById(R.id.logoutButton);
-
-        TutorPagerAdapter tutorPagerAdapter = new TutorPagerAdapter(this);
-        viewPager.setAdapter(tutorPagerAdapter);
-
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position) {
-                case 0 : tab.setText("Availability"); break;
-                case 1 : tab.setText("Requests"); break;
-                case 2 : tab.setText("Sessions"); break;
-            }
-        }).attach();
-
-        //Logout button code
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(TutorHome.this, "Logged out successfully.", Toast.LENGTH_SHORT).show();

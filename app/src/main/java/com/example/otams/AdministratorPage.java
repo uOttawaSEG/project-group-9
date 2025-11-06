@@ -19,6 +19,28 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AdministratorPage
+ *
+ * Admin dashboard for reviewing and moderating registration requests.
+ * Displays requests in a {@link RecyclerView} via {@link RequestsAdapter}, and lets
+ * the admin approve or reject them. Supports two views:
+ *  - Pending requests
+ *  - Rejected requests
+ *
+ * Flow:
+ *  - Loads pending requests by default.
+ *  - Admin can switch to the rejected list.
+ *  - Approve → creates/updates a document in "users" and marks request as "approved".
+ *  - Reject → updates request's "status" to "rejected".
+ *
+ * Firestore:
+ *  - Collection "requests": registration requests (pending/approved/rejected)
+ *  - Collection "users": persisted user profiles after approval
+ *
+ * Layout file: {@code activity_administrator_home.xml}
+ *
+ */
 public class AdministratorPage extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -34,6 +56,12 @@ public class AdministratorPage extends AppCompatActivity {
     private List<RegistrationRequest> requestsList;
     private String currentView = "pending";
 
+    /**
+     * Lifecycle: sets up Firebase, binds UI elements, configures the RecyclerView and listeners,
+     * and loads the default dataset (pending requests).
+     *
+     * @param savedInstanceState previously saved instance state (unused)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +70,7 @@ public class AdministratorPage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Initialize Views
+
         welcomeText = findViewById(R.id.welcomeText);
         logoutButton = findViewById(R.id.logoutButton);
         registrationRequestsButton = findViewById(R.id.Move2);
@@ -50,10 +78,10 @@ public class AdministratorPage extends AppCompatActivity {
         recyclerView = findViewById(R.id.requestsRecyclerView);
         emptyStateText = findViewById(R.id.emptyStateText);
 
-        // Initialize list
+
         requestsList = new ArrayList<>();
 
-        // Setup RecyclerView
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RequestsAdapter(this, requestsList, new RequestsAdapter.OnRequestActionListener() {
             @Override
@@ -68,10 +96,10 @@ public class AdministratorPage extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        // Set Welcome Message
+
         welcomeText.setText("Welcome, Administrator!");
 
-        // Set Listeners
+
         registrationRequestsButton.setOnClickListener(view -> {
             currentView = "pending";
             loadPendingRequests();
@@ -88,10 +116,13 @@ public class AdministratorPage extends AppCompatActivity {
             finish();
         });
 
-        // Load pending requests by default
+
         loadPendingRequests();
     }
-
+    /**
+     * Loads and displays all requests with status "pending".
+     * Populates {@link #requestsList} and updates empty-state visibility.
+     */
     private void loadPendingRequests() {
         Log.d("AdminPage", "Loading pending requests...");
 
@@ -108,12 +139,12 @@ public class AdministratorPage extends AppCompatActivity {
                         Log.d("AdminPage", "Doc ID: " + document.getId());
                         Log.d("AdminPage", "  Status: [" + status + "]");
 
-                        // Check for pending status
+
                         if (status != null && "pending".equalsIgnoreCase(status)) {
                             // Log all available fields in the document
                             Log.d("AdminPage", "  >>> Available fields: " + document.getData().keySet());
 
-                            // MANUAL MAPPING
+
                             RegistrationRequest request = new RegistrationRequest();
                             request.setRequestId(document.getId());
                             request.setFirstName(document.getString("firstName"));
@@ -126,7 +157,7 @@ public class AdministratorPage extends AppCompatActivity {
                             request.setProgram(document.getString("program"));
                             request.setDegree(document.getString("degree"));
 
-                            // Handle courses array
+
                             Object coursesObj = document.get("courses");
                             if (coursesObj instanceof List) {
                                 request.setCourses((List<String>) coursesObj);
@@ -162,7 +193,10 @@ public class AdministratorPage extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 });
     }
-
+    /**
+     * Loads and displays all requests with status "rejected".
+     * Populates {@link #requestsList} and updates empty-state visibility.
+     */
     private void loadRejectedRequests() {
         Log.d("AdminPage", "Loading rejected requests...");
 
@@ -174,7 +208,7 @@ public class AdministratorPage extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         String status = document.getString("status");
 
-                        // Check for rejected status
+
                         if ("rejected".equalsIgnoreCase(status)) {
                             // MANUAL MAPPING
                             RegistrationRequest request = new RegistrationRequest();
@@ -219,25 +253,74 @@ public class AdministratorPage extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Approves a {@link RegistrationRequest}:
+     *  - Creates a corresponding {@code users/{userId}} document with typed model (Student/Tutor/Admin).
+     *  - Updates the original request's status to "approved".
+     *  - Refreshes the currently selected view (pending or rejected).
+     *
+     * @param request the request to approve
+     */
     private void approveRequest(RegistrationRequest request) {
-        db.collection("requests")
-                .document(request.getRequestId())
-                .update("status", "approved")
+        User newUser = null;
+
+        if("Student".equals(request.getRole())){
+            Student student = new Student(request.getEmail());
+            student.setProgram(request.getProgram());
+            newUser = student;
+        } else if("Tutor".equals(request.getRole())){
+            Tutor tutor = new Tutor(request.getEmail());
+            tutor.setDegree(request.getDegree());
+            tutor.setCourses(request.getCourses());
+            newUser = tutor;
+        } else if("Administrator".equals(request.getRole())){
+            Administrator admin = new Administrator(request.getEmail());
+            newUser = admin;
+        }
+
+        if(newUser == null){
+            Toast.makeText(this, "Error. Role type is invalid.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
+        newUser.setPhoneNumber(request.getPhoneNumber());
+        newUser.setRole(request.getRole());
+
+
+        db.collection("users")
+                .document(request.getUserId())
+                .set(newUser)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Request approved successfully", Toast.LENGTH_SHORT).show();
-                    // Reload current view
-                    if ("pending".equals(currentView)) {
-                        loadPendingRequests();
-                    } else {
-                        loadRejectedRequests();
-                    }
+                    db.collection("requests")
+                        .document(request.getRequestId())
+                        .update("status","approved")
+                        .addOnSuccessListener(aVoid2 -> {
+                            Toast.makeText(this, "Request approved successfully", Toast.LENGTH_SHORT).show();
+                            // Reload current view
+                            if ("pending".equals(currentView)) {
+                                loadPendingRequests();
+                            } else {
+                                loadRejectedRequests();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this,"Failed to update request status: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to approve: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to approve: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
+    /**
+     * Rejects a {@link RegistrationRequest} by setting its status to "rejected"
+     * and then reloading the pending list.
+     *
+     * @param request the request to reject
+     */
     private void rejectRequest(RegistrationRequest request) {
         db.collection("requests")
                 .document(request.getRequestId())

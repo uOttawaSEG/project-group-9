@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Administrator extends User {
     // Instantiating variables
-    private final List<Request> requests = new ArrayList<>();
+    private final List<RegistrationRequest> requests = new ArrayList<>();
     private String email = "admin@example.com";
 
     /**
@@ -27,7 +27,7 @@ public class Administrator extends User {
      *
      * @return list of requests
      */
-    public List<Request> getRequests() {
+    public List<RegistrationRequest> getRequests() {
         return this.requests;
     }
 
@@ -35,8 +35,8 @@ public class Administrator extends User {
      * Approves all the requests in the list of requests
      */
     public void approveAll() {
-        for (Request r : requests) {
-            r.setApprovalApproved();
+        for (RegistrationRequest r : requests) {
+            r.setStatus("approved");
         }
     }
 
@@ -44,20 +44,18 @@ public class Administrator extends User {
      * Denys all the requests in the list of requests
      */
     public void denyAll() {
-        for (Request r : requests) {
-            r.setApprovalNotApproved();
+        for (RegistrationRequest r : requests) {
+            r.setStatus("rejected");
         }
     }
 
-    /**
-     * Approves a certain request under a user's email
-     *
+    /** Approves a certain request under a user's email
      * @param userEmail
      */
     public void approve(String userEmail) {
-        for (Request r : requests) {
-            if (r.getUser().getEmail() == userEmail) {
-                r.setApprovalApproved();
+        for (RegistrationRequest r : requests) {
+            if (r.getEmail() == userEmail) {
+                r.setStatus("approved");
                 return;
             }
         }
@@ -69,9 +67,9 @@ public class Administrator extends User {
      * @param userEmail
      */
     public void deny(String userEmail) {
-        for (Request r : requests) {
-            if (r.getUser().getEmail() == userEmail) {
-                r.setApprovalNotApproved();
+        for (RegistrationRequest r : requests) {
+            if (r.getEmail() == userEmail) {
+                r.setStatus("rejected");
                 return;
             }
         }

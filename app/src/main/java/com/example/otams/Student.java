@@ -1,24 +1,26 @@
 package com.example.otams;
 
+/** Basic Student class
+ * 
+ * @author Lauren [lhend093@uottawa.ca]
+ */
 public class Student extends User {
+    // Instatiating variables
     private String program;
 
-    public Student() {
-        super();
+    /** Email constructor for student object (for firebase)
+     */
+    public Student(String email) {
+        super(email);
     }
 
-    public String getProgram() {
-        return program;
-    }
+    /** [GETTER] Gets the program of the student
+     * @return program
+     */
+    public String getProgram() { return program; }
 
-    public void setProgram(String program) {
-        this.program = program;
-    }
-//    public void rateTutor() {
-//        System.out.println("Student rated a tutor.");
-//    }
-//
-//    public void bookSession() {
-//        System.out.println("Student booked a session.");
-//    }
+    /** [SETTER] Sets the program of the student
+     * @param program
+     */
+    public void setProgram(String program) { this.program = program; }
 }
