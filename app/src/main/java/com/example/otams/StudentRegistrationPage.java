@@ -19,7 +19,20 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * StudentRegistrationPage
+ *
+ * Activity that handles student registration by collecting basic user details
+ * (first name, last name, phone number, program of study) from input fields,
+ * validating the data, and submitting it as a pending {@link RegistrationRequest}
+ * document to Firestore.
+ *
+ * Flow:
+ *  - Verifies that a Firebase user is currently signed in.
+ *  - On "Sign Up": validates all required fields, creates and submits a Firestore request.
+ *  - On success: updates the document ID, triggers confirmation email, and redirects to {@link PendingPage}.
+ *  - On "Log Out": signs the user out and navigates back to {@link LoginPage}.
+ */
 public class StudentRegistrationPage extends AppCompatActivity {
     private TextInputEditText editTextFirstName, editTextLastName, editTextNumber, editTextProgram;
     private String email;
@@ -29,8 +42,14 @@ public class StudentRegistrationPage extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser user;
-    
 
+    /**
+     * Lifecycle method called when the activity is created.
+     * Initializes Firebase instances, checks for authenticated user,
+     * and sets up UI bindings and click listeners.
+     *
+     * @param savedInstanceState previous saved state (unused)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +102,18 @@ public class StudentRegistrationPage extends AppCompatActivity {
         	finish();
         });
     }
-
+    /**
+     * Creates a new {@link RegistrationRequest} object for the student
+     * and adds it to the "requests" collection in Firestore.
+     * Upon success, updates the document with its generated ID and triggers an email confirmation.
+     *
+     * @param uid         Firebase user ID
+     * @param firstName   student's first name
+     * @param lastName    student's last name
+     * @param phoneNumber student's phone number
+     * @param email       student's email (from FirebaseAuth)
+     * @param program     student's program of study
+     */
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String program){
     	RegistrationRequest request = new RegistrationRequest();
     	request.setUserId(uid);
@@ -94,7 +124,7 @@ public class StudentRegistrationPage extends AppCompatActivity {
         request.setPhoneNumber(phoneNumber);
         request.setProgram(program);
     	request.setStatus("pending");
-        //request.setTimestamp(Timestamp.now());
+
 
     	db.collection("requests")
     			.add(request)
@@ -114,7 +144,13 @@ public class StudentRegistrationPage extends AppCompatActivity {
                 });
     }
 
-
+    /**
+     * Adds a document to the "mail" collection to trigger a confirmation email.
+     * Works with Firebase Extensions or backend listeners that handle outgoing emails.
+     *
+     * @param email recipient email address
+     * @param role  user role for template substitution
+     */
     private void sendConfirmation(String email, String role){
         Map<String, Object> mail = new HashMap<>();
         mail.put("to", email);
@@ -137,15 +173,29 @@ public class StudentRegistrationPage extends AppCompatActivity {
                 });
     }
 
-
+    /**
+     * Utility method that safely retrieves trimmed text from a TextInputEditText.
+     *
+     * @param input TextInputEditText field
+     * @return trimmed text value (empty string if null)
+     */
     private String text(TextInputEditText input){
     	return input.getText() == null ? "" : input.getText().toString().trim();
     }
 
+    /**
+     * Displays a short Toast message.
+     *
+     * @param msg message to display
+     */
     private void toast(String msg) {
         Toast.makeText(StudentRegistrationPage.this, msg, Toast.LENGTH_SHORT).show();
     }
-
+    /**
+     * Displays a long Toast message.
+     *
+     * @param msg message to display
+     */
     private void toastLong(String msg) {
         Toast.makeText(StudentRegistrationPage.this, msg, Toast.LENGTH_LONG).show();
     }

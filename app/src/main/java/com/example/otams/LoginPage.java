@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * This activity manages UI input, manages authentication to Firebase,
  * and determines the user's registration status and role for redirection.
  *
- * co-author Sophia Hopkins [shopk012@uottawa.ca]
+ * co-author Sophia Hopkins
  */
 
 public class LoginPage extends AppCompatActivity {
@@ -46,24 +46,24 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Initialize Firebase
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        //Initialize UI components by ID
+
         progressBar = findViewById(R.id.progressBar);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         buttonLogin = findViewById(R.id.btn_login);
         textView = findViewById(R.id.registerNow);
 
-        // Set listener to for navigating to the RegisterPage
+
         textView.setOnClickListener(view -> {
             startActivity(new Intent(LoginPage.this, RegisterPage.class));
             finish();
         });
 
-        //Set listener for the main login button
+
         buttonLogin.setOnClickListener(view -> attemptLogin());
     }
 
@@ -72,7 +72,7 @@ public class LoginPage extends AppCompatActivity {
             String email = editTextEmail.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
 
-            //Validates to ensure fields are not empty
+
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ) {
                 Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
@@ -80,7 +80,7 @@ public class LoginPage extends AppCompatActivity {
             }
 
 
-            // 1.Admin login check
+
             if (email.equals("admin@example.com") && password.equals("admin123")) {
                 Toast.makeText(this, "Logged in as Administrator", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginPage.this, AdministratorPage.class));
@@ -90,7 +90,7 @@ public class LoginPage extends AppCompatActivity {
 
             Log.d("LoginPage", "Attempting to sign in with email: " + email);
 
-            //2.Firebase login for Student/Tutor
+
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         progressBar.setVisibility(View.GONE);
@@ -128,7 +128,7 @@ public class LoginPage extends AppCompatActivity {
                         String role = doc.getString("role");
                         String email = mAuth.getCurrentUser().getEmail();
 
-                        //Instantiate the correct object class (Student or Tutor)
+
                         final User loggedInUser;
                         if ("Student".equals(role)) {
                             loggedInUser = new Student(email);
@@ -139,16 +139,14 @@ public class LoginPage extends AppCompatActivity {
                             };
                         }
 
-                        //Setting properties on the object
+
                         loggedInUser.setRole(role);
                         loggedInUser.setStatus(status);
 
-                        // 3. Redirect based on the user's status
                         if ("approved".equals(loggedInUser.getStatus())) {
                             Toast.makeText(this, "Login Successful. Welcome!", Toast.LENGTH_SHORT).show();
 
                             Intent intent;
-                            // Use instanceof to determine the user type and correct home screen
                             if (loggedInUser instanceof Student) {
                                 intent = new Intent(LoginPage.this, StudentHome.class);
                             } else { // Must be Tutor
@@ -162,18 +160,16 @@ public class LoginPage extends AppCompatActivity {
                             startActivity(new Intent(LoginPage.this, RejectedPage.class));
                             finish();
 
-                        } else { // Status is "pending"
+                        } else {
                             startActivity(new Intent(LoginPage.this, PendingPage.class));
                             finish();
                         }
                     } else {
-                        // Case: User exists in Auth but the registration profile is incomplete in Firestore.
                         Log.e("LoginFlow", "No request document found for user: " + userId);
                         Toast.makeText(this, "Profile setup is not complete. Please finish your registration.", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Handle Firestore query failures (network, permissions, etc.)
                     Log.e("LoginFlow", "Firestore query failed for user: " + userId, e);
                     Toast.makeText(this, "Error checking account status: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });

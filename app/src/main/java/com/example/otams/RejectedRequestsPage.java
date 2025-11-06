@@ -17,7 +17,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * RejectedRequestsPage
+ *
+ * Activity displaying a list of previously rejected user registration requests
+ * (both students and tutors). The data is retrieved from the Firestore
+ * "requests" collection, filtered by entries with a "rejected" status.
+ *
+ */
 public class RejectedRequestsPage extends AppCompatActivity {
     TextView welcomeText;
     Button registrationRequestsButton;
@@ -29,7 +36,12 @@ public class RejectedRequestsPage extends AppCompatActivity {
     private List<String> rejectedUsers = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
-
+    /**
+     * Lifecycle method called when the activity is first created.
+     * Initializes Firestore, UI components, and sets up click listeners.
+     *
+     * @param savedInstanceState previous saved state (unused)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +80,10 @@ public class RejectedRequestsPage extends AppCompatActivity {
         fetchRejectedRequests();
     }
 
+    /**
+     * Fetches all registration requests with a "rejected" status
+     * from the Firestore "requests" collection and updates the ListView.
+     */
     private void fetchRejectedRequests() {
         db.collection("requests")
                 .whereEqualTo("status", "rejected")

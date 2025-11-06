@@ -22,6 +22,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * RegisterPage
+ *
+ * Activity that handles the creation of new user accounts using Firebase Authentication.
+ * Users can register as either a **Student** or **Tutor** by selecting their role
+ * and providing an email and password.
+ *
+ * Flow:
+ *  - Validates user input (email, password, and role selection).
+ *  - Uses Firebase Authentication to create a new account.
+ *  - Redirects users to either {@link StudentRegistrationPage} or {@link TutorRegistrationPage}
+ *    to complete their profile details.
+ *
+ */
 
 public class RegisterPage extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword;
@@ -33,6 +47,12 @@ public class RegisterPage extends AppCompatActivity {
     RadioButton radioStudent, radioTutor;
     FirebaseFirestore db;
 
+    /**
+     * Called when the activity is first created.
+     * Initializes Firebase instances, sets up input fields, and defines button behavior.
+     *
+     * @param savedInstanceState previously saved instance state (unused)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,10 +118,20 @@ public class RegisterPage extends AppCompatActivity {
         });
     }
 
+    /**
+     * Displays a short-duration toast message.
+     *
+     * @param msg message to display
+     */
     private void toast(String msg) {
         Toast.makeText(RegisterPage.this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Displays a long-duration toast message.
+     *
+     * @param msg message to display
+     */
     private void toastLong(String msg) {
         Toast.makeText(RegisterPage.this, msg, Toast.LENGTH_LONG).show();
     }
