@@ -1,6 +1,7 @@
 package com.example.otams;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fragment showing pending session requests for tutors
  */
 public class RequestsFragment extends Fragment {
+
+    private static final String TAG = "RequestsFragment";
 
     private RecyclerView requestsRecyclerView;
     private TextView noRequestsText;
@@ -119,18 +125,67 @@ public class RequestsFragment extends Fragment {
     }
 
     private void approveRequest(SessionRequest request) {
+        Log.d(TAG, "Approving request: " + request.getRequestId());
+
+        // First, update the request status to approved
         db.collection("sessionRequests")
                 .document(request.getRequestId())
                 .update("status", "approved")
                 .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Request status updated to approved");
+
+                    // Then create the Session document
+                    createSession(request);
+
+                    // Remove from UI
                     sessionRequests.remove(request);
                     adapter.notifyDataSetChanged();
                     updateEmptyView();
                     Toast.makeText(getContext(), "Session approved!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error approving request", e);
                     Toast.makeText(getContext(), "Error approving: " + e.getMessage(),
                             Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void createSession(SessionRequest request) {
+        Log.d(TAG, "Creating Session document for approved request");
+
+        // Get tutor info
+        String tutorId = auth.getCurrentUser().getUid();
+        String tutorEmail = auth.getCurrentUser().getEmail();
+
+        // Create Student object
+        Map<String, Object> student = new HashMap<>();
+        student.put("firstName", request.getStudentFirstName());
+        student.put("lastName", request.getStudentLastName());
+        student.put("email", request.getStudentEmail());
+        student.put("phoneNumber", request.getStudentPhone());
+        student.put("userId", request.getStudentId());
+
+        // Create Session document
+        Map<String, Object> session = new HashMap<>();
+        session.put("tutorId", tutorId);
+        session.put("tutorEmail", tutorEmail);
+        session.put("student", student);
+        session.put("course", request.getCourse());
+        session.put("date", request.getDate());
+        session.put("startTime", request.getStartTime());
+        session.put("endTime", request.getEndTime());
+        session.put("status", "approved");
+        session.put("timestamp", Timestamp.now());
+
+        db.collection("Sessions")
+                .add(session)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Session created successfully: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error creating Session document", e);
+                    Toast.makeText(getContext(), "Warning: Session approved but not added to Sessions list",
+                            Toast.LENGTH_LONG).show();
                 });
     }
 

@@ -307,7 +307,7 @@ public class AvailableSessionsActivity extends AppCompatActivity {
         request.put("timestamp", Timestamp.now());
 
         Log.d(TAG, "Saving session request: " + request);
-        saveSessionRequest(request, session.isRequiresApproval());
+        saveSessionRequest(request, session.isRequiresApproval(), firstName, lastName, phoneNumber);
     }
 
     private void createSessionRequestWithEmail(AvailableSession session, String studentId, String studentEmail) {
@@ -329,14 +329,21 @@ public class AvailableSessionsActivity extends AppCompatActivity {
         request.put("timestamp", Timestamp.now());
 
         Log.d(TAG, "Saving session request with email only: " + request);
-        saveSessionRequest(request, session.isRequiresApproval());
+        saveSessionRequest(request, session.isRequiresApproval(), "", "", "");
     }
 
-    private void saveSessionRequest(Map<String, Object> request, boolean requiresApproval) {
+    private void saveSessionRequest(Map<String, Object> request, boolean requiresApproval,
+                                    String firstName, String lastName, String phoneNumber) {
         db.collection("sessionRequests")
                 .add(request)
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Session request saved: " + documentReference.getId());
+
+                    // If instant booking (no approval required), create Session immediately
+                    if (!requiresApproval) {
+                        createSessionForInstantBooking(request, firstName, lastName, phoneNumber);
+                    }
+
                     String message = requiresApproval
                             ? "Session request sent! Waiting for tutor approval."
                             : "Session booked successfully!";
@@ -346,6 +353,40 @@ public class AvailableSessionsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Failed to save session request", e);
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private void createSessionForInstantBooking(Map<String, Object> request,
+                                                String firstName, String lastName, String phoneNumber) {
+        Log.d(TAG, "Creating Session for instant booking");
+
+        // Create Student object
+        Map<String, Object> student = new HashMap<>();
+        student.put("firstName", firstName != null ? firstName : "");
+        student.put("lastName", lastName != null ? lastName : "");
+        student.put("email", request.get("studentEmail"));
+        student.put("phoneNumber", phoneNumber != null ? phoneNumber : "");
+        student.put("userId", request.get("studentId"));
+
+        // Create Session document
+        Map<String, Object> session = new HashMap<>();
+        session.put("tutorId", request.get("tutorId"));
+        session.put("tutorEmail", request.get("tutorEmail"));
+        session.put("student", student);
+        session.put("course", request.get("course"));
+        session.put("date", request.get("date"));
+        session.put("startTime", request.get("startTime"));
+        session.put("endTime", request.get("endTime"));
+        session.put("status", "approved");
+        session.put("timestamp", Timestamp.now());
+
+        db.collection("Sessions")
+                .add(session)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Session created successfully: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error creating Session document", e);
                 });
     }
 
