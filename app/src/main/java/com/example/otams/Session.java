@@ -7,7 +7,9 @@ package com.example.otams;
 public class Session extends Slot {
     // Instatiated variables
     private String approval;
+    private String course;
     private Student student;
+
 
     /** Parameterized constructor for session object
      * @param student
@@ -15,6 +17,7 @@ public class Session extends Slot {
     public Session(Tutor tutor, Student student) {
         super(tutor);
         this.student = student;
+        this.course = course;
         this.approval = "pending";
     }
 
@@ -32,4 +35,8 @@ public class Session extends Slot {
      * @return student
      */
     public Student getStudent() { return this.student; }
+
+    public String getCourse() { return this.course; }
+
+    public void setCourse(String course) {this.course = course; }
 }
