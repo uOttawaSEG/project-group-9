@@ -41,7 +41,7 @@ public class SessionsFragment extends Fragment {
     private FirebaseAuth auth;
 
     public SessionsFragment() {
-        // Required empty public constructor
+        // empty constructor
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SessionsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadSessions(); // Reload sessions when fragment becomes visible
+        loadSessions();
     }
 
     private void loadSessions() {
@@ -105,7 +105,7 @@ public class SessionsFragment extends Fragment {
                         try {
                             String sessionId = document.getId();
 
-                            // Get student info
+
                             Map<String, Object> studentMap = (Map<String, Object>) document.get("student");
                             Student student = null;
                             if (studentMap != null) {
@@ -123,21 +123,18 @@ public class SessionsFragment extends Fragment {
                             int endTime = document.getLong("endTime").intValue();
                             String status = document.getString("status");
 
-                            // Get tutor info
                             String tutorEmail = document.getString("tutorEmail");
                             Tutor tutor = new Tutor(tutorEmail);
 
-                            // Create session
                             Session session = new Session(tutor, student);
                             session.setCourse(course);
                             session.setApproval(status != null ? status : "approved");
 
-                            // Set date and time from Slot parent class
                             session.setDate(date);
                             session.setStartTime(startTime);
                             session.setEndTime(endTime);
 
-                            // Sort into upcoming or past
+
                             if (date >= todayInt) {
                                 upcomingSessions.add(session);
                                 Log.d(TAG, "Added to upcoming: " + course + " on " + date);
@@ -161,7 +158,37 @@ public class SessionsFragment extends Fragment {
                 });
     }
 
-    // Simple adapter for displaying sessions
+    private void cancelSession(Session session) {
+        String tutorId = auth.getCurrentUser().getUid();
+
+        // Find this session in Firestore and delete it
+        db.collection("Sessions")
+                .whereEqualTo("tutorId", tutorId)
+                .whereEqualTo("course", session.getCourse())
+                .whereEqualTo("date", session.getDate())
+                .whereEqualTo("startTime", session.getStartTime())
+                .whereEqualTo("endTime", session.getEndTime())
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        querySnapshot.getDocuments().get(0).getReference().delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    // Remove locally
+                                    upcomingSessions.remove(session);
+                                    upcomingAdapter.notifyDataSetChanged();
+                                    Log.d(TAG, "Session canceled successfully");
+                                })
+                                .addOnFailureListener(e ->
+                                        Log.e(TAG, "Error canceling session", e));
+                    } else {
+                        Log.w(TAG, "Session not found for cancel");
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Log.e(TAG, "Error finding session for cancel", e));
+    }
+
+
     private class SessionAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         private List<Session> sessions;
 
@@ -193,8 +220,15 @@ public class SessionsFragment extends Fragment {
             holder.textTimeSlot.setText(formatDate(session.getDate()) + "\n" +
                     formatTimeRange(session.getStartTime(), session.getEndTime()));
             holder.textStatus.setText(session.getApproval() != null ? session.getApproval() : "approved");
-            // Hide reject button for now
-            holder.buttonReject.setVisibility(View.GONE);
+
+            if (sessions == upcomingSessions) {
+                holder.buttonReject.setVisibility(View.VISIBLE);
+                holder.buttonReject.setText("Cancel");
+
+                holder.buttonReject.setOnClickListener(v -> cancelSession(session));
+            } else {
+                holder.buttonReject.setVisibility(View.GONE);
+            }
         }
 
         @Override
