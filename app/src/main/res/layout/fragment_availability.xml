@@ -24,6 +24,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Subtitle explaining 30-minute slots -->
+        <TextView
+            android:id="@+id/availabilitySubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="All slots are in 30-minute intervals"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availabilityTitle" />
 
         <DatePicker
             android:id="@+id/datePicker"
@@ -34,7 +47,7 @@
             android:theme="@style/CustomDatePicker"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/availabilityTitle" />
+            app:layout_constraintTop_toBottomOf="@id/availabilitySubtitle" />
 
         <TextView
             android:id="@+id/startTimeLabel"
@@ -69,14 +82,49 @@
             app:layout_constraintStart_toEndOf="@id/startTimePicker"
             app:layout_constraintTop_toBottomOf="@id/datePicker" />
 
+        <TextView
+            android:id="@+id/endTimeHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="(in 30-min intervals)"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/startTimePicker"
+            app:layout_constraintTop_toBottomOf="@id/endTimeLabel" />
+
         <TimePicker
             android:id="@+id/endTimePicker"
             android:layout_width="165dp"
             android:layout_height="112dp"
             android:timePickerMode="spinner"
             app:layout_constraintStart_toStartOf="@id/endTimeLabel"
-            app:layout_constraintTop_toBottomOf="@id/endTimeLabel" />
+            app:layout_constraintTop_toBottomOf="@id/endTimeHint" />
 
+        <!-- Course Selection Label -->
+        <TextView
+            android:id="@+id/courseLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Select Course:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/startTimePicker" />
+
+        <!-- Course Spinner -->
+        <Spinner
+            android:id="@+id/courseSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseLabel" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/approvalSwitch"
@@ -88,7 +136,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/startTimePicker" />
+            app:layout_constraintTop_toBottomOf="@id/courseSpinner" />
 
         <Button
             android:id="@+id/addSlotButton"
@@ -113,20 +161,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addSlotButton" />
 
+        <!-- Header for slot list -->
+        <TextView
+            android:id="@+id/slotsListHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Your Availability Slots"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
         <!-- List of existing slots -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/availabilityRecyclerView"
             android:layout_width="0dp"
             android:layout_height="200dp"
+            android:layout_marginTop="8dp"
             android:paddingTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintTop_toBottomOf="@id/slotsListHeader"
             tools:listitem="@layout/item_availability_slot" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
-
