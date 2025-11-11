@@ -83,13 +83,14 @@ public class SessionsFragment extends Fragment {
     private void loadSessions() {
         String tutorId = auth.getCurrentUser().getUid();
 
-        // Get today's date as integer
-        Calendar today = Calendar.getInstance();
-        int todayInt = today.get(Calendar.YEAR) * 10000 +
-                (today.get(Calendar.MONTH) + 1) * 100 +
-                today.get(Calendar.DAY_OF_MONTH);
+        // Get current date and time
+        Calendar now = Calendar.getInstance();
+        int todayInt = now.get(Calendar.YEAR) * 10000 +
+                (now.get(Calendar.MONTH) + 1) * 100 +
+                now.get(Calendar.DAY_OF_MONTH);
+        int currentTimeInMinutes = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE);
 
-        Log.d(TAG, "Loading sessions for tutorId: " + tutorId + ", today: " + todayInt);
+        Log.d(TAG, "Loading sessions for tutorId: " + tutorId + ", today: " + todayInt + ", current time: " + currentTimeInMinutes);
 
         // Load all sessions for this tutor
         db.collection("Sessions")
@@ -104,7 +105,6 @@ public class SessionsFragment extends Fragment {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         try {
                             String sessionId = document.getId();
-
 
                             Map<String, Object> studentMap = (Map<String, Object>) document.get("student");
                             Student student = null;
@@ -134,13 +134,26 @@ public class SessionsFragment extends Fragment {
                             session.setStartTime(startTime);
                             session.setEndTime(endTime);
 
+                            // Check if session is in the past
+                            boolean isPast = false;
 
-                            if (date >= todayInt) {
-                                upcomingSessions.add(session);
-                                Log.d(TAG, "Added to upcoming: " + course + " on " + date);
-                            } else {
+                            if (date < todayInt) {
+                                // Session date is before today - definitely past
+                                isPast = true;
+                            } else if (date == todayInt) {
+                                // Session is today - check if start time has passed
+                                if (startTime <= currentTimeInMinutes) {
+                                    isPast = true;
+                                }
+                            }
+                            // If date > todayInt, it's in the future (isPast stays false)
+
+                            if (isPast) {
                                 pastSessions.add(session);
-                                Log.d(TAG, "Added to past: " + course + " on " + date);
+                                Log.d(TAG, "Added to past: " + course + " on " + date + " at " + startTime);
+                            } else {
+                                upcomingSessions.add(session);
+                                Log.d(TAG, "Added to upcoming: " + course + " on " + date + " at " + startTime);
                             }
 
                         } catch (Exception e) {
