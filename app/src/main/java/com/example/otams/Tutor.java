@@ -3,46 +3,104 @@ package com.example.otams;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Basic Tutor class
+ * @author Lauren [lhend093@uottawa.ca]
+ */
 public class Tutor extends User {
+    // Instatiated variables
     private List<String> coursesOffered = new ArrayList<>();
+    private List<Session> pastSessions = new ArrayList<>();
+    private List<Slot> availableSlots = new ArrayList<>();
+    private List<Session> upcomingSessions = new ArrayList<>();
     private String degree;
 
+    /** Empty constructor for tutor object
+     */
     public Tutor() {
         super();
     }
 
+    /** Constructor with email (for firebase)
+     */
     public Tutor(String email) {
         super(email);
     }
 
-    public List<String> getCoursesOffered() {
-        return coursesOffered;
+    /** [GETTER] Gets the courses offered by the tutor
+     * @return courses
+     */
+    public List<String> getCourses() { return coursesOffered; }
+
+    /** [SETTER] Sets the courses offered by the tutor
+     * @param coursesOffered
+     */
+    public void setCourses(List<String> coursesOffered) { this.coursesOffered = coursesOffered; }
+
+    /** [GETTER] Gets the degree of the tutor
+     * @return degree
+     */
+    public String getDegree() { return degree; }
+
+    /** [SETTER] Sets the degree of the tutor
+     * @param degree
+     */
+    public void setDegree(String degree) { this.degree = degree; }
+
+    /** [SETTER] Sets the past sessions of the tutor
+     * @param pastSessions
+     */
+    public void setPastSessions(List<Session> pastSessions){ this.pastSessions = pastSessions; }
+
+    /** [SETTER] Sets the upcoming sessions of the tutor
+     * @param upcoming
+     */
+    public void setUpcomingSession(List<Session> upcoming){ this.upcomingSessions = upcoming; }
+
+    /** [SETTER] Sets the available slots of the tutor
+     * @param slots
+     */
+    public void setAvailableSlots(List<Slot> slots){ this.availableSlots = slots; }
+
+    /** [GETTER] Gets the past sessions of the tutor
+     * @return pastSessions
+     */
+    public List<Session> getPastSessions(){ return pastSessions; }
+
+    /** [GETTER] Gets the upcoming sessions of the tutor
+     * @return upcomingSessions
+     */
+    public List<Session> getUpcomingSessions(){ return upcomingSessions; }
+
+    /** [GETTER] Gets the slots of the tutor
+     * @return availableSlots
+     */
+    public List<Slot> getAvailableSlots(){ return availableSlots; }
+
+
+    //////    -----   HELPER METHODS    -----   //////
+
+
+    /** Sets the approval of the session
+     * @param session 
+     * @param approval
+     */
+    public void approveSessionRequest(Session session, String approval) { session.setApproval(approval); }
+
+    /** Automatically approves all session requests
+     * @param listOfSessions
+     */
+    public void approveAllSessionRequests(List<Session> listOfSessions) {
+        for(Session s : listOfSessions){
+            s.setApproval("approved");
+        }
     }
 
-    public void setCoursesOffered(List<String> coursesOffered) {
-        this.coursesOffered = coursesOffered;
+    /** Creates a new slot for the tutor
+     * @param start
+     * @param end
+     */
+    public void createNewSlot(Tutor tutor, int start, int end, int date){
+        Slot s = new Slot(tutor, start, end, date);
+        availableSlots.add(s);
     }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-//    public void approveSessionRequest(TutoringSessions session, int approved) {
-//        if (approved == 1) {
-//            session.setApproval(1);
-//        } else if (approved == 0) {
-//            session.setApproval(0);
-//        }
-//    }
-//
-//    public int approveAllSessionRequests(ArrayList<TutoringSessions> listOfSessions) {
-//        for (TutoringSessions session : listOfSessions) {
-//            approveSessionRequest(session, 1);
-//        }
-//        return listOfSessions.size();
-//    }
 }

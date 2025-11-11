@@ -14,9 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Otams">
+
         <activity
             android:name=".TutorHome"
             android:exported="false" />
+        <activity
+            android:name=".AvailableSessionsActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            />
         <activity
             android:name=".StudentHome"
             android:exported="false" />
@@ -55,6 +60,9 @@
             android:exported="true" />
         <activity
             android:name=".ApprovedPage"
+            android:exported="true" />
+        <activity
+            android:name=".RejectedRequestsPage"
             android:exported="true" />
     </application>
 

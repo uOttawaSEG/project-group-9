@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +31,13 @@ public class TutorRegistrationPage extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseUser user;
 
-
+    /**
+     * Android lifecycle - called when the Activity is created.
+     * Initializes Firebase, resolves the current user, wires up the UI,
+     * and attaches click listeners to buttons.
+     *
+     * @param savedInstanceState previous state (unused here)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,25 +92,43 @@ public class TutorRegistrationPage extends AppCompatActivity {
         });
     }
 
+    /**
+     * Builds a RegistrationRequest model and writes it to the "requests" collection.
+     * On success, updates the document with its generated ID ("requestId"),
+     * sends a confirmation email trigger, and navigates to PendingPage.
+     *
+     * @param uid         Firebase Auth user ID
+     * @param firstName   tutor first name
+     * @param lastName    tutor last name
+     * @param phoneNumber contact number
+     * @param email       user email (from FirebaseUser)
+     * @param degree      academic degree
+     * @param courses     list of courses the tutor can teach
+     */
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String degree, List<String> courses){
-        Map<String,Object> request = new HashMap<>();
-        request.put("userId", uid);
-        request.put("role", "Tutor");
-        request.put("firstName", firstName);
-        request.put("lastName", lastName);
-        request.put("email", email);
-        request.put("phoneNumber", phoneNumber);
-        request.put("degree", degree);
-        request.put("courses", courses);
-        request.put("timestamp", Timestamp.now());
-        request.put("status", "pending");
+        RegistrationRequest request = new RegistrationRequest();
+        request.setUserId(uid);
+        request.setRole("Tutor");
+        request.setFirstName(firstName);
+        request.setLastName(lastName);
+        request.setEmail(email);
+        request.setPhoneNumber(phoneNumber);
+        request.setDegree(degree);
+        request.setCourses(courses);
+        request.setStatus("pending");
+        //request.setTimestamp(Timestamp.now());
 
         db.collection("requests")
                 .add(request)
                 .addOnSuccessListener(docRef -> {
-                    progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(TutorRegistrationPage.this, PendingPage.class));
-                    finish();
+                    String reqId = docRef.getId();
+                    docRef.update("requestId",reqId)
+                        .addOnSuccessListener(aVoid -> {
+                            sendConfirmation(email, "Tutor");
+                            progressBar.setVisibility(View.GONE);
+                            startActivity(new Intent(TutorRegistrationPage.this, PendingPage.class));
+                            finish();
+                        });
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
@@ -112,14 +137,58 @@ public class TutorRegistrationPage extends AppCompatActivity {
     }
 
 
+    /**
+     * Writes a document to the "mail" collection to trigger an email.
+     * The exact fields required depend on your email-sending mechanism
+     * (e.g., Firebase Extensions vs. custom Cloud Function).
+     *
+     * @param email recipient email address
+     * @param role  role label to inject into the template (e.g., "Tutor")
+     */
+    private void sendConfirmation(String email, String role){
+        Map<String, Object> mail = new HashMap<>();
+        mail.put("to", email);
+
+        Map<String, Object> template = new HashMap<>();
+        template.put("role", role);
+        template.put("displayEmail", email);
+
+        mail.put("templateData", template);
+        mail.put("createdAt", Timestamp.now());
+
+        db.collection("mail")
+                .add(mail)
+                .addOnSuccessListener(docRef -> {
+                    Log.d("RegisterFlow", "Successfully saved to 'mail' collection. Now redirecting to profile page.");
+                    toast("Confirmation email sent.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Email", "Failed to save user data: " + e.getMessage());
+                });
+    }
+
+    /**
+     * Utility helper to safely extract trimmed text from a TextInputEditText.
+     *
+     * @param input the TextInputEditText field
+     * @return trimmed string value; empty if null
+     */
     private String text(TextInputEditText input){
         return input.getText() == null ? "" : input.getText().toString().trim();
     }
-
+    /**
+     * Short toast message helper.
+     *
+     * @param msg message to display
+     */
     private void toast(String msg) {
         Toast.makeText(TutorRegistrationPage.this, msg, Toast.LENGTH_SHORT).show();
     }
-
+    /**
+     * Long toast message helper.
+     *
+     * @param msg message to display
+     */
     private void toastLong(String msg) {
         Toast.makeText(TutorRegistrationPage.this, msg, Toast.LENGTH_LONG).show();
     }

@@ -131,6 +131,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phoneNumLayout" />
 
+        <!-- Courses hint -->
+        <TextView
+            android:id="@+id/coursesHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Separate multiple courses with commas (e.g., CEG 2136, CSI 2110, SEG 2105)"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView7" />
+
         <!-- Courses field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/coursesOfferedLayout"
@@ -140,14 +153,14 @@
             android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView7">
+            app:layout_constraintTop_toBottomOf="@id/coursesHint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextCourses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Courses offered"
-                android:inputType="textCapSentences"
+                android:inputType="textCapCharacters"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -220,4 +233,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-

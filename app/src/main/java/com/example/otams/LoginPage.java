@@ -14,24 +14,43 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * Handles the user login process for all user roles (Administrator, Student, Tutor).
+ * This activity manages UI input, manages authentication to Firebase,
+ * and determines the user's registration status and role for redirection.
+ *
+ * co-author Sophia Hopkins
+ */
 
 public class LoginPage extends AppCompatActivity {
+    //---UI ELEMENTS---
     TextInputEditText editTextEmail, editTextPassword;
     Button buttonLogin;
-    FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
-    FirebaseFirestore db;
 
+    //---FIREBASE COMPONENTS---
+    FirebaseAuth mAuth; //Authentication instance
+    FirebaseFirestore db; // Database instance
+
+
+    /**
+     *Called when the activity is first created. Initializes UI components and Firebase Instances.
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+
         progressBar = findViewById(R.id.progressBar);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
@@ -44,23 +63,24 @@ public class LoginPage extends AppCompatActivity {
             finish();
         });
 
-        buttonLogin.setOnClickListener(view -> {
+
+        buttonLogin.setOnClickListener(view -> attemptLogin());
+    }
+
+        private void attemptLogin(){
             progressBar.setVisibility(View.VISIBLE);
             String email = editTextEmail.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
 
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
-                return;
-            }
-            if (TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
+
+            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ) {
+                Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
                 return;
             }
 
-            // Admin login
+
+
             if (email.equals("admin@example.com") && password.equals("admin123")) {
                 Toast.makeText(this, "Logged in as Administrator", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginPage.this, AdministratorPage.class));
@@ -69,7 +89,8 @@ public class LoginPage extends AppCompatActivity {
             }
 
             Log.d("LoginPage", "Attempting to sign in with email: " + email);
-            // Firebase login for Student/Tutor
+
+
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         progressBar.setVisibility(View.GONE);
@@ -81,62 +102,75 @@ public class LoginPage extends AppCompatActivity {
                         }
 
                     });
-        });
-    }
+        }
 
+
+    /**
+     * Questions the Firestore 'requests' collection using the authenticated userId to find
+     * the user's registration statues (approved, rejected, pending) and role, then redirects.
+     *
+     * @param userId the UID of the authenticated user for Firebase Auth.
+     */
     private void checkUserStatusAndRedirect(String userId) {
         Log.d("LoginFlow", "Querying 'requests' collection for user with userId: " + userId);
-        // Query the 'requests' collection to find the document where the 'userId' field matches.
+
         db.collection("requests")
                 .whereEqualTo("userId", userId)
-                .limit(1) // We only expect one document per user.
+                .limit(1)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    // This block executes if the database query itself was successful.
+
 
                     if (!querySnapshot.isEmpty()) {
-                        // Request document for this user was found.
-                        String status = querySnapshot.getDocuments().get(0).getString("status");
-                        Log.d("LoginFlow", "Request document found. User status is: " + status);
+                        DocumentSnapshot doc = querySnapshot.getDocuments().get(0);
 
-                        // Check the value of the 'status' field to decide where to send the user.
-                        if ("approved".equals(status)) {
-                            // The user's registration was approved by the administrator.
-                            // Get the role from the same document to send them to the correct home screen.
-                            String role = querySnapshot.getDocuments().get(0).getString("role");
-                            Log.d("LoginFlow", "User is approved. Role is: " + role);
+                        String status = doc.getString("status");
+                        String role = doc.getString("role");
+                        String email = mAuth.getCurrentUser().getEmail();
+
+
+                        final User loggedInUser;
+                        if ("Student".equals(role)) {
+                            loggedInUser = new Student(email);
+                        }else if ("Tutor".equals(role)) {
+                            loggedInUser = new Tutor(email);
+                        }else {
+                            loggedInUser = new User(email) {
+                            };
+                        }
+
+
+                        loggedInUser.setRole(role);
+                        loggedInUser.setStatus(status);
+
+                        if ("approved".equals(loggedInUser.getStatus())) {
                             Toast.makeText(this, "Login Successful. Welcome!", Toast.LENGTH_SHORT).show();
 
-                            if ("Student".equals(role)) {
-                                startActivity(new Intent(LoginPage.this, StudentHome.class));
-                            } else if ("Tutor".equals(role)) {
-                                startActivity(new Intent(LoginPage.this, TutorHome.class));
+                            Intent intent;
+                            if (loggedInUser instanceof Student) {
+                                intent = new Intent(LoginPage.this, StudentHome.class);
+                            } else { // Must be Tutor
+                                intent = new Intent(LoginPage.this, TutorHome.class);
                             }
-                            finish(); // Finish LoginPage so the user cannot go back to it.
 
-                        } else if ("rejected".equals(status)) {
-                            // User's registration was rejected.
-                            Log.d("LoginFlow", "User is rejected. Redirecting to RejectedPage.");
+                            startActivity(intent);
+                            finish();
+
+                        } else if ("rejected".equals(loggedInUser.getStatus())) {
                             startActivity(new Intent(LoginPage.this, RejectedPage.class));
                             finish();
 
                         } else {
-                            // Status is "pending" or another unexpected value.
-                            Log.d("LoginFlow", "User is pending. Redirecting to PendingPage.");
                             startActivity(new Intent(LoginPage.this, PendingPage.class));
                             finish();
                         }
                     } else {
-                        // User exists in Firebase Authentication, but has no request document.
-                        // Can happen if they created an account but never completed the profile setup form.
                         Log.e("LoginFlow", "No request document found for user: " + userId);
                         Toast.makeText(this, "Profile setup is not complete. Please finish your registration.", Toast.LENGTH_LONG).show();
-                        // You could optionally sign them out here or send them back to the RegisterPage.
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Block executes if the database query fails (e.g., no internet, permissions error).
-                    Log.e("LoginFlow", "Firestore query to 'requests' collection failed for user: " + userId, e);
+                    Log.e("LoginFlow", "Firestore query failed for user: " + userId, e);
                     Toast.makeText(this, "Error checking account status: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
