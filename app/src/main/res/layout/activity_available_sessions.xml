@@ -4,42 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RequestsFragment">
+    android:padding="16dp"
+    tools:context=".AvailableSessionsActivity">
 
     <TextView
-        android:id="@+id/requestsTitle"
+        android:id="@+id/courseTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Pending Requests"
-        android:textSize="20sp"
+        android:text="CSI 2110"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Available Sessions"
+        android:textColor="#666666"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/courseTitle" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/requestsRecyclerView"
+        android:id="@+id/sessionsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requestsTitle"
-        tools:listitem="@layout/item_pending_session" />
+        app:layout_constraintTop_toBottomOf="@id/subtitle"
+        tools:listitem="@layout/item_available_session" />
 
     <TextView
-        android:id="@+id/noRequestsText"
+        android:id="@+id/noSessionsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:text="No pending requests"
+        android:text="No available sessions for this course"
         android:textSize="16sp"
-        android:textColor="#999999"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requestsTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

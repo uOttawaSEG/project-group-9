@@ -11,37 +11,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="16dp">
 
         <TextView
-            android:id="@+id/slotDateText"
+            android:id="@+id/tutorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Monday, January 15, 2024"
+            android:text="Tutor: john@tutor.com"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/slotTimeText"
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Monday, November 11, 2024"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/timeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_regular"
-            android:text="09:00 - 11:00"
+            android:text="14:00 - 14:30"
             android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/deleteSlotButton"
+        <TextView
+            android:id="@+id/approvalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="#FF6B6B"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_regular"
-            android:text="Delete"
-            android:textAllCaps="false"
-            android:textSize="12sp" />
+            android:text="Requires Approval"
+            android:textColor="#FF6600"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/requestButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Request Session"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
