@@ -46,6 +46,14 @@ public class Student extends User {
      */
     public ArrayList<Session> viewPastSessions(){return this.pastSessions;}
 
+    /**
+     * Allows a student to rate a tutor by providing a star value.
+     * This method forwards the rating to the tutor's rating system,
+     * where it is added to the tutor's total rating points and
+     * increasing their number of received ratings.
+     * @param tutor
+     * @param stars
+     */
     public void rateTutor(Tutor tutor, int stars){
         tutor.addRating(stars);
 }
