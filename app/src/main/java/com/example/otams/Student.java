@@ -1,4 +1,5 @@
 package com.example.otams;
+import java.util.ArrayList;
 
 /** Basic Student class
  * 
@@ -32,20 +33,23 @@ public class Student extends User {
     public void setProgram(String program) {
         this.program = program;
     }
+
+
     /**
      *[GETTER] Retrieves all upcoming sessions for the user.
      *
      * @return upcomingSessions a list of upcoming Session objects
      */
-    public ArrayList<Session> viewUpcomingSessions(){return  this.upcomingSessions;}
 
+    //public ArrayList<Session> viewUpcomingSessions(){return  this.upcomingSessions;}
+    //implement for deliverable 4
     /**
      *[GETTER] Retrieves all past sessions for the user.
      *
      * @return pastSessions a list of past Session objects
      */
-    public ArrayList<Session> viewPastSessions(){return this.pastSessions;}
-
+    //public ArrayList<Session> viewPastSessions(){return this.pastSessions;}
+    //implement for deliverable 4
     /**
      * Allows a student to rate a tutor by providing a star value.
      * This method forwards the rating to the tutor's rating system,
