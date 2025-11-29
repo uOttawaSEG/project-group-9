@@ -40,6 +40,8 @@ public class StudentHome extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
+    private Button mySessionsButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class StudentHome extends AppCompatActivity {
         searchField = findViewById(R.id.searchField);
         coursesRecyclerView = findViewById(R.id.coursesRecyclerView);
         logoutButton = findViewById(R.id.logoutButton);
+        mySessionsButton = findViewById(R.id.mySessionsButton);
     }
 
     private void setupRecyclerView() {
@@ -122,6 +125,11 @@ public class StudentHome extends AppCompatActivity {
             Toast.makeText(StudentHome.this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(StudentHome.this, LoginPage.class));
             finish();
+        });
+
+        mySessionsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentHome.this, StudentSessionsActivity.class);
+            startActivity(intent);
         });
     }
 
