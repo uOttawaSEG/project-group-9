@@ -12,8 +12,11 @@ public abstract class User {
     private String lastName;
     private String phoneNumber;
     private String email;
-    private String status;
     private String role;
+    private String program;
+    private List<String> courses;
+    private String degree;
+    private String userId;
 
     /** Empty constructor for firebase
      */
@@ -30,18 +33,6 @@ public abstract class User {
 
     /////-------      MAIN METHODS      -------/////
 
-
-    /** [GETTER] Returns the status
-     * @return status
-     */
-    @PropertyName("status")
-    public String getStatus(){ return this.status; }
-
-    /** [SETTER] Sets the status
-     * @param status
-     */
-    @PropertyName("status")
-    public void setStatus(String status){ this.status = status; }
 
     /** [GETTER] Returns the firstName
      * @return firstName
@@ -102,4 +93,54 @@ public abstract class User {
      */
     @PropertyName("role")
     public void setRole(String role) { this.role = role; }
+
+    /** [GETTER] Returns the degree
+     * @return degree
+     */
+    @PropertyName("degree")
+    public String getDegree() { return degree; }
+
+    /** [SETTER] Sets the degree
+     * @param degree
+     */
+    @PropertyName("degree")
+    public void setDegree(String degree) { this.degree = degree; }
+
+    /** [GETTER] Returns the courses
+     * @return courses
+     */
+    @PropertyName("courses")
+    public String getCourses() { return courses; }
+
+    /** [SETTER] Sets the courses
+     * @param courses
+     */
+    @PropertyName("courses")
+    public void setCourses(List<String> courses) { this.courses = courses; }
+
+    /** [GETTER] Returns the program
+     * @return program
+     */
+    @PropertyName("program")
+    public String getProgram() { return program; }
+
+    /** [SETTER] Sets the program
+     * @param program
+     */
+    @PropertyName("program")
+    public void setProgram(String program) { this.program = program; }
+
+    /** [GETTER] Returns the userId
+     * @return userId
+     */
+    @PropertyName("userId")
+    public String getUserId() { return userId; }
+
+    /** [SETTER] Sets the userId
+     * @param userId
+     */
+    @PropertyName("userId")
+    public void setUserId(String userId) { this.userId = userId; }
+
+
 }

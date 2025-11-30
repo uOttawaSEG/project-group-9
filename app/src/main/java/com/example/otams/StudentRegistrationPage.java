@@ -115,15 +115,16 @@ public class StudentRegistrationPage extends AppCompatActivity {
      * @param program     student's program of study
      */
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String program){
-    	RegistrationRequest request = new RegistrationRequest();
-    	request.setUserId(uid);
-        request.setRole("Student");
-    	request.setFirstName(firstName);
-    	request.setLastName(lastName);
-        request.setEmail(email);
-        request.setPhoneNumber(phoneNumber);
-        request.setProgram(program);
-    	request.setStatus("pending");
+    	Student student = new Student(email);
+    	student.setUserId(uid);
+        student.setRole("Student");
+    	student.setFirstName(firstName);
+    	student.setLastName(lastName);
+        student.setPhoneNumber(phoneNumber);
+        student.setProgram(program);
+    	student.setStatus("pending");
+
+        RegistrationRequest request = new RegistrationRequest(student);
 
 
     	db.collection("requests")
