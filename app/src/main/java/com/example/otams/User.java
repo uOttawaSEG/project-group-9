@@ -1,5 +1,6 @@
 package com.example.otams;
 import com.google.firebase.firestore.PropertyName;
+import java.util.List;
 
 /** Basic User class
  * 
@@ -17,6 +18,7 @@ public abstract class User {
     private List<String> courses;
     private String degree;
     private String userId;
+    private String status;
 
     /** Empty constructor for firebase
      */
@@ -28,6 +30,7 @@ public abstract class User {
      */
     public User(String email) {
         this.email = email;
+        this.status = "pending";
     }
 
 
@@ -110,7 +113,7 @@ public abstract class User {
      * @return courses
      */
     @PropertyName("courses")
-    public String getCourses() { return courses; }
+    public List<String> getCourses() { return courses; }
 
     /** [SETTER] Sets the courses
      * @param courses
@@ -141,6 +144,20 @@ public abstract class User {
      */
     @PropertyName("userId")
     public void setUserId(String userId) { this.userId = userId; }
+
+    /** [GETTER] Returns the status
+     * @return status
+     */
+    @PropertyName("status")
+    public String getStatus() { return status; }
+
+    /** [SETTER] Sets the status
+     * @param status
+     */
+    @PropertyName("status")
+    public void setStatus(String status) { this.status = status; }
+
+
 
 
 }

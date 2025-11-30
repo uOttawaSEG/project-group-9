@@ -28,11 +28,11 @@ public class AvailableSession {
     }
 
     public String getTutorEmail() {
-        return tutor.getTutorEmail();
+        return tutor.getEmail();
     }
 
     public String getTutorId() {
-        return tutor.getTutorId();
+        return tutor.getId();
     }
 
     public int getDate() {
