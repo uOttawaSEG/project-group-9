@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+    //checks if average is calculated correctly
     @Test
     public void average_multipleRatings_computesCorrectly() {
         Tutor tutor = new Tutor();
