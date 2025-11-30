@@ -35,7 +35,7 @@ public class ExampleUnitTest {
     // Tests the creation of an administrator object
     @Test
     public void administrator_creation_test(){
-        Administrator admin = new Administrator();
+        Administrator admin = new Administrator("admin@example.com");
         assertNotNull("Admin not null",admin);
         assertNotNull("Requests not null",admin.getRequests());
     }
@@ -45,8 +45,8 @@ public class ExampleUnitTest {
     public void administrator_approval_test(){
         Administrator admin = new Administrator("admin@example.com");
         
-        User a = new User();
-        User b = new User();
+        Student a = new Student();
+        Tutor b = new Tutor();
         a.setEmail("a@email.com");
         b.setEmail("b@email.com");
 
