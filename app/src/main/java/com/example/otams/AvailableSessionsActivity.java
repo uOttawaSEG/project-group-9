@@ -174,41 +174,61 @@ public class AvailableSessionsActivity extends AppCompatActivity {
                                 pendingChecks--;
                                 Log.d(TAG, "Slot " + slotId + " is booked: " + isBooked + " (pending checks: " + pendingChecks + ")");
 
-                                if (!isBooked) {
-                                    AvailableSession session = new AvailableSession(
-                                            slotId, tutorEmail, tutorId, date, startTime,
-                                            endTime, courseName, requiresApproval
-                                    );
-                                    availableSessions.add(session);
-                                    Log.d(TAG, "Added session! Total now: " + availableSessions.size());
-                                    runOnUiThread(() -> {
-                                        adapter.notifyDataSetChanged();
+
+                                if (isBooked) {
+                                    if(pendingChecks == 0){
+                                        updateEmptyView();   
+                                    }
+                                    return;
+                                }
+
+                                db.collection("tutors")
+                                    .document(tutorId)
+                                    .get()
+                                    .addOnSuccessListener(tutDoc -> {
+                                        Tutor tutor = tutDoc.toObject(Tutor.class);
+
+                                        if(tutor == null){
+                                            Log.e(TAG, "Tutor object null");
+                                            return;
+                                        }
+
+                                        AvailableSession session = new AvailableSession(slotId, tutor, date, startTime, endTime, courseName, requiresApproval);
+                                        
+                                        availableSessions.add(session);
+                                        Log.d(TAG, "Added session! Total now: " + availableSessions.size());
+                                        
+                                        runOnUiThread(() -> {
+                                            adapter.notifyDataSetChanged();
+                                            updateEmptyView();
+                                        });
+
+                                        if (pendingChecks == 0) {
+                                            Log.d(TAG, "All checks complete. Final count: " + availableSessions.size());
+                                            runOnUiThread(this::updateEmptyView);
+                                        }
+                                    })
+
+                                    .addOnFailureListener(e -> {
+                                        Log.e(TAG, "Query FAILED", e);
+                                        Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                         updateEmptyView();
                                     });
-                                }
-
-                                if (pendingChecks == 0) {
-                                    Log.d(TAG, "All checks complete. Final count: " + availableSessions.size());
-                                    runOnUiThread(this::updateEmptyView);
-                                }
                             });
+            } catch (Exception e){
+                Log.e(TAG, "Error", e);
+                pendingChecks--;
+            }
+        }
 
-                        } catch (Exception e) {
-                            Log.e(TAG, "Error processing document", e);
-                            pendingChecks--;
-                        }
-                    }
-
-                    if (pendingChecks == 0) {
-                        updateEmptyView();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Query FAILED", e);
-                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    updateEmptyView();
-                });
+        })
+        .addOnFailureListener(e -> {
+            Log.e(TAG, "Query FAILED", e);
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            updateEmptyView();
+        });
     }
+    
 
     private void checkIfSlotBooked(String slotId, OnSlotCheckListener listener) {
         Log.d(TAG, "Checking booking status for slot: " + slotId);

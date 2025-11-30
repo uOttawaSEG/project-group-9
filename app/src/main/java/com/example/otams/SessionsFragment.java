@@ -235,10 +235,15 @@ public class SessionsFragment extends Fragment {
             holder.textStatus.setText(session.getApproval() != null ? session.getApproval() : "approved");
 
             if (sessions == upcomingSessions) {
-                holder.buttonReject.setVisibility(View.VISIBLE);
-                holder.buttonReject.setText("Cancel");
+                String pendingStats = session.getApproval();
+                if ("approved".equals(pendingStats)){
+                    holder.buttonReject.setVisibility(View.GONE);
+                }else {
+                    holder.buttonReject.setVisibility(View.VISIBLE);
+                    holder.buttonReject.setText("Cancel");
 
-                holder.buttonReject.setOnClickListener(v -> cancelSession(session));
+                    holder.buttonReject.setOnClickListener(v -> cancelSession(session));
+                }
             } else {
                 holder.buttonReject.setVisibility(View.GONE);
             }

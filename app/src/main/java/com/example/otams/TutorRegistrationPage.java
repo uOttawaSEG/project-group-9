@@ -106,17 +106,18 @@ public class TutorRegistrationPage extends AppCompatActivity {
      * @param courses     list of courses the tutor can teach
      */
     private void createRequest(String uid, String firstName, String lastName, String phoneNumber, String email, String degree, List<String> courses){
-        RegistrationRequest request = new RegistrationRequest();
-        request.setUserId(uid);
-        request.setRole("Tutor");
-        request.setFirstName(firstName);
-        request.setLastName(lastName);
-        request.setEmail(email);
-        request.setPhoneNumber(phoneNumber);
-        request.setDegree(degree);
-        request.setCourses(courses);
-        request.setStatus("pending");
-        //request.setTimestamp(Timestamp.now());
+        Tutor tutor = new Tutor(email);
+
+        tutor.setUserId(uid);
+        tutor.setRole("Tutor");
+        tutor.setFirstName(firstName);
+        tutor.setLastName(lastName);
+        tutor.setPhoneNumber(phoneNumber);
+        tutor.setDegree(degree);
+        tutor.setCourses(courses);
+        tutor.setStatus("pending");
+        
+        RegistrationRequest request = new RegistrationRequest(tutor);
 
         db.collection("requests")
                 .add(request)

@@ -13,6 +13,8 @@ public class Tutor extends User {
     private List<Slot> availableSlots = new ArrayList<>();
     private List<Session> upcomingSessions = new ArrayList<>();
     private String degree;
+    private int totalRatingPoints;
+    private int totalRatings;
 
     /** Empty constructor for tutor object
      */
@@ -77,6 +79,27 @@ public class Tutor extends User {
     public List<Slot> getAvailableSlots(){ return availableSlots; }
 
 
+    /**
+     * [GETTER] Calculates and returns the tutor's average rating.
+     * If the tutor has no ratings, this returns 0.0
+     *
+     * @return the average rating as a double value
+     */
+    public double getAverageRating(){
+        if(totalRatings == 0) return 0.0;
+        return(double) totalRatingPoints/totalRatings;
+    }
+
+    /**
+     * [SETTER] Adds a new rating to the tutor.
+     * Updates the total rating points and the number of ratings received.
+     *
+     * @param stars the rating value given by a student (1-5)
+     */
+    public void addRating(int stars){
+        totalRatingPoints += stars;
+        totalRatings++;
+    }
     //////    -----   HELPER METHODS    -----   //////
 
 
@@ -103,4 +126,7 @@ public class Tutor extends User {
         Slot s = new Slot(tutor, start, end, date);
         availableSlots.add(s);
     }
+
+    //////    -----   RATING METHODS    -----   //////
+    //needs to be completed
 }

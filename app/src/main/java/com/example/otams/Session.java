@@ -9,6 +9,9 @@ public class Session extends Slot {
     private String approval;
     private String course;
     private Student student;
+    private boolean completed;
+    private boolean rated;
+
 
 
     /** Parameterized constructor for session object

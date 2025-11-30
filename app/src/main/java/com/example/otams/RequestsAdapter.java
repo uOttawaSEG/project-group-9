@@ -82,6 +82,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
         RegistrationRequest request = requests.get(position);
+        User user = request.getUser();
+
+        if(user == null) return;
 
         // Debug logging
         Log.d("Adapter", "Position: " + position);
