@@ -1,6 +1,8 @@
 package com.example.otams;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.otams.StudentSession;
+import com.example.otams.StudentSessionAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -25,7 +29,7 @@ import java.util.List;
 /**
  * Fragment showing student's booked/requested sessions
  */
-public class StudentSessionsFragment extends Fragment {
+public class StudentSessionsFragment extends Fragment implements StudentSessionAdapter.OnSessionInteractionListener {
 
     private static final String TAG = "StudentSessions";
 
@@ -82,8 +86,8 @@ public class StudentSessionsFragment extends Fragment {
     }
 
     private void setupRecyclerViews() {
-        upcomingAdapter = new StudentSessionAdapter(upcomingSessions, this::cancelSession);
-        pastAdapter = new StudentSessionAdapter(pastSessions, null); // No cancel for past
+        upcomingAdapter = new StudentSessionAdapter(upcomingSessions, this);
+        pastAdapter = new StudentSessionAdapter(pastSessions, null); // No interaction for past
 
         upcomingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         pastRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -211,6 +215,40 @@ public class StudentSessionsFragment extends Fragment {
         } else {
             noPastText.setVisibility(View.GONE);
             pastRecyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onCancel(StudentSession session) {
+        cancelSession(session);
+    }
+
+    @Override
+    public void onAddToCalendar(StudentSession session) {
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setData(CalendarContract.Events.CONTENT_URI);
+        intent.putExtra(CalendarContract.Events.TITLE, "Tutoring Session: " + session.getCourse());
+        intent.putExtra(CalendarContract.Events.DESCRIPTION, "Tutoring session for " + session.getCourse() + " with " + session.getTutorEmail());
+
+        Calendar startTime = Calendar.getInstance();
+        int year = session.getDate() / 10000;
+        int month = (session.getDate() % 10000) / 100;
+        int day = session.getDate() % 100;
+        int startHour = session.getStartTime() / 60;
+        int startMinute = session.getStartTime() % 60;
+        startTime.set(year, month - 1, day, startHour, startMinute);
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
+
+        Calendar endTime = Calendar.getInstance();
+        int endHour = session.getEndTime() / 60;
+        int endMinute = session.getEndTime() % 60;
+        endTime.set(year, month - 1, day, endHour, endMinute);
+        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
+
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+            startActivity(intent);
+        } else {
+            Toast.makeText(getContext(), "No calendar app found", Toast.LENGTH_SHORT).show();
         }
     }
 }

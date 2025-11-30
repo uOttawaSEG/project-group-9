@@ -17,15 +17,16 @@ import java.util.Locale;
 public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAdapter.ViewHolder> {
 
     private List<StudentSession> sessions;
-    private OnCancelListener cancelListener;
+    private OnSessionInteractionListener interactionListener;
 
-    public interface OnCancelListener {
+    public interface OnSessionInteractionListener {
         void onCancel(StudentSession session);
+        void onAddToCalendar(StudentSession session);
     }
 
-    public StudentSessionAdapter(List<StudentSession> sessions, OnCancelListener cancelListener) {
+    public StudentSessionAdapter(List<StudentSession> sessions, OnSessionInteractionListener listener) {
         this.sessions = sessions;
-        this.cancelListener = cancelListener;
+        this.interactionListener = listener;
     }
 
     @NonNull
@@ -62,12 +63,21 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
                 break;
         }
 
+        // Reset visibility
+        holder.cancelButton.setVisibility(View.GONE);
+        holder.addToCalendarButton.setVisibility(View.GONE);
+
         // Show cancel button only for upcoming sessions that can be cancelled
-        if (cancelListener != null && session.canCancel()) {
+        if (interactionListener != null && session.canCancel()) {
             holder.cancelButton.setVisibility(View.VISIBLE);
-            holder.cancelButton.setOnClickListener(v -> cancelListener.onCancel(session));
-        } else {
-            holder.cancelButton.setVisibility(View.GONE);
+            holder.cancelButton.setOnClickListener(v -> interactionListener.onCancel(session));
+        }
+
+
+        // Show calendar button only for approved sessions
+        if (interactionListener != null && "approved".equals(status)) {
+            holder.addToCalendarButton.setVisibility(View.VISIBLE);
+            holder.addToCalendarButton.setOnClickListener(v -> interactionListener.onAddToCalendar(session));
         }
     }
 
@@ -107,6 +117,7 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
         TextView timeText;
         TextView statusText;
         Button cancelButton;
+        Button addToCalendarButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +127,7 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
             timeText = itemView.findViewById(R.id.timeText);
             statusText = itemView.findViewById(R.id.statusText);
             cancelButton = itemView.findViewById(R.id.cancelButton);
+            addToCalendarButton = itemView.findViewById(R.id.addToCalendarButton);
         }
     }
 }
