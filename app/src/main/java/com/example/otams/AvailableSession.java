@@ -32,7 +32,7 @@ public class AvailableSession {
     }
 
     public String getTutorId() {
-        return tutor.getId();
+        return tutor.getUserId();
     }
 
     public int getDate() {
