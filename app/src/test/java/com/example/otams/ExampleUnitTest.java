@@ -11,11 +11,6 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
-    //calculating average of multiple ratings
-    @Test
     public void average_multipleRatings_computesCorrectly() {
         Tutor tutor = new Tutor();
         tutor.addRating(4);
