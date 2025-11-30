@@ -227,6 +227,7 @@ public class AvailableSessionsActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             updateEmptyView();
         });
+    }
     
 
     private void checkIfSlotBooked(String slotId, OnSlotCheckListener listener) {

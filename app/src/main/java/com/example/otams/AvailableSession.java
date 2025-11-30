@@ -4,7 +4,7 @@ package com.example.otams;
  * Model class representing an available tutoring session
  */
 public class AvailableSession {
-    private Tutor tutor
+    private Tutor tutor;
     private String slotId;
     private String tutorId;
     private int date;
