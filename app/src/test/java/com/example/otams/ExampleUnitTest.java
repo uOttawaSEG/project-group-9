@@ -14,4 +14,26 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+    //calculating average of multiple ratings
+    @Test
+    public void average_multipleRatings_computesCorrectly() {
+        Tutor tutor = new Tutor();
+        tutor.addRating(4);
+        tutor.addRating(5);
+        tutor.addRating(3);
+
+        double avg = tutor.getAverageRating();
+
+        assertEquals(4.0, avg, 0.001);
+    }
+    //if tutor has no rating it returns 0
+    @Test
+    public void average_noRatings_returnsZero() {
+        Tutor tutor = new Tutor();
+
+        double avg = tutor.getAverageRating();
+
+        assertEquals(0.0, avg, 0.0);
+    }
+
 }
