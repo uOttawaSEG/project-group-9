@@ -45,10 +45,8 @@ public class ExampleUnitTest {
     public void administrator_approval_test(){
         Administrator admin = new Administrator("admin@example.com");
         
-        Student a = new Student();
-        Tutor b = new Tutor();
-        a.setEmail("a@email.com");
-        b.setEmail("b@email.com");
+        Student a = new Student("student@email.com");
+        Tutor b = new Tutor("tutor@email.com");
 
         RegistrationRequest reqA = new RegistrationRequest(a);
         RegistrationRequest reqB = new RegistrationRequest(b);
