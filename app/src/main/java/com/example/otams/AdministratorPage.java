@@ -142,16 +142,26 @@ public class AdministratorPage extends AppCompatActivity {
 
                         if (status != null && "pending".equalsIgnoreCase(status)) {
                             // Log all available fields in the document
-                            Log.d("AdminPage", "  >>> Available fields: " + document.getData().keySet());
-
-
                             RegistrationRequest request = new RegistrationRequest();
+                            String role = document.getString("role");
+                            User user;
+
+                            if ("Student".equals(role)) {
+                                user = new Student();
+                            } else if ("Tutor".equals(role)) {
+                                user = new Tutor();
+                            } else {
+                                Log.e("AdminPage", "Unknown role in request: " + role);
+                                continue; // Skip this request
+                            }
+                            request.setUser(user);
+
                             request.setRequestId(document.getId());
                             request.setFirstName(document.getString("firstName"));
                             request.setLastName(document.getString("lastName"));
                             request.setEmail(document.getString("email"));
                             request.setPhoneNumber(document.getString("phoneNumber"));
-                            request.setRole(document.getString("role"));
+                            request.setRole(role);
                             request.setStatus(document.getString("status"));
                             request.setUserId(document.getString("userId"));
                             request.setProgram(document.getString("program"));
@@ -210,8 +220,21 @@ public class AdministratorPage extends AppCompatActivity {
 
 
                         if ("rejected".equalsIgnoreCase(status)) {
-                            // MANUAL MAPPING
                             RegistrationRequest request = new RegistrationRequest();
+                            String role = document.getString("role");
+                            User user;
+
+                            if ("Student".equals(role)) {
+                                user = new Student();
+                            } else if ("Tutor".equals(role)) {
+                                user = new Tutor();
+                            } else {
+                                Log.e("AdminPage", "Unknown role in request: " + role);
+                                continue; // Skip this request
+                            }
+                            request.setUser(user);
+
+                            // MANUAL MAPPING
                             request.setRequestId(document.getId());
                             request.setFirstName(document.getString("firstName"));
                             request.setLastName(document.getString("lastName"));
