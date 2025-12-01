@@ -265,7 +265,7 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
         if(intent.resolveActivity(getActivity().getPackageManager()) != null){
             startActivity(intent);
         } else {
-            Toast.makeText(getContext(), "No calendar app found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No calendar app found. Please install a calendar app to use this feature.", Toast.LENGTH_LONG).show();
         }
     }
 
