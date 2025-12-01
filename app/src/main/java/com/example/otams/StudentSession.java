@@ -12,6 +12,8 @@ public class StudentSession {
     private int startTime;
     private int endTime;
     private String status; // pending, approved, rejected, cancelled
+    private int rating; // 1-5 stars
+
 
     public StudentSession(String requestId, String slotId, String course, String tutorEmail,
                           int date, int startTime, int endTime, String status) {
@@ -23,6 +25,7 @@ public class StudentSession {
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;
+        this.rating = -1;
     }
 
     public String getRequestId() {
@@ -56,6 +59,10 @@ public class StudentSession {
     public String getStatus() {
         return status;
     }
+
+    public int getRating() { return rating; }
+
+    public void setRating(int rating) { this.rating = rating; }
 
     public boolean canCancel() {
         // Only allow cancel for pending or approved sessions

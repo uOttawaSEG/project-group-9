@@ -32,4 +32,31 @@ public class ExampleUnitTest {
         assertEquals(0.0, avg, 0.0);
     }
 
+    // Tests the creation of an administrator object
+    @Test
+    public void administrator_creation_test(){
+        Administrator admin = new Administrator("admin@example.com");
+        assertNotNull("Admin not null",admin);
+        assertNotNull("Requests not null",admin.getRequests());
+    }
+
+    // Tests the approval of a user
+    @Test
+    public void administrator_approval_test(){
+        Administrator admin = new Administrator("admin@example.com");
+        
+        Student a = new Student("student@email.com");
+        Tutor b = new Tutor("tutor@email.com");
+
+        RegistrationRequest reqA = new RegistrationRequest(a);
+        RegistrationRequest reqB = new RegistrationRequest(b);
+
+        admin.getRequests().add(reqA);
+        admin.getRequests().add(reqB);
+
+        admin.approveAll();
+
+        assertEquals("approved", reqA.getStatus());
+        assertEquals("approved", reqB.getStatus());
+    }
 }

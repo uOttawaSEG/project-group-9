@@ -11,17 +11,8 @@ import java.util.List;
 public class RegistrationRequest {
     // Instatiating variables
     private String requestId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String role;
     private String status;
-    private String userId;
-    private String program;
-    private String degree;
-    private List<String> courses;
-    private String password;
+    private User user;
 
     /** Empty constructor for Firestore
      */
@@ -36,15 +27,9 @@ public class RegistrationRequest {
      * @param phoneNumber
      * @param role
      */
-    public RegistrationRequest(String firstName, String lastName, String email, String password, String phoneNumber, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
+    public RegistrationRequest(User user) {
+        this.user = user;
         this.status = "pending";
-        //this.timestamp = Timestamp.now();
     }
 
 
@@ -67,61 +52,61 @@ public class RegistrationRequest {
      * @return firstName
      */
     @PropertyName("firstName")
-    public String getFirstName() { return firstName; }
+    public String getFirstName() { return user.getFirstName(); }
 
     /** [SETTER] Sets the first name
      * @param firstName
      */
     @PropertyName("firstName")
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setFirstName(String firstName) { user.setFirstName(firstName); }
 
     /** [GETTER] Gets the last name
      * @return lastName
      */
     @PropertyName("lastName")
-    public String getLastName() { return lastName; }
+    public String getLastName() { return user.getLastName(); }
 
     /** [SETTER] Sets the last name
      * @param lastName
      */
     @PropertyName("lastName")
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setLastName(String lastName) { user.setLastName(lastName); }
 
     /** [GETTER] Gets the email
      * @return email
      */
     @PropertyName("email")
-    public String getEmail() { return email; }
+    public String getEmail() { return user.getEmail(); }
 
     /** [SETTER] Sets the email
      * @param email
      */
     @PropertyName("email")
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) { user.setEmail(email); }
 
     /** [GETTER] Gets the phone number
      * @return phoneNumber
      */
     @PropertyName("phoneNumber")
-    public String getPhoneNumber() { return phoneNumber; }
+    public String getPhoneNumber() { return user.getPhoneNumber(); }
 
     /** [SETTER] Sets the phone number
      * @param phoneNumber
      */
     @PropertyName("phoneNumber")
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { user.setPhoneNumber(phoneNumber); }
 
     /** [GETTER] Gets the role
      * @return role
      */
     @PropertyName("role")
-    public String getRole() { return role; }
+    public String getRole() { return user.getRole(); }
 
     /** [SETTER] Sets the role
      * @param role
      */
     @PropertyName("role")
-    public void setRole(String role) { this.role = role; }
+    public void setRole(String role) { user.setRole(role); }
 
     /** [GETTER] Gets the status
      * @return status
@@ -139,77 +124,61 @@ public class RegistrationRequest {
      * @return userId
      */
     @PropertyName("userId")
-    public String getUserId() { return userId; }
+    public String getUserId() { return user.getUserId(); }
 
     /** [SETTER] Sets the userId
      * @param userId
      */
     @PropertyName("userId")
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setUserId(String userId) { user.setUserId(userId); }
 
     /** [GETTER] Gets program
      * @return program
      */
     @PropertyName("program")
-    public String getProgram() { return program; }
+    public String getProgram() { return user.getProgram(); }
 
     /** [SETTER] Sets program
      * @param program
      */
     @PropertyName("program")
-    public void setProgram(String program) { this.program = program; }
+    public void setProgram(String program) { user.setProgram(program); }
 
     /** [GETTER] Gets degree
      * @return degree
      */
     @PropertyName("degree")
-    public String getDegree() { return degree; }
+    public String getDegree() { return user.getDegree(); }
 
     /** [SETTER] Sets degree
      * @param degree
      */
     @PropertyName("degree")
-    public void setDegree(String degree) { this.degree = degree; }
+    public void setDegree(String degree) { user.setDegree(degree); }
 
     /** [GETTER] Gets courses
      * @return courses
      */
     @PropertyName("courses")
-    public List<String> getCourses() { return courses; }
+    public List<String> getCourses() { return user.getCourses(); }
 
     /** [SETTER] Sets courses
      * @param courses
      */
     @PropertyName("courses")
-    public void setCourses(List<String> courses) { this.courses = courses; }
+    public void setCourses(List<String> courses) { user.setCourses(courses); }
 
-    /** [GETTER] Gets password
-     * @return password
+    /** [GETTER] Gets user
+     * @return user
      */
-    @PropertyName("password")
-    public String getPassword() { return password; }
+    @PropertyName("user")
+    public User getUser() { return user; }
 
-    /** [SETTER] Sets password
-     * @param password
+    /** [SETTER] Sets user
+     * @param user
      */
-    @PropertyName("password")
-    public void setPassword(String password) { this.password = password; }
-
-    /** [GETTER] Gets timestamp
-     * @return timestamp
-     */
-
-    /*
-    @PropertyName("timestamp")
-    public String getPassword() { return timestamp; }
-    */
-    /** [SETTER] Sets timestamp
-     * @param timestamp
-     */
-    /*
-    @PropertyName("timestamp")
-    public void setPassword(Timestamp timestamp) { this.timestamp = timestamp; }
-    */
+    @PropertyName("user")
+    public void setUser(User user) { this.user = user; }
 
 
     /////-------      HELPER METHODS      -------/////
@@ -221,6 +190,7 @@ public class RegistrationRequest {
      * @return courses
      */
     public String getCoursesAsString() {
+        List<String> courses = user.getCourses();
         if (courses == null || courses.isEmpty()) {
             return "N/A";
         }

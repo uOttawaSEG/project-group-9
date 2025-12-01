@@ -128,5 +128,26 @@ public class Tutor extends User {
     }
 
     //////    -----   RATING METHODS    -----   //////
-    //needs to be completed
+
+    /** [GETTER] Gets the total rating points of the tutor
+     * @return totalRatingPoints
+     */
+    public int getTotalRatingPoints(){ return totalRatingPoints; }
+
+    /** [SETTER] Sets the total rating points of the tutor
+     * Updates the total rating points of the tutor.
+     * @param totalRatingPoints
+     */
+    public void setTotalRatingPoints(int totalRatingPoints){ this.totalRatingPoints = totalRatingPoints; }
+
+    /** [GETTER] Gets the total ratings of the tutor
+     * @return totalRatings
+     */
+    public int getTotalRatings(){ return totalRatings; }
+
+    /** [SETTER] Sets the total ratings of the tutor
+     * Updates the total ratings of the tutor.
+     * @param totalRatings
+     */
+    public void setTotalRatings(int totalRatings){ this.totalRatings = totalRatings; }
 }

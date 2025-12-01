@@ -17,6 +17,13 @@ public class Student extends User {
     }
 
     /**
+     * Empty constructor for student object
+     */
+    public Student() {
+        super();
+    }
+
+    /**
      * [GETTER] Gets the program of the student
      *
      * @return program
