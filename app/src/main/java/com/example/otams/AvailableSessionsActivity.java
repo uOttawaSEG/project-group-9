@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Shows available tutoring sessions for a specific course
@@ -65,6 +67,14 @@ public class AvailableSessionsActivity extends AppCompatActivity {
         initializeViews();
         setupRecyclerView();
         loadAvailableSessions();
+
+        // Handle back press
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -80,12 +90,6 @@ public class AvailableSessionsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 
     private void initializeViews() {
@@ -108,7 +112,8 @@ public class AvailableSessionsActivity extends AppCompatActivity {
     }
 
     private void loadAvailableSessions() {
-        Calendar today = Calendar.getInstance();
+        TimeZone timeZone = TimeZone.getTimeZone("America/Toronto");
+        Calendar today = Calendar.getInstance(timeZone);
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);

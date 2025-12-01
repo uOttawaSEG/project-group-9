@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Fragment showing student's booked/requested sessions
@@ -102,7 +103,8 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
     private void loadStudentSessions() {
         String studentId = auth.getCurrentUser().getUid();
 
-        Calendar now = Calendar.getInstance();
+        TimeZone timeZone = TimeZone.getTimeZone("America/Toronto");
+        Calendar now = Calendar.getInstance(timeZone);
         int todayInt = now.get(Calendar.YEAR) * 10000 +
                 (now.get(Calendar.MONTH) + 1) * 100 +
                 now.get(Calendar.DAY_OF_MONTH);
@@ -177,7 +179,8 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
 
     private void cancelSession(StudentSession session) {
         // Check if session is within 24 hours
-        Calendar sessionDateTime = Calendar.getInstance();
+        TimeZone timeZone = TimeZone.getTimeZone("America/Toronto");
+        Calendar sessionDateTime = Calendar.getInstance(timeZone);
         int year = session.getDate() / 10000;
         int month = (session.getDate() % 10000) / 100;
         int day = session.getDate() % 100;
@@ -186,7 +189,7 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
 
         sessionDateTime.set(year, month - 1, day, hour, minute);
 
-        Calendar now = Calendar.getInstance();
+        Calendar now = Calendar.getInstance(timeZone);
         long hoursUntilSession = (sessionDateTime.getTimeInMillis() - now.getTimeInMillis()) / (1000 * 60 * 60);
 
         if (hoursUntilSession < 24) {
@@ -240,7 +243,9 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
         intent.putExtra(CalendarContract.Events.TITLE, "Tutoring Session: " + session.getCourse());
         intent.putExtra(CalendarContract.Events.DESCRIPTION, "Tutoring session for " + session.getCourse() + " with " + session.getTutorEmail());
 
-        Calendar startTime = Calendar.getInstance();
+        TimeZone timeZone = TimeZone.getTimeZone("America/Toronto");
+
+        Calendar startTime = Calendar.getInstance(timeZone);
         int year = session.getDate() / 10000;
         int month = (session.getDate() % 10000) / 100;
         int day = session.getDate() % 100;
@@ -249,11 +254,13 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
         startTime.set(year, month - 1, day, startHour, startMinute);
         intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
 
-        Calendar endTime = Calendar.getInstance();
+        Calendar endTime = Calendar.getInstance(timeZone);
         int endHour = session.getEndTime() / 60;
         int endMinute = session.getEndTime() % 60;
         endTime.set(year, month - 1, day, endHour, endMinute);
         intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
+        
+        intent.putExtra(CalendarContract.Events.EVENT_TIMEZONE, "America/Toronto");
 
         if(intent.resolveActivity(getActivity().getPackageManager()) != null){
             startActivity(intent);
