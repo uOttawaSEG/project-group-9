@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -319,21 +320,26 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
                 .limit(1)
                 .get()
                 .addOnSuccessListener(query -> {
-                    if (!query.isEmpty()) {
-                        DocumentSnapshot doc = query.getDocuments().get(0);
-                        Tutor tutor = doc.toObject(Tutor.class);
-                        if (tutor == null) return;
-                        tutor.addRating(stars);
-                        doc.getReference().update(
-                                "totalRatingPoints", tutor.getTotalRatingPoints(),
-                                "totalRatings", tutor.getTotalRatings()
-                        );
+                    if (query.isEmpty()) {
+                        Log.e("Rating", "No tutor found with email: " + tutorEmail);
+                        return;
                     }
+                    DocumentSnapshot doc = query.getDocuments().get(0);
+                    doc.getReference().update(
+                            "totalRatingPoints", FieldValue.increment(stars),
+                            "totalRatings", FieldValue.increment(1)
+                    ).addOnSuccessListener(aVoid -> {
+                        Log.d("Rating", "Tutor rating updated for " + tutorEmail
+                                + " with " + stars + " stars");
+                    }).addOnFailureListener(e -> {
+                        Log.e("Rating", "Failed to update tutor rating: " + e.getMessage());
+                    });
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(),
                             "Error updating tutor rating: " + e.getMessage(),
                             Toast.LENGTH_SHORT).show();
+                    Log.e("Rating", "Query failed: " + e.getMessage());
                 });
     }
 }
