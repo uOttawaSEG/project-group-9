@@ -25,7 +25,7 @@ public class AvailableSession {
         this.requiresApproval = requiresApproval;
 
         if (tutor != null) {
-            this.tutorAverageRating = tutor.getAverageRating();
+            this.tutorAverageRating = tutor.calculateAverageRating();
             this.tutorTotalRatings = tutor.getTotalRatings();
         }
     }
@@ -65,5 +65,9 @@ public class AvailableSession {
     public double getTutorAverageRating() { return tutorAverageRating; }
 
     public int getTutorTotalRatings() { return tutorTotalRatings; }
+
+    public void setTutorAverageRating(double tutorAverageRating) { this.tutorAverageRating = tutorAverageRating; }
+
+    public void setTutorTotalRatings(int tutorTotalRatings) { this.tutorTotalRatings = tutorTotalRatings; }
 
 }

@@ -18,7 +18,7 @@ public class ExampleUnitTest {
         tutor.addRating(5);
         tutor.addRating(3);
 
-        double avg = tutor.getAverageRating();
+        double avg = tutor.calculateAverageRating();
 
         assertEquals(4.0, avg, 0.001);
     }
@@ -27,7 +27,7 @@ public class ExampleUnitTest {
     public void average_noRatings_returnsZero() {
         Tutor tutor = new Tutor();
 
-        double avg = tutor.getAverageRating();
+        double avg = tutor.calculateAverageRating();
 
         assertEquals(0.0, avg, 0.0);
     }

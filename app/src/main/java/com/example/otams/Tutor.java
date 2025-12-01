@@ -85,7 +85,7 @@ public class Tutor extends User {
      *
      * @return the average rating as a double value
      */
-    public double getAverageRating(){
+    public double calculateAverageRating(){
         if(totalRatings == 0) return 0.0;
         return(double) totalRatingPoints/totalRatings;
     }

@@ -199,6 +199,9 @@ public class AvailableSessionsActivity extends AppCompatActivity {
                                         }
 
                                         AvailableSession session = new AvailableSession(slotId, tutor, date, startTime, endTime, courseName, requiresApproval);
+
+                                        session.setTutorAverageRating(tutor.calculateAverageRating());
+                                        session.setTutorTotalRatings(tutor.getTotalRatings());
                                         
                                         availableSessions.add(session);
                                         Log.d(TAG, "Added session! Total now: " + availableSessions.size());
