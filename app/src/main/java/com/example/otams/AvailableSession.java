@@ -12,6 +12,8 @@ public class AvailableSession {
     private int endTime;
     private String course;
     private boolean requiresApproval;
+    private double tutorAverageRating;
+    private int tutorTotalRatings;
     
     public AvailableSession(String slotId, Tutor tutor, int date, int startTime, int endTime, String course, boolean requiresApproval) {
         this.slotId = slotId;
@@ -21,6 +23,11 @@ public class AvailableSession {
         this.endTime = endTime;
         this.course = course;
         this.requiresApproval = requiresApproval;
+
+        if (tutor != null) {
+            this.tutorAverageRating = tutor.getAverageRating();
+            this.tutorTotalRatings = tutor.getTotalRatings();
+        }
     }
 
     public String getSlotId() {
@@ -54,4 +61,9 @@ public class AvailableSession {
     public boolean isRequiresApproval() {
         return requiresApproval;
     }
+
+    public double getTutorAverageRating() { return tutorAverageRating; }
+
+    public int getTutorTotalRatings() { return tutorTotalRatings; }
+
 }

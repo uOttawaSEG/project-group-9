@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,15 +18,22 @@ import java.util.Locale;
 public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAdapter.ViewHolder> {
 
     private List<StudentSession> sessions;
-    private OnCancelListener cancelListener;
+    private OnSessionInteractionListener interactionListener;
+    private OnRateListener rateListener;
 
-    public interface OnCancelListener {
+    public interface OnSessionInteractionListener {
         void onCancel(StudentSession session);
+        void onAddToCalendar(StudentSession session);
     }
 
-    public StudentSessionAdapter(List<StudentSession> sessions, OnCancelListener cancelListener) {
+    public interface OnRateListener {
+        void onRate(StudentSession session);
+    }
+
+    public StudentSessionAdapter(List<StudentSession> sessions, OnSessionInteractionListener listener, OnRateListener rateListener) {
         this.sessions = sessions;
-        this.cancelListener = cancelListener;
+        this.interactionListener = listener;
+        this.rateListener = rateListener;
     }
 
     @NonNull
@@ -62,12 +70,43 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
                 break;
         }
 
+        // Reset visibility
+        holder.cancelButton.setVisibility(View.GONE);
+        holder.addToCalendarButton.setVisibility(View.GONE);
+        holder.rateButton.setVisibility(View.GONE);
+        holder.ratingBarSession.setVisibility(View.GONE);
+
         // Show cancel button only for upcoming sessions that can be cancelled
-        if (cancelListener != null && session.canCancel()) {
+        if (interactionListener != null && session.canCancel()) {
             holder.cancelButton.setVisibility(View.VISIBLE);
-            holder.cancelButton.setOnClickListener(v -> cancelListener.onCancel(session));
+            holder.cancelButton.setOnClickListener(v -> interactionListener.onCancel(session));
+        }
+
+
+        // Show calendar button only for approved sessions
+        if (interactionListener != null && "approved".equals(status)) {
+            holder.addToCalendarButton.setVisibility(View.VISIBLE);
+            holder.addToCalendarButton.setOnClickListener(v -> interactionListener.onAddToCalendar(session));
+        }
+
+        // Show rating button only for unrated sessions
+        if (interactionListener == null) {
+            if (session.getRating() == -1) {
+                holder.rateButton.setVisibility(View.VISIBLE);
+                holder.ratingBarSession.setVisibility(View.GONE);
+                holder.rateButton.setOnClickListener(v -> {
+                    if (rateListener != null) {
+                        rateListener.onRate(session);
+                    }
+                });
+            } else {
+                holder.rateButton.setVisibility(View.GONE);
+                holder.ratingBarSession.setVisibility(View.VISIBLE);
+                holder.ratingBarSession.setRating(session.getRating());
+            }
         } else {
-            holder.cancelButton.setVisibility(View.GONE);
+            holder.rateButton.setVisibility(View.GONE);
+            holder.ratingBarSession.setVisibility(View.GONE);
         }
     }
 
@@ -107,6 +146,9 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
         TextView timeText;
         TextView statusText;
         Button cancelButton;
+        Button addToCalendarButton;
+        Button rateButton;
+        RatingBar ratingBarSession;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +158,9 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
             timeText = itemView.findViewById(R.id.timeText);
             statusText = itemView.findViewById(R.id.statusText);
             cancelButton = itemView.findViewById(R.id.cancelButton);
+            addToCalendarButton = itemView.findViewById(R.id.addToCalendarButton);
+            rateButton = itemView.findViewById(R.id.rateButton);
+            ratingBarSession = itemView.findViewById(R.id.ratingBarSession);
         }
     }
 }
