@@ -11,6 +11,7 @@ public class Session extends Slot {
     private Student student;
     private boolean completed;
     private boolean rated;
+    private int rating;
 
 
 
@@ -22,6 +23,8 @@ public class Session extends Slot {
         this.student = student;
         this.course = course;
         this.approval = "pending";
+        this.rated = false;
+        this.rating = 0;
     }
 
     /** [SETTER] Sets the approval
@@ -42,4 +45,22 @@ public class Session extends Slot {
     public String getCourse() { return this.course; }
 
     public void setCourse(String course) {this.course = course; }
+
+    /** [SETTER] Sets the status of the rating and the rating.
+     * @param rating
+     */
+    public void setRating(int rating){
+        this.rating = rating;
+        this.rated = (rating > 0);
+    }
+
+    /** [GETTER] Gets the rating.
+     * @return rated
+     */
+    public int getRating(){ return this.rating; }
+
+    /** [GETTER] Gets the status of the rating.
+     * @return rated
+     */
+    public boolean isRated(){ return this.rated; }
 }

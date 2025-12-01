@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,9 @@ public class AvailableSessionAdapter extends RecyclerView.Adapter<AvailableSessi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AvailableSession session = sessions.get(position);
 
+        double avg = session.getTutorAverageRating();
+        int count = session.getTutorTotalRatings();
+
         holder.tutorText.setText("Tutor: " + session.getTutorEmail());
         holder.dateText.setText(formatDate(session.getDate()));
         holder.timeText.setText(formatTimeRange(session.getStartTime(), session.getEndTime()));
@@ -50,6 +54,20 @@ public class AvailableSessionAdapter extends RecyclerView.Adapter<AvailableSessi
                 requestListener.onRequestSession(session);
             }
         });
+
+        if (count > 0) {
+            holder.tutorRatingBar.setVisibility(View.VISIBLE);
+            holder.tutorRatingBar.setRating((float) avg);
+            holder.tutorRatingText.setVisibility(View.VISIBLE);
+            holder.tutorRatingText.setText(
+                    String.format(Locale.getDefault(),
+                            "%.1f / 5 (%d ratings)", avg, count)
+            );
+        } else {
+            holder.tutorRatingBar.setVisibility(View.GONE);
+            holder.tutorRatingText.setVisibility(View.VISIBLE);
+            holder.tutorRatingText.setText("No ratings yet");
+        }
     }
 
     @Override
@@ -87,6 +105,9 @@ public class AvailableSessionAdapter extends RecyclerView.Adapter<AvailableSessi
         TextView timeText;
         TextView approvalText;
         Button requestButton;
+        RatingBar tutorRatingBar;
+        TextView tutorRatingText;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,6 +116,8 @@ public class AvailableSessionAdapter extends RecyclerView.Adapter<AvailableSessi
             timeText = itemView.findViewById(R.id.timeText);
             approvalText = itemView.findViewById(R.id.approvalText);
             requestButton = itemView.findViewById(R.id.requestButton);
+            tutorRatingBar = itemView.findViewById(R.id.tutorRatingBar);
+            tutorRatingText = itemView.findViewById(R.id.tutorRatingText);
         }
     }
 }

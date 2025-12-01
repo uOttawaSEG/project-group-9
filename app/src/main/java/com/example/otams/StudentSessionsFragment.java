@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.otams.StudentSession;
 import com.example.otams.StudentSessionAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -86,8 +89,8 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
     }
 
     private void setupRecyclerViews() {
-        upcomingAdapter = new StudentSessionAdapter(upcomingSessions, this);
-        pastAdapter = new StudentSessionAdapter(pastSessions, null); // No interaction for past
+        upcomingAdapter = new StudentSessionAdapter(upcomingSessions, this, null);
+        pastAdapter = new StudentSessionAdapter(pastSessions, null, this::openRatingDialog); // No interaction for past
 
         upcomingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         pastRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -127,11 +130,18 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
                             int date = document.getLong("date").intValue();
                             int startTime = document.getLong("startTime").intValue();
                             int endTime = document.getLong("endTime").intValue();
+                            Long ratingLong = document.getLong("rating");
+                            int rating = -1;
+                            if (ratingLong != null) {
+                                rating = ratingLong.intValue();
+                            }
 
                             StudentSession session = new StudentSession(
                                     requestId, slotId, course, tutorEmail, date,
                                     startTime, endTime, status
                             );
+
+                            session.setRating(rating);
 
                             // Determine if past or upcoming
                             boolean isPast = false;
@@ -250,5 +260,73 @@ public class StudentSessionsFragment extends Fragment implements StudentSessionA
         } else {
             Toast.makeText(getContext(), "No calendar app found", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void openRatingDialog(StudentSession session) {
+        View dialogView = LayoutInflater.from(getContext())
+                .inflate(R.layout.dialog_rate_session, null);
+
+        RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Rate this session")
+                .setView(dialogView)
+                .setPositiveButton("Submit", (dialog, which) -> {
+                    int stars = (int) ratingBar.getRating();
+                    if (stars == 0) {
+                        Toast.makeText(getContext(),
+                                "Please select a rating", Toast.LENGTH_SHORT).show();
+                    } else {
+                        rateSessions(session, stars);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void rateSessions(StudentSession session, int stars) {
+        db.collection("sessionRequests")
+                .document(session.getRequestId())
+                .update("rating", stars)
+                .addOnSuccessListener(aVoid -> {
+                    session.setRating(stars);
+                    int position = pastSessions.indexOf(session);
+                    if (position != -1) {
+                        pastAdapter.notifyItemChanged(position);
+                    }
+                    Toast.makeText(getContext(),
+                            "Rating submitted!",
+                            Toast.LENGTH_SHORT).show();
+                    updateTutorRating(session.getTutorEmail(), stars);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(),
+                            "Error submitting rating: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void updateTutorRating(String tutorEmail, int stars) {
+        db.collection("tutors")
+                .whereEqualTo("email", tutorEmail)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(query -> {
+                    if (!query.isEmpty()) {
+                        DocumentSnapshot doc = query.getDocuments().get(0);
+                        Tutor tutor = doc.toObject(Tutor.class);
+                        if (tutor == null) return;
+                        tutor.addRating(stars);
+                        doc.getReference().update(
+                                "totalRatingPoints", tutor.getTotalRatingPoints(),
+                                "totalRatings", tutor.getTotalRatings()
+                        );
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(),
+                            "Error updating tutor rating: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                });
     }
 }

@@ -37,6 +37,7 @@ import java.util.List;
  * Firestore:
  *  - Collection "requests": registration requests (pending/approved/rejected)
  *  - Collection "users": persisted user profiles after approval
+ *  - Collection "tutors": persisted tutor profiles after approval
  *
  * Layout file: {@code activity_administrator_home.xml}
  *
@@ -295,6 +296,8 @@ public class AdministratorPage extends AppCompatActivity {
             Tutor tutor = new Tutor(request.getEmail());
             tutor.setDegree(request.getDegree());
             tutor.setCourses(request.getCourses());
+            tutor.setTotalRatingPoints(0);
+            tutor.setTotalRatings(0);
             newUser = tutor;
         } else if("Administrator".equals(request.getRole())){
             Administrator admin = new Administrator(request.getEmail());
@@ -312,11 +315,21 @@ public class AdministratorPage extends AppCompatActivity {
         newUser.setPhoneNumber(request.getPhoneNumber());
         newUser.setRole(request.getRole());
 
+        final User finalNewUser = newUser;
 
         db.collection("users")
                 .document(request.getUserId())
                 .set(newUser)
                 .addOnSuccessListener(aVoid -> {
+                    if (finalNewUser instanceof Tutor) {
+                        Tutor tutor = (Tutor) finalNewUser;
+                        db.collection("tutors")
+                                .document(request.getUserId()) // même uid
+                                .set(tutor)
+                                .addOnFailureListener(e ->
+                                        Log.e("AdminPage", "Failed to save tutor profile: " + e.getMessage())
+                                );
+                    }
                     db.collection("requests")
                         .document(request.getRequestId())
                         .update("status","approved")

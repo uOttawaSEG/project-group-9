@@ -59,6 +59,27 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <RatingBar
+            android:id="@+id/ratingBarSession"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            android:stepSize="1"
+            android:isIndicator="true"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/rateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Rate Session"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

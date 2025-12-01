@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,15 +19,21 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
 
     private List<StudentSession> sessions;
     private OnSessionInteractionListener interactionListener;
+    private OnRateListener rateListener;
 
     public interface OnSessionInteractionListener {
         void onCancel(StudentSession session);
         void onAddToCalendar(StudentSession session);
     }
 
-    public StudentSessionAdapter(List<StudentSession> sessions, OnSessionInteractionListener listener) {
+    public interface OnRateListener {
+        void onRate(StudentSession session);
+    }
+
+    public StudentSessionAdapter(List<StudentSession> sessions, OnSessionInteractionListener listener, OnRateListener rateListener) {
         this.sessions = sessions;
         this.interactionListener = listener;
+        this.rateListener = rateListener;
     }
 
     @NonNull
@@ -66,6 +73,8 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
         // Reset visibility
         holder.cancelButton.setVisibility(View.GONE);
         holder.addToCalendarButton.setVisibility(View.GONE);
+        holder.rateButton.setVisibility(View.GONE);
+        holder.ratingBarSession.setVisibility(View.GONE);
 
         // Show cancel button only for upcoming sessions that can be cancelled
         if (interactionListener != null && session.canCancel()) {
@@ -78,6 +87,26 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
         if (interactionListener != null && "approved".equals(status)) {
             holder.addToCalendarButton.setVisibility(View.VISIBLE);
             holder.addToCalendarButton.setOnClickListener(v -> interactionListener.onAddToCalendar(session));
+        }
+
+        // Show rating button only for unrated sessions
+        if (interactionListener == null) {
+            if (session.getRating() == -1) {
+                holder.rateButton.setVisibility(View.VISIBLE);
+                holder.ratingBarSession.setVisibility(View.GONE);
+                holder.rateButton.setOnClickListener(v -> {
+                    if (rateListener != null) {
+                        rateListener.onRate(session);
+                    }
+                });
+            } else {
+                holder.rateButton.setVisibility(View.GONE);
+                holder.ratingBarSession.setVisibility(View.VISIBLE);
+                holder.ratingBarSession.setRating(session.getRating());
+            }
+        } else {
+            holder.rateButton.setVisibility(View.GONE);
+            holder.ratingBarSession.setVisibility(View.GONE);
         }
     }
 
@@ -118,6 +147,8 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
         TextView statusText;
         Button cancelButton;
         Button addToCalendarButton;
+        Button rateButton;
+        RatingBar ratingBarSession;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,6 +159,8 @@ public class StudentSessionAdapter extends RecyclerView.Adapter<StudentSessionAd
             statusText = itemView.findViewById(R.id.statusText);
             cancelButton = itemView.findViewById(R.id.cancelButton);
             addToCalendarButton = itemView.findViewById(R.id.addToCalendarButton);
+            rateButton = itemView.findViewById(R.id.rateButton);
+            ratingBarSession = itemView.findViewById(R.id.ratingBarSession);
         }
     }
 }
